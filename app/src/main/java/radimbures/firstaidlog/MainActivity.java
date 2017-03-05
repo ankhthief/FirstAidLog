@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
-
+/*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 fm.beginTransaction().replace(R.id.fragment_holder, new ParticipantsList()).addToBackStack(null).commit();
             }
         });
+        */
     }
 
     @Override
