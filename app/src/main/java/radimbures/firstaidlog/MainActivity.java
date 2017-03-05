@@ -12,12 +12,16 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    DatabaseHelper myDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        myDb = new DatabaseHelper(this);
 
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
