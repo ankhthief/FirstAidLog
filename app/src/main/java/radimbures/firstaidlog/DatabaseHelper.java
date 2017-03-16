@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //TODO možná přepsat tento příkaz
         //vytovoření tabulky Events
-        db.execSQL("create table " + TABLE_EVENTS +" ("+EVENTS_ROWID+" integer primary key autoincrement" + EVENTS_NAME+" text not null)" );
+        db.execSQL("create table " + TABLE_EVENTS +" ("+EVENTS_ROWID+" integer primary key autoincrement," + EVENTS_NAME+" text not null)" );
     }
 
     @Override
