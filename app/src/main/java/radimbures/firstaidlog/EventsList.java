@@ -55,7 +55,7 @@ public class EventsList extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //TODO zde se načtou data z polí a uloží do databáze
                         //String str = eventName.getText().toString();
-                        Toast.makeText(getActivity(),"pokus",
+                        Toast.makeText(getActivity(),"pokus123",
                                 Toast.LENGTH_LONG).show();
                     }
                 });
