@@ -12,7 +12,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseHelper myDb;
+    //DatabaseHelper myDb;
+    DBAdapter myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        myDb = new DatabaseHelper(this);
+        //myDB =  new DBAdapter(this);
+        //myDB.open();
+        //myDb = new DatabaseHelper(this);
 
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
