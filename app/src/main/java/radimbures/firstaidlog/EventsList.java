@@ -22,6 +22,8 @@ import android.widget.EditText;
  */
 public class EventsList extends DialogFragment {
 
+    DatabaseHelper myDB;
+
     public EventsList() {
         // Required empty public constructor
     }
@@ -54,9 +56,13 @@ public class EventsList extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //TODO zde se načtou data z polí a uloží do databáze
-                        //String str = eventName.getText().toString();
-                        Toast.makeText(getActivity(),"pokus123",
-                                Toast.LENGTH_LONG).show();
+                        String str = eventName.getText().toString();
+                        boolean isInserted = myDB.insertData(str);
+                        if (isInserted == true) {
+                            Toast.makeText(getActivity(),str,
+                                    Toast.LENGTH_LONG).show();
+                        }
+
                     }
                 });
                 addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

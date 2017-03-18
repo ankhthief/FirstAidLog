@@ -23,7 +23,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        SQLiteDatabase db = this.getReadableDatabase();
     }
 
     @Override
@@ -43,4 +42,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    //insert data to Events table
+    public boolean insertData(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(EVENTS_NAME,name);
+        long result = db.insert(TABLE_EVENTS, null, contentValues);
+        if (result == -1)
+            return false;
+        else
+            return true;
+    }
 }
