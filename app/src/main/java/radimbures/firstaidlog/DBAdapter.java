@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.Cursor;
 
 public class DBAdapter {
 
@@ -18,6 +19,8 @@ public class DBAdapter {
     //table Events
     public static final String EVENTS_ROWID = "id";
     public static final String EVENTS_NAME = "name";
+
+    public static final String[] ALL_KEYS_EVENT = new String[] {EVENTS_ROWID, EVENTS_NAME};
 
     //SQL pro vytvoření tabulky Events
     private static final String DATABASE_CREATE_SQL_EVENTS =
@@ -42,6 +45,15 @@ public class DBAdapter {
     //close database
     public void close() {
         myDBHelper.close();
+    }
+
+    // Vrátí všechny data z tabulky Events
+    public Cursor getAllRowsEvent() {
+        Cursor c = 	db.query(true, TABLE_EVENTS, ALL_KEYS_EVENT, null, null, null, null, null, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
     }
 
     // Vytvoří novou sadu hodnot, která se má přidat do tabulky Events

@@ -13,7 +13,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     //DatabaseHelper myDb;
-    DBAdapter myDB;
+    //DBAdapter myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
