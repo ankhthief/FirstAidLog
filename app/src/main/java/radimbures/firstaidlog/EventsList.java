@@ -59,9 +59,10 @@ public class EventsList extends DialogFragment {
                         String str = eventName.getText().toString();
                         boolean isInserted = myDB.insertData(str);
                         if (isInserted == true) {
-                            Toast.makeText(getActivity(),str,
-                                    Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"data přidána", Toast.LENGTH_LONG).show();
                         }
+                        else
+                            Toast.makeText(getActivity(),"data nepřidána", Toast.LENGTH_LONG).show();
 
                     }
                 });
