@@ -14,10 +14,10 @@ public class DBAdapter {
     //database info
     public static final String DATABASE_NAME = "firstaidlog.db";
     public static final String TABLE_EVENTS = "events";  //database name Events
-    public static final int DATABASE_VERSION = 1;  //database version. Need to increment every time DB changes
+    public static final int DATABASE_VERSION = 2;  //database version. Need to increment every time DB changes
 
     //table Events
-    public static final String EVENTS_ROWID = "id";
+    public static final String EVENTS_ROWID = "_id";
     public static final String EVENTS_NAME = "name";
 
     public static final String[] ALL_KEYS_EVENT = new String[] {EVENTS_ROWID, EVENTS_NAME};
@@ -26,7 +26,7 @@ public class DBAdapter {
     private static final String DATABASE_CREATE_SQL_EVENTS =
             "CREATE TABLE " + TABLE_EVENTS
                     + " (" + EVENTS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + EVENTS_NAME + " TEXT NOT NULL, "
+                    + EVENTS_NAME + " TEXT NOT NULL"
                     + ");";
 
     private DatabaseHelper myDBHelper;

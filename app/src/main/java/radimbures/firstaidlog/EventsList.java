@@ -45,7 +45,7 @@ public class EventsList extends DialogFragment {
         final FragmentManager fm = getFragmentManager();
         eventList = (ListView) root.findViewById(R.id.list_events);
         FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
-        //populateListView();
+        populateListView();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +96,7 @@ public class EventsList extends DialogFragment {
         String[] fromEventNames = new String[] {DBAdapter.EVENTS_NAME};
         int[] toViewIDs = new int[] {R.id.name_of_event};
         SimpleCursorAdapter myCursorAdapter;
-        myCursorAdapter = new SimpleCursorAdapter(getContext(),R.layout.row_event, cursor, fromEventNames, toViewIDs,0 );
+        myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_event, cursor, fromEventNames, toViewIDs,0 );
         eventList.setAdapter(myCursorAdapter);
     }
 
