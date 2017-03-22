@@ -44,7 +44,7 @@ public class DBAdapter {
 
     public boolean isEmpty() {
         boolean empty = true;
-        Cursor cur = db.rawQuery("SELECT COUNT(*) "+TABLE_EVENTS, null);
+        Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_EVENTS, null);
         if (cur != null && cur.moveToFirst()) {
             empty = (cur.getInt (0) == 0);
         }

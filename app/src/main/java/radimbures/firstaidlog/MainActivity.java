@@ -26,16 +26,19 @@ public class MainActivity extends AppCompatActivity {
         myDB =  new DBAdapter(this);
         myDB.open();
 
-        //TODO not working yet
+        final FragmentManager fm = getSupportFragmentManager();
+
         if (myDB.isEmpty()) {
             Toast.makeText(this,"db prázdná", Toast.LENGTH_LONG).show();
+            fm.beginTransaction().replace(R.id.fragment_holder, new EmptyList()).commit();
         } else {
             Toast.makeText(this,"db plná", Toast.LENGTH_LONG).show();
+            fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
         }
 
 
-        final FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
+
+
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
