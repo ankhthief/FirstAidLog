@@ -9,11 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    //DatabaseHelper myDb;
-    //DBAdapter myDB;
+
+    DBAdapter myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +23,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //myDB =  new DBAdapter(this);
-        //myDB.open();
-        //myDb = new DatabaseHelper(this);
+        myDB =  new DBAdapter(this);
+        myDB.open();
+
+        //TODO not working yet
+        if (myDB.isEmpty()) {
+            Toast.makeText(this,"db prázdná", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this,"db plná", Toast.LENGTH_LONG).show();
+        }
+
 
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();

@@ -42,6 +42,17 @@ public class DBAdapter {
         return this;
     }
 
+    public boolean isEmpty() {
+        boolean empty = true;
+        Cursor cur = db.rawQuery("SELECT COUNT(*) "+TABLE_EVENTS, null);
+        if (cur != null && cur.moveToFirst()) {
+            empty = (cur.getInt (0) == 0);
+        }
+        cur.close();
+
+        return empty;
+    }
+
     //close database
     public void close() {
         myDBHelper.close();
