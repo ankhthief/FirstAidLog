@@ -3,7 +3,6 @@ package radimbures.firstaidlog;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.DialogFragment;
@@ -16,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.database.Cursor;
 import android.widget.SimpleCursorAdapter;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 
 
@@ -40,11 +40,11 @@ public class EventsList extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
-        myDB.open();
-        final View root = inflater.inflate(R.layout.fragment_events_list, container, false);
         final FragmentManager fm = getFragmentManager();
+        final View root = inflater.inflate(R.layout.fragment_events_list, container, false);
+        //final FragmentManager fm = getFragmentManager();
         eventList = (ListView) root.findViewById(R.id.list_events);
-        FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab_event);
         populateListView();
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,13 +67,11 @@ public class EventsList extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //TODO zde se načtou data z polí a uloží do databáze
                         String str = eventName.getText().toString();
-                        //boolean isInserted = myDB.insertData(str);
-                        //if (isInserted == true) {
-                        //    Toast.makeText(getActivity(),"data přidána", Toast.LENGTH_LONG).show();
-                        //}
-                        //else
+                        myDB.open();
                         myDB.insertRowEvent(str);
-                        Toast.makeText(getActivity(),str, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),R.string.event_add_toast, Toast.LENGTH_LONG).show();
+                        myDB.close();
+                        fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
                     }
                 });
                 addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -92,12 +90,14 @@ public class EventsList extends DialogFragment {
     }
 
     public void populateListView() {
+        myDB.open();
         Cursor cursor = myDB.getAllRowsEvent();
         String[] fromEventNames = new String[] {DBAdapter.EVENTS_NAME};
         int[] toViewIDs = new int[] {R.id.name_of_event};
         SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_event, cursor, fromEventNames, toViewIDs,0 );
         eventList.setAdapter(myCursorAdapter);
+        myDB.close();
     }
 
 }

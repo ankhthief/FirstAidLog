@@ -8,4 +8,5 @@
     <string name="cancel">Cancel</string>
     <string name="addEventDialog">Add new Event</string>
     <string name="name_of_the_event">name of the event</string>
+    <string name="event_add_toast">Event added</string>
 </resources>

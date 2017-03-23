@@ -12,14 +12,14 @@
         android:text="Oh no, it seems that there's no data to display. Start adding some using + button." />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/pink_icon"
+        android:id="@+id/fab_emptyList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         fab:fab_icon="@drawable/plusicon"
         fab:fab_colorNormal="@color/colorAccent"
         fab:fab_colorPressed="@color/colorPrimaryDark"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="16dp"/>
+        android:layout_margin="@dimen/fab_margin"/>
 
 
 

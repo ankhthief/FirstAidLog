@@ -1,11 +1,17 @@
 package radimbures.firstaidlog;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
+import android.view.View.OnClickListener;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 
 /**
@@ -13,6 +19,8 @@ import android.view.ViewGroup;
  */
 public class EmptyList extends Fragment {
 
+    DBAdapter myDB;
+    EditText eventName;
 
     public EmptyList() {
         // Required empty public constructor
@@ -22,8 +30,51 @@ public class EmptyList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_empty_list, container, false);
+
+        myDB =  new DBAdapter(getContext());
+
+        final View root = inflater.inflate(R.layout.fragment_empty_list, container, false);
+        FloatingActionButton fab_add = (FloatingActionButton) root.findViewById(R.id.fab_emptyList);
+
+        fab_add.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final AlertDialog.Builder addEventDialog = new AlertDialog.Builder(getContext());
+                addEventDialog.setTitle(R.string.addEventDialog);
+                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
+                addEventDialog.setView(viewInflated);
+                eventName = (EditText) viewInflated.findViewById(R.id.add_event_name);
+                addEventDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //TODO zde se načtou data z polí a uloží do databáze
+                        String str = eventName.getText().toString();
+                        myDB.open();
+                        myDB.insertRowEvent(str);
+                        Toast.makeText(getActivity(), R.string.event_add_toast, Toast.LENGTH_LONG).show();
+                        myDB.close();
+                        getActivity().recreate();
+                    }
+                });
+                addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                addEventDialog.show();
+            }
+        });
+
+
+
+
+
+
+        return root;
+
+
     }
 
 }

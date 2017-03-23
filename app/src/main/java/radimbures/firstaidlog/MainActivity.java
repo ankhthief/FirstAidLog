@@ -1,15 +1,12 @@
 package radimbures.firstaidlog;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,25 +26,11 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fm = getSupportFragmentManager();
 
         if (myDB.isEmpty()) {
-            Toast.makeText(this,"db prázdná", Toast.LENGTH_LONG).show();
             fm.beginTransaction().replace(R.id.fragment_holder, new EmptyList()).commit();
         } else {
-            Toast.makeText(this,"db plná", Toast.LENGTH_LONG).show();
             fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
         }
-
-
-
-
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fm.beginTransaction().replace(R.id.fragment_holder, new ParticipantsList()).addToBackStack(null).commit();
-            }
-        });
-        */
+        myDB.close();
     }
 
     @Override
