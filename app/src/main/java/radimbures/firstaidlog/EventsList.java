@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.app.AlertDialog;
+import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -42,10 +43,16 @@ public class EventsList extends DialogFragment {
         myDB =  new DBAdapter(getContext());
         final FragmentManager fm = getFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_events_list, container, false);
-        //final FragmentManager fm = getFragmentManager();
         eventList = (ListView) root.findViewById(R.id.list_events);
         FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab_event);
         populateListView();
+
+        eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                fm.beginTransaction().replace(R.id.fragment_holder, new Participants()).addToBackStack(null).commit();
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
