@@ -17,6 +17,7 @@ public class Participants extends Fragment {
 
     private FragmentTabHost mTabHost;
 
+    DBAdapter myDB;
 
     public Participants() {
         // Required empty public constructor
@@ -30,13 +31,21 @@ public class Participants extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_participants, container, false);
         // Inflate the layout for this fragment
 
+        myDB =  new DBAdapter(getActivity());
+        myDB.open();
+        Class S;
+        if (myDB.isEmptyParticipants()) {
+            S = EmptyList.class;
+        } else {
+            S = ParticipantsList.class;
+        }
+        myDB.close();
 
         mTabHost = (FragmentTabHost) root.findViewById(R.id.tabHost);
-//android.R.id.tabcontent
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
 
         mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("List of participants"),
-                ParticipantsList.class, null);
+        S, null);
         mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Event information"),
                 EventInfo.class, null);
 

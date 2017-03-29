@@ -72,6 +72,18 @@ public class DBAdapter {
         return empty;
     }
 
+    //checks if is database empty
+    public boolean isEmptyParticipants() {
+        boolean empty = true;
+        Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_PARTICIPANTS, null);
+        if (cur != null && cur.moveToFirst()) {
+            empty = (cur.getInt (0) == 0);
+        }
+        cur.close();
+
+        return empty;
+    }
+
     //close database
     public void close() {
         myDBHelper.close();
