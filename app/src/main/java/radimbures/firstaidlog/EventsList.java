@@ -20,7 +20,7 @@ import android.view.MenuInflater;
 import android.database.Cursor;
 import android.widget.SimpleCursorAdapter;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-
+import android.content.ContentValues;
 
 
 
@@ -121,7 +121,7 @@ public class EventsList extends DialogFragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        long id = info.id;
+        final long id = info.id;
         switch(item.getItemId()) {
             case R.id.edit_event_popup:
                 //Intent intent = new Intent(MainActivity.this, InsertEvent.class);
@@ -133,17 +133,25 @@ public class EventsList extends DialogFragment {
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
                 addEventDialog.setView(viewInflated);
                 eventName = (EditText) viewInflated.findViewById(R.id.add_event_name);
-                eventName.setText("pokus");
+                myDB.open();
+                Cursor c = myDB.db.rawQuery("SELECT * FROM events WHERE _id=="+id, null);
+                c.moveToFirst();
+                String s = c.getString(c.getColumnIndex("name"));
+                eventName.setText(s); //tady se musí načíst data z db
                 addEventDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //TODO zde se načtou data z polí a uloží do databáze
                         String str = eventName.getText().toString();
-                        myDB.open();
-                        myDB.insertRowEvent(str);
+
+                        ContentValues cv = new ContentValues();
+                        cv.put("name",str);
+                        myDB.db.update("events", cv, "_id="+id, null);
+
                         Toast.makeText(getActivity(),"event changed", Toast.LENGTH_LONG).show();
                         myDB.close();
-                        //fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
+                        final FragmentManager fm = getFragmentManager();
+                        fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
                     }
                 });
                 addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

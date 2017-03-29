@@ -30,7 +30,7 @@ public class DBAdapter {
                     + ");";
 
     private DatabaseHelper myDBHelper;
-    private SQLiteDatabase db;
+    public SQLiteDatabase db;
 
     public DBAdapter(Context ctx) {
         myDBHelper = new DatabaseHelper(ctx);
