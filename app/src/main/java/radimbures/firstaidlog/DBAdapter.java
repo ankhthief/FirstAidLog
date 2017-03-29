@@ -14,7 +14,8 @@ public class DBAdapter {
     //database info
     public static final String DATABASE_NAME = "firstaidlog.db";
     public static final String TABLE_EVENTS = "events";  //database name Events
-    public static final int DATABASE_VERSION = 2;  //database version. Need to increment every time DB changes
+    public static final String TABLE_PARTICIPANTS = "participants"; //database name Participants
+    public static final int DATABASE_VERSION = 3;  //database version. Need to increment every time DB changes
 
     //table Events
     public static final String EVENTS_ROWID = "_id";
@@ -22,11 +23,28 @@ public class DBAdapter {
 
     public static final String[] ALL_KEYS_EVENT = new String[] {EVENTS_ROWID, EVENTS_NAME};
 
-    //SQL pro vytvoření tabulky Events
+    //table Participants
+    public static final String PARTICIPANTS_ROWID = "_id";
+    public static final String PARTICIPANTS_NAME = "name";
+    public static final String PARTICIPANTS_SURNAME = "surname";
+    public static final String PARTICIPANTS_EVENTID = "id_event";
+
+    public static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME, PARTICIPANTS_EVENTID};
+
+    //SQL to create table Events
     private static final String DATABASE_CREATE_SQL_EVENTS =
             "CREATE TABLE " + TABLE_EVENTS
                     + " (" + EVENTS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + EVENTS_NAME + " TEXT NOT NULL"
+                    + ");";
+
+    //SQL to create table Participants
+    private static final String DATABASE_CREATE_SQL_PARTICIPANTS =
+            "CREATE TABLE " + TABLE_PARTICIPANTS
+                    + " (" + PARTICIPANTS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + PARTICIPANTS_NAME + " TEXT NOT NULL, "
+                    + PARTICIPANTS_SURNAME + " TEXT NOT NULL, "
+                    + PARTICIPANTS_EVENTID + "TEXT"
                     + ");";
 
     private DatabaseHelper myDBHelper;
@@ -42,6 +60,7 @@ public class DBAdapter {
         return this;
     }
 
+    //checks if is database empty
     public boolean isEmpty() {
         boolean empty = true;
         Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_EVENTS, null);
@@ -58,7 +77,7 @@ public class DBAdapter {
         myDBHelper.close();
     }
 
-    // Vrátí všechny data z tabulky Events
+    //returns all data from table Events
     public Cursor getAllRowsEvent() {
         Cursor c = 	db.query(true, TABLE_EVENTS, ALL_KEYS_EVENT, null, null, null, null, null, null);
         if (c != null) {
@@ -67,20 +86,45 @@ public class DBAdapter {
         return c;
     }
 
-    // Vytvoří novou sadu hodnot, která se má přidat do tabulky Events
+    //returns all data from table Participants
+    public Cursor getAllRowsParticipant() {
+        Cursor c = db.query(true, TABLE_PARTICIPANTS, ALL_KEYS_PARTICIPANT, null, null, null, null, null, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    //creates dataset to add to the table Events
     public long insertRowEvent(String name) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(EVENTS_NAME, name);
 
-        // Vloží data do tabulky Events
+        //add dataset to table Events
         return db.insert(TABLE_EVENTS, null, initialValues);
     }
 
+    //creates dataset to add to the table Participants
+    public long insertRowParticipant(String name, String surname, String id_event) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(PARTICIPANTS_NAME, name);
+        initialValues.put(PARTICIPANTS_SURNAME, surname);
+        initialValues.put(PARTICIPANTS_EVENTID, id_event);
 
-    // vymaže řádek z db podle EVENT_ROWID
+        //add dataset to table Participants
+        return db.insert(TABLE_PARTICIPANTS, null, initialValues);
+    }
+
+    //deletes row from db by EVENT_ROWID
     public boolean deleteRowEvent(long rowId) {
         String where = EVENTS_ROWID + "=" + rowId;
         return db.delete(TABLE_EVENTS, where, null) != 0;
+    }
+
+    //deletes row from db by PARTICIPANT_ROWID
+    public boolean deleteRowParticipant(long rowId) {
+        String where = PARTICIPANTS_ROWID + "=" + rowId;
+        return db.delete(TABLE_PARTICIPANTS, where, null) != 0;
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper
@@ -93,6 +137,7 @@ public class DBAdapter {
         public void onCreate(SQLiteDatabase _db) {
 
             _db.execSQL(DATABASE_CREATE_SQL_EVENTS);
+            _db.execSQL(DATABASE_CREATE_SQL_PARTICIPANTS);
 
         }
 
@@ -103,6 +148,7 @@ public class DBAdapter {
 
             // Zničení staré db:
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
+            _db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
 
             // Znovuvytvoření db:
             onCreate(_db);
