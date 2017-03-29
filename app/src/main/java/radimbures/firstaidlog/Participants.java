@@ -39,7 +39,7 @@ public class Participants extends Fragment {
         Bundle bundle1 = new Bundle();
         bundle1.putLong("key", id_eventu);
         frag.setArguments(bundle1);
-        Toast.makeText(getActivity(),"id eventu: "+id_eventu, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(),"id eventu: "+id_eventu, Toast.LENGTH_LONG).show();
 
         myDB =  new DBAdapter(getActivity());
         myDB.open();

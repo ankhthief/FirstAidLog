@@ -44,7 +44,7 @@ public class EmptyParticipantsList extends Fragment {
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
         }
-        Toast.makeText(getActivity(),"id eventu: "+id_eventu, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(),"id eventu: "+id_eventu, Toast.LENGTH_LONG).show();
 
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +62,7 @@ public class EmptyParticipantsList extends Fragment {
                         String name = participantName.getText().toString();
                         String surname = participantSurname.getText().toString();
                         myDB.open();
+                        Toast.makeText(getActivity(),"id pred ulozenim" + id_eventu, Toast.LENGTH_LONG).show();
                         myDB.insertRowParticipant(name,surname, id_eventu);
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();

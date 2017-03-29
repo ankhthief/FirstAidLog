@@ -46,12 +46,11 @@ public class ParticipantsList extends DialogFragment {
         myDB =  new DBAdapter(getContext());
         participantList = (ListView) root.findViewById(R.id.list_participants);
         FloatingActionButton fab1 = (FloatingActionButton) root.findViewById(R.id.fab_participant);
-        //TODO získat id eventu
         Bundle bundle = getArguments();
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
         }
-        populateListView();
+        //populateListView();
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override

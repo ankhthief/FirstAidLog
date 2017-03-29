@@ -15,7 +15,7 @@ public class DBAdapter {
     public static final String DATABASE_NAME = "firstaidlog.db";
     public static final String TABLE_EVENTS = "events";  //database name Events
     public static final String TABLE_PARTICIPANTS = "participants"; //database name Participants
-    public static final int DATABASE_VERSION = 4;  //database version. Need to increment every time DB changes
+    public static final int DATABASE_VERSION = 5;  //database version. Need to increment every time DB changes
 
     //table Events
     public static final String EVENTS_ROWID = "_id";
