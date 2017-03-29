@@ -2,29 +2,22 @@ package radimbures.firstaidlog;
 
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.database.Cursor;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
-import static android.R.attr.defaultValue;
-import static radimbures.firstaidlog.R.string.addEventDialog;
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ParticipantsList extends DialogFragment {
+public class EmptyParticipantsList extends Fragment {
 
     DBAdapter myDB;
     ListView participantList;
@@ -33,7 +26,7 @@ public class ParticipantsList extends DialogFragment {
     EditText participantSurname;
 
 
-    public ParticipantsList() {
+    public EmptyParticipantsList() {
         // Required empty public constructor
     }
 
@@ -41,22 +34,21 @@ public class ParticipantsList extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        final View root = inflater.inflate(R.layout.fragment_participants_list, container, false);
+
         myDB =  new DBAdapter(getContext());
-        participantList = (ListView) root.findViewById(R.id.list_participants);
-        FloatingActionButton fab1 = (FloatingActionButton) root.findViewById(R.id.fab_participant);
-        //TODO získat id eventu
+        // Inflate the layout for this fragment
+        final View root = inflater.inflate(R.layout.fragment_empty_participants_list, container, false);
+
+        FloatingActionButton fab_add = (FloatingActionButton) root.findViewById(R.id.fab_emptyList);
         Bundle bundle = getArguments();
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
         }
-        populateListView();
+        Toast.makeText(getActivity(),"id eventu: "+id_eventu, Toast.LENGTH_LONG).show();
 
-        fab1.setOnClickListener(new View.OnClickListener() {
+        fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 final AlertDialog.Builder addParticipantDialog = new AlertDialog.Builder(getContext());
                 addParticipantDialog.setTitle("Add new Participant");
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_participant, (ViewGroup) getView(), false);
@@ -83,21 +75,12 @@ public class ParticipantsList extends DialogFragment {
                     }
                 });
                 addParticipantDialog.show();
+
             }
         });
 
-        return root;
-    }
 
-    public void populateListView() {
-        myDB.open();
-        Cursor cursor = myDB.getAllRowsParticipant(id_eventu);
-        String[] fromParticipantNames = new String[] {DBAdapter.PARTICIPANTS_NAME, DBAdapter.PARTICIPANTS_SURNAME};
-        int[] toViewIDs = new int[] {R.id.name_of_participant, R.id.surname_of_participant};
-        SimpleCursorAdapter myCursorAdapter;
-        myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_participant, cursor, fromParticipantNames, toViewIDs,0 );
-        participantList.setAdapter(myCursorAdapter);
-        myDB.close();
+        return  root;
     }
 
 }

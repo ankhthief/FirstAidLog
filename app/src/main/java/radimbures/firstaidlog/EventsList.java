@@ -22,6 +22,9 @@ import android.widget.SimpleCursorAdapter;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import android.content.ContentValues;
 
+import static android.R.attr.fragment;
+import static android.R.attr.id;
+import static android.R.attr.value;
 
 
 /**
@@ -55,6 +58,20 @@ public class EventsList extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 fm.beginTransaction().replace(R.id.fragment_holder, new Participants()).addToBackStack(null).commit();
+                //předání id eventu
+                //TODO zde přidat id eventu
+                //Fragment fragment = new Fragment();
+                EmptyParticipantsList frag = new EmptyParticipantsList();
+                ParticipantsList frag1 = new ParticipantsList();
+                Participants frag2 = new Participants();
+                EventsList frag3 = new EventsList();
+                Bundle bundle = new Bundle();
+                bundle.putLong("key", l);
+                Toast.makeText(getActivity(),"id eventu: "+l, Toast.LENGTH_LONG).show();
+                frag.setArguments(bundle);
+                frag1.setArguments(bundle);
+                frag2.setArguments(bundle);
+                frag3.setArguments(bundle);
             }
         });
 
@@ -129,7 +146,7 @@ public class EventsList extends DialogFragment {
                 //startActivity(intent);
                 //finish();
                 final AlertDialog.Builder addEventDialog = new AlertDialog.Builder(getContext());
-                addEventDialog.setTitle(R.string.addEventDialog);
+                addEventDialog.setTitle("Edit event");
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
                 addEventDialog.setView(viewInflated);
                 eventName = (EditText) viewInflated.findViewById(R.id.add_event_name);
@@ -165,8 +182,9 @@ public class EventsList extends DialogFragment {
             case R.id.delete_event_popup:
                 myDB.open();
                 myDB.deleteRowEvent(id);
-                Toast.makeText(getActivity(),"delete", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"event deleted", Toast.LENGTH_LONG).show();
                 populateListView();
+                //TODO když vymažu i poslední záznam, tak by se měl ukázat empty list
                 return true;
             default:
                 return super.onContextItemSelected(item);

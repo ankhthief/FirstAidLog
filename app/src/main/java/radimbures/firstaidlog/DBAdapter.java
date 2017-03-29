@@ -99,8 +99,9 @@ public class DBAdapter {
     }
 
     //returns all data from table Participants
-    public Cursor getAllRowsParticipant() {
-        Cursor c = db.query(true, TABLE_PARTICIPANTS, ALL_KEYS_PARTICIPANT, null, null, null, null, null, null);
+    public Cursor getAllRowsParticipant(long radek) {
+        //Cursor c = db.query(true, TABLE_PARTICIPANTS, ALL_KEYS_PARTICIPANT, null, null, null, null, null, null);
+        Cursor c = 	db.rawQuery("SELECT * FROM participants WHERE id_event= " + radek + ";", null);
         if (c != null) {
             c.moveToFirst();
         }
@@ -117,7 +118,7 @@ public class DBAdapter {
     }
 
     //creates dataset to add to the table Participants
-    public long insertRowParticipant(String name, String surname, String id_event) {
+    public long insertRowParticipant(String name, String surname, Long id_event) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PARTICIPANTS_NAME, name);
         initialValues.put(PARTICIPANTS_SURNAME, surname);

@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fm = getSupportFragmentManager();
 
         if (myDB.isEmpty()) {
-            fm.beginTransaction().replace(R.id.fragment_holder, new EmptyList()).commit();
+            fm.beginTransaction().replace(R.id.fragment_holder, new EmptyEventsList()).commit();
         } else {
             fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
         }

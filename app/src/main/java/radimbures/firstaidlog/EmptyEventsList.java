@@ -17,12 +17,12 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EmptyList extends Fragment {
+public class EmptyEventsList extends Fragment {
 
     DBAdapter myDB;
     EditText eventName;
 
-    public EmptyList() {
+    public EmptyEventsList() {
         // Required empty public constructor
     }
 
