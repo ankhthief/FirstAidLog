@@ -35,6 +35,10 @@ public class Participants extends Fragment {
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
         }
+        ParticipantsList frag = new ParticipantsList();
+        Bundle bundle1 = new Bundle();
+        bundle1.putLong("key", id_eventu);
+        frag.setArguments(bundle1);
         Toast.makeText(getActivity(),"id eventu: "+id_eventu, Toast.LENGTH_LONG).show();
 
         myDB =  new DBAdapter(getActivity());
@@ -49,11 +53,10 @@ public class Participants extends Fragment {
 
         mTabHost = (FragmentTabHost) root.findViewById(R.id.tabHost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
-
         mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("List of participants"),
-        S, null);
+        S, bundle1);
         mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Event information"),
-                EventInfo.class, null);
+                EventInfo.class, bundle1);
 
 
 

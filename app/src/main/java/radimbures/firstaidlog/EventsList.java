@@ -57,21 +57,15 @@ public class EventsList extends DialogFragment {
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                fm.beginTransaction().replace(R.id.fragment_holder, new Participants()).addToBackStack(null).commit();
                 //předání id eventu
                 //TODO zde přidat id eventu
                 //Fragment fragment = new Fragment();
-                EmptyParticipantsList frag = new EmptyParticipantsList();
-                ParticipantsList frag1 = new ParticipantsList();
-                Participants frag2 = new Participants();
-                EventsList frag3 = new EventsList();
+                Participants frag = new Participants();
                 Bundle bundle = new Bundle();
                 bundle.putLong("key", l);
                 Toast.makeText(getActivity(),"id eventu: "+l, Toast.LENGTH_LONG).show();
                 frag.setArguments(bundle);
-                frag1.setArguments(bundle);
-                frag2.setArguments(bundle);
-                frag3.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();
             }
         });
 

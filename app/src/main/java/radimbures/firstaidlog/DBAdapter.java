@@ -15,7 +15,7 @@ public class DBAdapter {
     public static final String DATABASE_NAME = "firstaidlog.db";
     public static final String TABLE_EVENTS = "events";  //database name Events
     public static final String TABLE_PARTICIPANTS = "participants"; //database name Participants
-    public static final int DATABASE_VERSION = 3;  //database version. Need to increment every time DB changes
+    public static final int DATABASE_VERSION = 4;  //database version. Need to increment every time DB changes
 
     //table Events
     public static final String EVENTS_ROWID = "_id";
@@ -27,7 +27,7 @@ public class DBAdapter {
     public static final String PARTICIPANTS_ROWID = "_id";
     public static final String PARTICIPANTS_NAME = "name";
     public static final String PARTICIPANTS_SURNAME = "surname";
-    public static final String PARTICIPANTS_EVENTID = "id_event";
+    public static final String PARTICIPANTS_EVENTID = "idevent";
 
     public static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME, PARTICIPANTS_EVENTID};
 
@@ -118,11 +118,11 @@ public class DBAdapter {
     }
 
     //creates dataset to add to the table Participants
-    public long insertRowParticipant(String name, String surname, Long id_event) {
+    public long insertRowParticipant(String name, String surname, Long idevent) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PARTICIPANTS_NAME, name);
         initialValues.put(PARTICIPANTS_SURNAME, surname);
-        initialValues.put(PARTICIPANTS_EVENTID, id_event);
+        initialValues.put(PARTICIPANTS_EVENTID, idevent);
 
         //add dataset to table Participants
         return db.insert(TABLE_PARTICIPANTS, null, initialValues);
