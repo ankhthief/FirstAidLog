@@ -76,6 +76,13 @@ public class DBAdapter {
         return db.insert(TABLE_EVENTS, null, initialValues);
     }
 
+
+    // vymaže řádek z db podle EVENT_ROWID
+    public boolean deleteRowEvent(long rowId) {
+        String where = EVENTS_ROWID + "=" + rowId;
+        return db.delete(TABLE_EVENTS, where, null) != 0;
+    }
+
     private static class DatabaseHelper extends SQLiteOpenHelper
     {
         DatabaseHelper(Context context) {

@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.DialogFragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.app.AlertDialog;
@@ -14,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.view.MenuInflater;
 import android.database.Cursor;
 import android.widget.SimpleCursorAdapter;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -46,6 +49,7 @@ public class EventsList extends DialogFragment {
         eventList = (ListView) root.findViewById(R.id.list_events);
         FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab_event);
         populateListView();
+        registerForContextMenu(eventList);
 
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -107,4 +111,57 @@ public class EventsList extends DialogFragment {
         myDB.close();
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.event_popup, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        long id = info.id;
+        switch(item.getItemId()) {
+            case R.id.edit_event_popup:
+                //Intent intent = new Intent(MainActivity.this, InsertEvent.class);
+                //intent.putExtra("id",id);
+                //startActivity(intent);
+                //finish();
+                final AlertDialog.Builder addEventDialog = new AlertDialog.Builder(getContext());
+                addEventDialog.setTitle(R.string.addEventDialog);
+                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
+                addEventDialog.setView(viewInflated);
+                eventName = (EditText) viewInflated.findViewById(R.id.add_event_name);
+                eventName.setText("pokus");
+                addEventDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //TODO zde se načtou data z polí a uloží do databáze
+                        String str = eventName.getText().toString();
+                        myDB.open();
+                        myDB.insertRowEvent(str);
+                        Toast.makeText(getActivity(),"event changed", Toast.LENGTH_LONG).show();
+                        myDB.close();
+                        //fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
+                    }
+                });
+                addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                addEventDialog.show();
+                return true;
+            case R.id.delete_event_popup:
+                myDB.open();
+                myDB.deleteRowEvent(id);
+                Toast.makeText(getActivity(),"delete", Toast.LENGTH_LONG).show();
+                populateListView();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 }
