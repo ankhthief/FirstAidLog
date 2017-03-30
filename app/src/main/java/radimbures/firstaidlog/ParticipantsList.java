@@ -50,7 +50,7 @@ public class ParticipantsList extends DialogFragment {
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
         }
-        //populateListView();
+        populateListView();
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override

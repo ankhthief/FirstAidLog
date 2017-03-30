@@ -100,8 +100,8 @@ public class DBAdapter {
 
     //returns all data from table Participants
     public Cursor getAllRowsParticipant(long radek) {
-        //Cursor c = db.query(true, TABLE_PARTICIPANTS, ALL_KEYS_PARTICIPANT, null, null, null, null, null, null);
-        Cursor c = 	db.rawQuery("SELECT * FROM participants WHERE id_event= " + radek + ";", null);
+        Cursor c = db.query(true, TABLE_PARTICIPANTS, ALL_KEYS_PARTICIPANT, null, null, null, null, null, null);
+        //Cursor c = 	db.rawQuery("SELECT * FROM participants WHERE id_event = " + radek + ";", null);
         if (c != null) {
             c.moveToFirst();
         }
