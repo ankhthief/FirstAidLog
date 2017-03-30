@@ -133,10 +133,6 @@ public class EventsList extends DialogFragment {
         final long id = info.id;
         switch(item.getItemId()) {
             case R.id.edit_event_popup:
-                //Intent intent = new Intent(MainActivity.this, InsertEvent.class);
-                //intent.putExtra("id",id);
-                //startActivity(intent);
-                //finish();
                 final AlertDialog.Builder addEventDialog = new AlertDialog.Builder(getContext());
                 addEventDialog.setTitle("Edit event");
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
