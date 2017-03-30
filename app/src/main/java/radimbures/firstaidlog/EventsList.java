@@ -177,8 +177,12 @@ public class EventsList extends DialogFragment {
                 myDB.open();
                 myDB.deleteRowEvent(id);
                 Toast.makeText(getActivity(),"event deleted", Toast.LENGTH_LONG).show();
-                populateListView();
-                //TODO když vymažu i poslední záznam, tak by se měl ukázat empty list
+                final FragmentManager fm = getFragmentManager();
+                if (myDB.isEmpty()) {
+                    fm.beginTransaction().replace(R.id.fragment_holder, new EmptyEventsList()).commit();
+                } else {
+                    populateListView();
+                }
                 return true;
             default:
                 return super.onContextItemSelected(item);
