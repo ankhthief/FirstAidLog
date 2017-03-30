@@ -15,6 +15,7 @@ public class DBAdapter {
     public static final String DATABASE_NAME = "firstaidlog.db";
     public static final String TABLE_EVENTS = "events";  //database name Events
     public static final String TABLE_PARTICIPANTS = "participants"; //database name Participants
+    public static final String TABLE_REGISTR = "registr"; //database name Registr
     public static final int DATABASE_VERSION = 6;  //database version. Need to increment every time DB changes
 
     //table Events
@@ -31,6 +32,12 @@ public class DBAdapter {
 
     public static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME, PARTICIPANTS_EVENTID};
 
+
+    //table Registr
+    public static final String REGISTR_ROWID = "_id";
+    public static final String REGISTR_EVENTID = "eventid";
+    public static final String REGISTR_PARTICIPANTID = "participantid";
+
     //SQL to create table Events
     private static final String DATABASE_CREATE_SQL_EVENTS =
             "CREATE TABLE " + TABLE_EVENTS
@@ -45,6 +52,14 @@ public class DBAdapter {
                     + PARTICIPANTS_NAME + " TEXT NOT NULL, "
                     + PARTICIPANTS_SURNAME + " TEXT NOT NULL, "
                     + PARTICIPANTS_EVENTID + " TEXT"
+                    + ");";
+
+    //SQL to create table Registr
+    private static final String DATABASE_CREATE_SQL_REGISTR =
+                "CREATE TABLE " + TABLE_REGISTR
+                    + " (" + REGISTR_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + REGISTR_EVENTID + " TEXT, "
+                    + REGISTR_PARTICIPANTID + " TEXT"
                     + ");";
 
     private DatabaseHelper myDBHelper;
@@ -73,9 +88,9 @@ public class DBAdapter {
     }
 
     //checks if is database empty
-    public boolean isEmptyParticipants() {
+    public boolean isEmptyParticipants(Long radek) {
         boolean empty = true;
-        Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_PARTICIPANTS, null);
+        Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_PARTICIPANTS+ " WHERE " + PARTICIPANTS_EVENTID+ "= " + radek, null);
         if (cur != null && cur.moveToFirst()) {
             empty = (cur.getInt (0) == 0);
         }
@@ -128,6 +143,15 @@ public class DBAdapter {
         return db.insert(TABLE_PARTICIPANTS, null, initialValues);
     }
 
+    public long insertRowRegistr(Long idevent, Long idparticipant) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(REGISTR_EVENTID, idevent);
+        initialValues.put(REGISTR_PARTICIPANTID, idparticipant);
+
+        //add dataset to table Registr
+        return db.insert(TABLE_REGISTR, null, initialValues);
+    }
+
     //deletes row from db by EVENT_ROWID
     public boolean deleteRowEvent(long rowId) {
         String where = EVENTS_ROWID + "=" + rowId;
@@ -138,6 +162,12 @@ public class DBAdapter {
     public boolean deleteRowParticipant(long rowId) {
         String where = PARTICIPANTS_ROWID + "=" + rowId;
         return db.delete(TABLE_PARTICIPANTS, where, null) != 0;
+    }
+
+    //delete row from db by REGISTR_PARTICIPANTID
+    public boolean deleteRowRegistr(long rowId) {
+        String where = REGISTR_PARTICIPANTID + "=" + rowId;
+        return db.delete(TABLE_REGISTR, where, null) != 0;
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper
@@ -151,6 +181,7 @@ public class DBAdapter {
 
             _db.execSQL(DATABASE_CREATE_SQL_EVENTS);
             _db.execSQL(DATABASE_CREATE_SQL_PARTICIPANTS);
+            _db.execSQL(DATABASE_CREATE_SQL_REGISTR);
 
         }
 
@@ -162,6 +193,7 @@ public class DBAdapter {
             // Zničení staré db:
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
+            _db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGISTR);
 
             // Znovuvytvoření db:
             onCreate(_db);

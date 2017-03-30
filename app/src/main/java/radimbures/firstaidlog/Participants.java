@@ -44,7 +44,7 @@ public class Participants extends Fragment {
         myDB =  new DBAdapter(getActivity());
         myDB.open();
         Class S;
-        if (myDB.isEmptyParticipants()) {
+        if (myDB.isEmptyParticipants(id_eventu)) {
             S = EmptyParticipantsList.class;
         } else {
             S = ParticipantsList.class;

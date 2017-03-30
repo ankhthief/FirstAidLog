@@ -68,7 +68,7 @@ public class EmptyParticipantsList extends Fragment {
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();
                         //TODO refresh listu
-                        //fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
+                        fm.beginTransaction().replace(R.id.fragment_holder, new ParticipantsList()).commit();
                     }
                 });
                 addParticipantDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
