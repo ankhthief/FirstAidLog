@@ -74,11 +74,7 @@ public class ParticipantsList extends DialogFragment {
                         myDB.insertRowParticipant(name,surname, id_eventu);
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();
-                        //TODO refresh seznamu
-                        //final FragmentManager fm = getFragmentManager();
-                        //fm.beginTransaction().detach(new ParticipantsList()).attach(new ParticipantsList()).commit();
-                        //FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        //ft.detach(this).attach(this).commit();
+                        populateListView();
 
                     }
                 });
@@ -103,6 +99,7 @@ public class ParticipantsList extends DialogFragment {
         SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_participant, cursor, fromParticipantNames, toViewIDs,0 );
         participantList.setAdapter(myCursorAdapter);
+        myCursorAdapter.notifyDataSetChanged();
         myDB.close();
     }
 
