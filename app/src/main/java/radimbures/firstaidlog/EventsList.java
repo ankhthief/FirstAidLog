@@ -58,8 +58,6 @@ public class EventsList extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //předání id eventu
-                //TODO zde přidat id eventu
-                //Fragment fragment = new Fragment();
                 Participants frag = new Participants();
                 Bundle bundle = new Bundle();
                 bundle.putLong("key", l);

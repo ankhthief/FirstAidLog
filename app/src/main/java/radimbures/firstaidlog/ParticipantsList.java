@@ -4,6 +4,8 @@ package radimbures.firstaidlog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -73,7 +75,11 @@ public class ParticipantsList extends DialogFragment {
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();
                         //TODO refresh seznamu
-                        //fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
+                        //final FragmentManager fm = getFragmentManager();
+                        //fm.beginTransaction().detach(new ParticipantsList()).attach(new ParticipantsList()).commit();
+                        //FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        //ft.detach(this).attach(this).commit();
+
                     }
                 });
                 addParticipantDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
