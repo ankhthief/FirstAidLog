@@ -54,6 +54,7 @@ public class EmptyEventsList extends Fragment {
                         myDB.insertRowEvent(str);
                         Toast.makeText(getActivity(), R.string.event_add_toast, Toast.LENGTH_LONG).show();
                         myDB.close();
+                        //TODO udělat jinak, ať to neproblikává
                         getActivity().recreate();
                     }
                 });

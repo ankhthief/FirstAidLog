@@ -3,6 +3,7 @@ package radimbures.firstaidlog;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ public class EmptyParticipantsList extends Fragment {
         myDB =  new DBAdapter(getContext());
         // Inflate the layout for this fragment
         final View root = inflater.inflate(R.layout.fragment_empty_participants_list, container, false);
-
+        final FragmentManager fm = getFragmentManager();
         FloatingActionButton fab_add = (FloatingActionButton) root.findViewById(R.id.fab_emptyList);
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -66,6 +67,7 @@ public class EmptyParticipantsList extends Fragment {
                         myDB.insertRowParticipant(name,surname, id_eventu);
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();
+                        //TODO refresh listu
                         //fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
                     }
                 });

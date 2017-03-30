@@ -72,6 +72,7 @@ public class ParticipantsList extends DialogFragment {
                         myDB.insertRowParticipant(name,surname, id_eventu);
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();
+                        //TODO refresh seznamu
                         //fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
                     }
                 });
