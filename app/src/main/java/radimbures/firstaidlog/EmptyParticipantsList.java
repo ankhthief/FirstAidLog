@@ -39,7 +39,7 @@ public class EmptyParticipantsList extends Fragment {
         myDB =  new DBAdapter(getContext());
         // Inflate the layout for this fragment
         final View root = inflater.inflate(R.layout.fragment_empty_participants_list, container, false);
-        final FragmentManager fm = getFragmentManager();
+        final FragmentManager fm = getActivity().getSupportFragmentManager();
         FloatingActionButton fab_add = (FloatingActionButton) root.findViewById(R.id.fab_emptyList);
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -68,7 +68,7 @@ public class EmptyParticipantsList extends Fragment {
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();
                         //TODO refresh listu
-                        fm.beginTransaction().replace(R.id.fragment_holder, new ParticipantsList()).commit();
+                        //fm.beginTransaction().replace(R.id.tabHost, new ParticipantsList()).commit();
                     }
                 });
                 addParticipantDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

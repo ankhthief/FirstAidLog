@@ -147,6 +147,7 @@ public class ParticipantsList extends DialogFragment {
                         Toast.makeText(getActivity(),"participant changed", Toast.LENGTH_LONG).show();
                         myDB.close();
                         populateListView();
+                        //TODO refresh listview
                     }
                 });
                 addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -162,6 +163,7 @@ public class ParticipantsList extends DialogFragment {
                 myDB.deleteRowParticipant(id);
                 Toast.makeText(getActivity(),"participant deleted", Toast.LENGTH_LONG).show();
                 populateListView();
+                //TODO když je to poslední záznam, tak nahodit empty frag
                 return true;
             default:
                 return super.onContextItemSelected(item);
