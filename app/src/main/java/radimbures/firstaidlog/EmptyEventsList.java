@@ -2,9 +2,11 @@ package radimbures.firstaidlog;
 
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +56,10 @@ public class EmptyEventsList extends Fragment {
                         myDB.insertRowEvent(str);
                         Toast.makeText(getActivity(), R.string.event_add_toast, Toast.LENGTH_LONG).show();
                         myDB.close();
-                        //TODO udělat jinak, ať to neproblikává
-                        getActivity().recreate();
+                        FragmentManager fm = getFragmentManager();
+                        fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
+
+
                     }
                 });
                 addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
