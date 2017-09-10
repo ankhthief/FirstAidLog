@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.database.Cursor;
 import android.widget.EditText;
@@ -22,9 +21,6 @@ import android.content.DialogInterface;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-
-import static android.R.attr.defaultValue;
-import static radimbures.firstaidlog.R.string.addEventDialog;
 
 
 /**
@@ -37,6 +33,9 @@ public class ParticipantsList extends DialogFragment {
     long id_eventu;
     EditText participantName;
     EditText participantSurname;
+    SimpleCursorAdapter myCursorAdapter;
+    Cursor cursor;
+
 
 
     public ParticipantsList() {
@@ -78,9 +77,8 @@ public class ParticipantsList extends DialogFragment {
                         myDB.open();
                         myDB.insertRowParticipant(name,surname, id_eventu);
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
+                        //TODO listview refresh
                         myDB.close();
-                        participantList.invalidateViews();
-                        populateListView();
 
                     }
                 });
@@ -99,13 +97,13 @@ public class ParticipantsList extends DialogFragment {
 
     public void populateListView() {
         myDB.open();
-        Cursor cursor = myDB.getAllRowsParticipant(id_eventu);
+        participantList.invalidateViews();
+        cursor = myDB.getAllRowsParticipant(id_eventu);
         String[] fromParticipantNames = new String[] {DBAdapter.PARTICIPANTS_NAME, DBAdapter.PARTICIPANTS_SURNAME};
         int[] toViewIDs = new int[] {R.id.name_of_participant, R.id.surname_of_participant};
-        SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_participant, cursor, fromParticipantNames, toViewIDs,0 );
         participantList.setAdapter(myCursorAdapter);
-        //myCursorAdapter.notifyDataSetChanged();
+        myCursorAdapter.notifyDataSetChanged();
         myDB.close();
     }
 
@@ -145,12 +143,9 @@ public class ParticipantsList extends DialogFragment {
                         cv.put("name",str);
                         cv.put("surname",str1);
                         myDB.db.update("participants", cv, "_id="+id, null);
-
                         Toast.makeText(getActivity(),"participant changed", Toast.LENGTH_LONG).show();
+                        //TODO listview refresh
                         myDB.close();
-                        participantList.invalidateViews();
-                        populateListView();
-                        //TODO refresh listview
                     }
                 });
                 addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -165,8 +160,15 @@ public class ParticipantsList extends DialogFragment {
                 myDB.open();
                 myDB.deleteRowParticipant(id);
                 Toast.makeText(getActivity(),"participant deleted", Toast.LENGTH_LONG).show();
-                populateListView();
-                //TODO když je to poslední záznam, tak nahodit empty frag
+                if (myDB.isEmptyParticipants(id_eventu)) {
+                    //TODO když je to poslední záznam, tak nahodit empty frag
+                } else {
+                    myCursorAdapter.notifyDataSetChanged();
+
+                    //TODO listview refresh
+                }
+
+                myDB.close();
                 return true;
             default:
                 return super.onContextItemSelected(item);
