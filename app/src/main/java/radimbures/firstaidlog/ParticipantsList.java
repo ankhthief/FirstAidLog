@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.database.Cursor;
 import android.widget.EditText;
@@ -78,6 +79,7 @@ public class ParticipantsList extends DialogFragment {
                         myDB.insertRowParticipant(name,surname, id_eventu);
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();
+                        participantList.invalidateViews();
                         populateListView();
 
                     }
@@ -103,7 +105,7 @@ public class ParticipantsList extends DialogFragment {
         SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_participant, cursor, fromParticipantNames, toViewIDs,0 );
         participantList.setAdapter(myCursorAdapter);
-        myCursorAdapter.notifyDataSetChanged();
+        //myCursorAdapter.notifyDataSetChanged();
         myDB.close();
     }
 
@@ -146,6 +148,7 @@ public class ParticipantsList extends DialogFragment {
 
                         Toast.makeText(getActivity(),"participant changed", Toast.LENGTH_LONG).show();
                         myDB.close();
+                        participantList.invalidateViews();
                         populateListView();
                         //TODO refresh listview
                     }
