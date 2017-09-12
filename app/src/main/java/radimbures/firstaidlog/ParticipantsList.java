@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.database.Cursor;
 import android.widget.EditText;
 import android.content.DialogInterface;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -35,6 +37,9 @@ public class ParticipantsList extends DialogFragment {
     EditText participantSurname;
     SimpleCursorAdapter myCursorAdapter;
     Cursor cursor;
+    TextView tv_empty;
+    String[] fromParticipantNames;
+    int[] toViewIDs;
 
 
 
@@ -48,8 +53,11 @@ public class ParticipantsList extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View root = inflater.inflate(R.layout.fragment_participants_list, container, false);
+        final FragmentManager fm = getFragmentManager();
         myDB =  new DBAdapter(getContext());
         participantList = (ListView) root.findViewById(R.id.list_participants);
+        tv_empty= (TextView) root.findViewById(R.id.tv_empty);
+        tv_empty.setVisibility(View.GONE);
         FloatingActionButton fab1 = (FloatingActionButton) root.findViewById(R.id.fab_participant);
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -74,12 +82,20 @@ public class ParticipantsList extends DialogFragment {
                         //TODO zde se načtou data z polí a uloží do databáze
                         String name = participantName.getText().toString();
                         String surname = participantSurname.getText().toString();
+                        //TODO kontrola, ze jsou zadany hodnoty
                         myDB.open();
                         myDB.insertRowParticipant(name,surname, id_eventu);
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         //TODO listview refresh
                         myDB.close();
-
+                        populateListView();
+                         /* *//*fm.beginTransaction().replace(R.id.fragment_holder, new Participants()).commit();*//*
+                            Participants frag = new Participants();
+                            Bundle bundle = new Bundle();
+                            bundle.putLong("key", id_eventu);
+                            //Toast.makeText(getActivity(),"id eventu: "+l, Toast.LENGTH_LONG).show();
+                            frag.setArguments(bundle);
+                            fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();*/
                     }
                 });
                 addParticipantDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -99,11 +115,21 @@ public class ParticipantsList extends DialogFragment {
         myDB.open();
         participantList.invalidateViews();
         cursor = myDB.getAllRowsParticipant(id_eventu);
-        String[] fromParticipantNames = new String[] {DBAdapter.PARTICIPANTS_NAME, DBAdapter.PARTICIPANTS_SURNAME};
-        int[] toViewIDs = new int[] {R.id.name_of_participant, R.id.surname_of_participant};
+        fromParticipantNames = new String[] {DBAdapter.PARTICIPANTS_NAME, DBAdapter.PARTICIPANTS_SURNAME};
+        toViewIDs = new int[] {R.id.name_of_participant, R.id.surname_of_participant};
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_participant, cursor, fromParticipantNames, toViewIDs,0 );
         participantList.setAdapter(myCursorAdapter);
         myCursorAdapter.notifyDataSetChanged();
+        if (myDB.isEmptyParticipants(id_eventu)) {
+            // Toast.makeText(getActivity(),"if",Toast.LENGTH_LONG).show();
+            tv_empty.setVisibility(View.VISIBLE);
+
+
+        } else {
+            //Toast.makeText(getActivity(),"else",Toast.LENGTH_LONG).show();
+
+            tv_empty.setVisibility(View.GONE);
+        }
         myDB.close();
     }
 
@@ -146,6 +172,17 @@ public class ParticipantsList extends DialogFragment {
                         Toast.makeText(getActivity(),"participant changed", Toast.LENGTH_LONG).show();
                         //TODO listview refresh
                         myDB.close();
+                        populateListView();
+                         /* *//*fm.beginTransaction().replace(R.id.fragment_holder, new Participants()).commit();*//*
+
+
+                            Participants frag = new Participants();
+                            Bundle bundle = new Bundle();
+                            bundle.putLong("key", id_eventu);
+                            //Toast.makeText(getActivity(),"id eventu: "+l, Toast.LENGTH_LONG).show();
+                            frag.setArguments(bundle);
+                            fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();*/
+
                     }
                 });
                 addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -160,14 +197,7 @@ public class ParticipantsList extends DialogFragment {
                 myDB.open();
                 myDB.deleteRowParticipant(id);
                 Toast.makeText(getActivity(),"participant deleted", Toast.LENGTH_LONG).show();
-                if (myDB.isEmptyParticipants(id_eventu)) {
-                    //TODO když je to poslední záznam, tak nahodit empty frag
-                } else {
-                    myCursorAdapter.notifyDataSetChanged();
-
-                    //TODO listview refresh
-                }
-
+                populateListView();
                 myDB.close();
                 return true;
             default:

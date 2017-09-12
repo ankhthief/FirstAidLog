@@ -16,7 +16,8 @@ import android.widget.Toast;
 public class Participants extends Fragment {
 
     DBAdapter myDB;
-    long id_eventu;
+    public long id_eventu;
+    Class S;
 
     public Participants() {
         // Required empty public constructor
@@ -43,12 +44,7 @@ public class Participants extends Fragment {
 
         myDB =  new DBAdapter(getActivity());
         myDB.open();
-        Class S;
-        if (myDB.isEmptyParticipants(id_eventu)) {
-            S = EmptyParticipantsList.class;
-        } else {
-            S = ParticipantsList.class;
-        }
+        S = ParticipantsList.class;
         myDB.close();
 
         mTabHost = (FragmentTabHost) root.findViewById(R.id.tabHost);
