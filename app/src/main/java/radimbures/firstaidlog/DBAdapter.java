@@ -12,31 +12,39 @@ public class DBAdapter {
     private static final String TAG = "DBAdapter";
 
     //database info
-    public static final String DATABASE_NAME = "firstaidlog.db";
-    public static final String TABLE_EVENTS = "events";  //database name Events
-    public static final String TABLE_PARTICIPANTS = "participants"; //database name Participants
-    public static final String TABLE_REGISTR = "registr"; //database name Registr
-    public static final int DATABASE_VERSION = 6;  //database version. Need to increment every time DB changes
+    private static final String DATABASE_NAME = "firstaidlog.db";
+    private static final String TABLE_EVENTS = "events";  //database name Events
+    private static final String TABLE_PARTICIPANTS = "participants"; //database name Participants
+    private static final String TABLE_REGISTR = "registr"; //database name Registr
+    private static final String TABLE_INJURIES = "injuries";
+    private static final int DATABASE_VERSION = 7;  //database version. Need to increment every time DB changes
 
     //table Events
-    public static final String EVENTS_ROWID = "_id";
+    private static final String EVENTS_ROWID = "_id";
     public static final String EVENTS_NAME = "name";
 
-    public static final String[] ALL_KEYS_EVENT = new String[] {EVENTS_ROWID, EVENTS_NAME};
+    private static final String[] ALL_KEYS_EVENT = new String[] {EVENTS_ROWID, EVENTS_NAME};
 
     //table Participants
-    public static final String PARTICIPANTS_ROWID = "_id";
+    private static final String PARTICIPANTS_ROWID = "_id";
     public static final String PARTICIPANTS_NAME = "name";
     public static final String PARTICIPANTS_SURNAME = "surname";
-    public static final String PARTICIPANTS_EVENTID = "idevent";
 
-    public static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME, PARTICIPANTS_EVENTID};
+    private static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME};
 
+    //table Injuries
+    private static final String INJURIES_ROWID = "_id";
+    private static final String INJURIES_TITLE = "title";
+    private static final String INJURIES_DESCRIPTION = "description";
+    private static final String INJURIES_PARTICIPANTID = "participantid";
+    private static final String INJURIES_EVENTID = "eventid";
+
+    private static final String[] ALL_KEYS_INJURIES = new String[] {INJURIES_ROWID, INJURIES_TITLE, INJURIES_DESCRIPTION, INJURIES_PARTICIPANTID, INJURIES_EVENTID};
 
     //table Registr
-    public static final String REGISTR_ROWID = "_id";
-    public static final String REGISTR_EVENTID = "eventid";
-    public static final String REGISTR_PARTICIPANTID = "participantid";
+    private static final String REGISTR_ROWID = "_id";
+    private static final String REGISTR_EVENTID = "eventid";
+    private static final String REGISTR_PARTICIPANTID = "participantid";
 
     //SQL to create table Events
     private static final String DATABASE_CREATE_SQL_EVENTS =
@@ -50,19 +58,28 @@ public class DBAdapter {
             "CREATE TABLE " + TABLE_PARTICIPANTS
                     + " (" + PARTICIPANTS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + PARTICIPANTS_NAME + " TEXT NOT NULL, "
-                    + PARTICIPANTS_SURNAME + " TEXT NOT NULL, "
-                    + PARTICIPANTS_EVENTID + " TEXT"
+                    + PARTICIPANTS_SURNAME + " TEXT NOT NULL "
                     + ");";
 
     //SQL to create table Registr
     private static final String DATABASE_CREATE_SQL_REGISTR =
                 "CREATE TABLE " + TABLE_REGISTR
                     + " (" + REGISTR_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + REGISTR_EVENTID + " TEXT, "
-                    + REGISTR_PARTICIPANTID + " TEXT"
+                    + REGISTR_EVENTID + " TEXT NOT NULL, "
+                    + REGISTR_PARTICIPANTID + " TEXT NOT NULL"
                     + ");";
 
-    private DatabaseHelper myDBHelper;
+    //SQL to create table Injuries
+    private static final String DATABASE_CREATE_SQL_INJUERIES =
+            "CREATE TABLE " + TABLE_INJURIES
+                + " (" + INJURIES_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + INJURIES_TITLE + " TEXT NOT NULL, "
+                + INJURIES_DESCRIPTION + " TEXT NOT NULL, "
+                + INJURIES_PARTICIPANTID + " TEXT NOT NULL, "
+                    + INJURIES_EVENTID + " TEXT NOT NULL"
+                    + " );";
+
+    public DatabaseHelper myDBHelper;
     public SQLiteDatabase db;
 
     public DBAdapter(Context ctx) {
@@ -87,18 +104,7 @@ public class DBAdapter {
         return empty;
     }
 
-    //checks if is database empty
-    public boolean isEmptyParticipants(Long radek) {
-        boolean empty = true;
-        Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_PARTICIPANTS+ " WHERE " + PARTICIPANTS_EVENTID+ "= " + radek, null);
-        if (cur != null && cur.moveToFirst()) {
-            empty = (cur.getInt (0) == 0);
-        }
-        cur.close();
-
-        return empty;
-    }
-
+    //checks if is no Participant on this Event
     public boolean isEmptyRegistr(Long radek) {
         boolean empty = true;
         Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_REGISTR+ " WHERE " + REGISTR_EVENTID+ "= " + radek, null);
@@ -124,21 +130,23 @@ public class DBAdapter {
         return c;
     }
 
-    //returns all data from table Participants
-    public Cursor getAllRowsParticipant(long radek) {
-        String S = String.valueOf(radek);
-        Cursor c = db.query(true, TABLE_PARTICIPANTS, ALL_KEYS_PARTICIPANT,"idevent=?",new String[] {S}, null, null, null, null);
-        if (c != null) {
-            c.moveToFirst();
-        }
-        return c;
-    }
-
+    //returns all data from table Participants in Events
     public Cursor getAllRowsParticipantNew(long radek) {
         String S = String.valueOf(radek);
         String MY_QUERY = "SELECT p._id,p.name,p.surname FROM (" + TABLE_PARTICIPANTS + " p INNER JOIN " + TABLE_REGISTR + " r ON r." + REGISTR_PARTICIPANTID + "=p." + PARTICIPANTS_ROWID + ") INNER JOIN "
                 + TABLE_EVENTS + " e ON e." + EVENTS_ROWID + "=r." + REGISTR_EVENTID + " WHERE e." + EVENTS_ROWID + "=?";
         Cursor c = db.rawQuery(MY_QUERY, new String[]{S});
+        return c;
+    }
+
+    //returns all data from table Injuries in Event for Participant
+    public Cursor getAllRowsInjuries(long participantid, long eventid) {
+        String S = String.valueOf(participantid);
+        String K = String.valueOf(eventid);
+        String MY_QUERY = "SELECT * FROM " + TABLE_INJURIES + "WHERE " + INJURIES_PARTICIPANTID + "=" + participantid + "AND " + INJURIES_EVENTID + "=" + eventid;
+
+        Cursor c = db.rawQuery(MY_QUERY, new String[]{S,K});
+
         return c;
     }
 
@@ -156,12 +164,12 @@ public class DBAdapter {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PARTICIPANTS_NAME, name);
         initialValues.put(PARTICIPANTS_SURNAME, surname);
-        initialValues.put(PARTICIPANTS_EVENTID, idevent);
 
         //add dataset to table Participants
         return db.insert(TABLE_PARTICIPANTS, null, initialValues);
     }
 
+    //creates dataset to add to the table Registr
     public long insertRowRegistr(Long idevent, Long idparticipant) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(REGISTR_EVENTID, idevent);
@@ -169,6 +177,19 @@ public class DBAdapter {
 
         //add dataset to table Registr
         return db.insert(TABLE_REGISTR, null, initialValues);
+    }
+
+    //creates dataset to add to the table Injuries
+    public long insertRowInjuries(String title, String description, Long idparticipant, Long idevent) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(INJURIES_TITLE, title);
+        initialValues.put(INJURIES_DESCRIPTION, description);
+        initialValues.put(INJURIES_PARTICIPANTID, idparticipant);
+        initialValues.put(INJURIES_EVENTID, idevent);
+
+
+        //add dataset to table Injuries
+        return db.insert(TABLE_INJURIES, null, initialValues);
     }
 
     //deletes row from db by EVENT_ROWID
@@ -189,6 +210,13 @@ public class DBAdapter {
         return db.delete(TABLE_REGISTR, where, null) != 0;
     }
 
+    //delete row from db by INJURIES_PARTICIPANTID and INJURIES_EVENTID
+    public boolean deleteRowInjurie(long participantId, Long eventId) {
+        String where = INJURIES_PARTICIPANTID + "=" + participantId + "AND " + INJURIES_EVENTID + "=" + eventId;
+        return db.delete(TABLE_INJURIES, where, null) != 0;
+
+    }
+
     private static class DatabaseHelper extends SQLiteOpenHelper
     {
         DatabaseHelper(Context context) {
@@ -201,6 +229,7 @@ public class DBAdapter {
             _db.execSQL(DATABASE_CREATE_SQL_EVENTS);
             _db.execSQL(DATABASE_CREATE_SQL_PARTICIPANTS);
             _db.execSQL(DATABASE_CREATE_SQL_REGISTR);
+            _db.execSQL(DATABASE_CREATE_SQL_INJUERIES);
 
         }
 
@@ -213,6 +242,7 @@ public class DBAdapter {
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGISTR);
+            _db.execSQL("DROP TABLE IF EXISTS " + TABLE_INJURIES);
 
             // Znovuvytvoření db:
             onCreate(_db);

@@ -86,11 +86,9 @@ public class ParticipantsList extends DialogFragment {
                         String surname = participantSurname.getText().toString();
                         //TODO kontrola, ze jsou zadany hodnoty
                         myDB.open();
-                        myDB.insertRowParticipant(name, surname, id_eventu);
                         long id_user = myDB.insertRowParticipant(name, surname, id_eventu);
                         myDB.insertRowRegistr(id_eventu,id_user);
                         Toast.makeText(getActivity(), "Participant added", Toast.LENGTH_LONG).show();
-                        //TODO listview refresh
                         myDB.close();
                         populateListViewNew();
                     }
@@ -138,7 +136,7 @@ public class ParticipantsList extends DialogFragment {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.event_popup, menu);
+        inflater.inflate(R.menu.participant_popup, menu);
     }
 
     @Override
@@ -146,7 +144,7 @@ public class ParticipantsList extends DialogFragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final long id = info.id;
         switch(item.getItemId()) {
-            case R.id.edit_event_popup:
+            case R.id.edit_participant_popup:
                 final android.app.AlertDialog.Builder addEventDialog = new android.app.AlertDialog.Builder(getContext());
                 addEventDialog.setTitle("Edit participant");
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_participant, (ViewGroup) getView(), false);
@@ -184,7 +182,7 @@ public class ParticipantsList extends DialogFragment {
                 });
                 addEventDialog.show();
                 return true;
-            case R.id.delete_event_popup:
+            case R.id.delete_participant_popup:
                 myDB.open();
                 myDB.deleteRowRegistr(id);
                 Toast.makeText(getActivity(),"participant deleted", Toast.LENGTH_LONG).show();
