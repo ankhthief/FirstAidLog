@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
 /**
@@ -40,14 +39,13 @@ public class Participants extends Fragment {
         Bundle bundle1 = new Bundle();
         bundle1.putLong("key", id_eventu);
         frag.setArguments(bundle1);
-        //Toast.makeText(getActivity(),"id eventu: "+id_eventu, Toast.LENGTH_LONG).show();
 
         myDB =  new DBAdapter(getActivity());
         myDB.open();
         S = ParticipantsList.class;
         myDB.close();
 
-        mTabHost = (FragmentTabHost) root.findViewById(R.id.tabHost);
+        mTabHost = root.findViewById(R.id.tabHost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
         mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("List of participants"),
         S, bundle1);
