@@ -19,6 +19,7 @@
         android:id="@+id/list_participants">
     </ListView>
 
+    <!--
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_participant"
         android:layout_width="wrap_content"
@@ -28,5 +29,39 @@
         fab:fab_colorPressed="@color/colorPrimaryDark"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"/>
+        -->
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:fab_addButtonColorNormal="@color/colorAccent"
+        fab:fab_addButtonColorPressed="@color/colorPrimaryDark"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_title="@string/fab_add_new"
+            fab:fab_size="mini"
+            fab:fab_icon="@drawable/ic_person_add_white_24px"
+            fab:fab_colorPressed="@color/colorPrimaryDark"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            fab:fab_icon="@drawable/ic_group_add_white_24px"
+            fab:fab_size="mini"
+            fab:fab_title="@string/fab_add_db" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </FrameLayout>

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 
 /**
@@ -58,7 +59,10 @@ public class ParticipantsList extends DialogFragment {
         participantList = (ListView) root.findViewById(R.id.list_participants);
         tv_empty= (TextView) root.findViewById(R.id.tv_empty);
         tv_empty.setVisibility(View.GONE);
-        FloatingActionButton fab1 = (FloatingActionButton) root.findViewById(R.id.fab_participant);
+        //FloatingActionButton fab1 = (FloatingActionButton) root.findViewById(R.id.fab_participant);
+        FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) root.findViewById(R.id.multiple_actions);
+        final FloatingActionButton action_a = (FloatingActionButton) root.findViewById(R.id.action_a);
+        FloatingActionButton action_b = (FloatingActionButton) root.findViewById(R.id.action_b);
         Bundle bundle = getArguments();
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
@@ -66,6 +70,30 @@ public class ParticipantsList extends DialogFragment {
         populateListView();
         registerForContextMenu(participantList);
 
+
+        action_a.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "action a", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        action_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "action b", Toast.LENGTH_SHORT).show();
+            }
+        });
+        /*
+        menuMultipleActions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+*/
+        //TODO tady
+/*
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,8 +112,8 @@ public class ParticipantsList extends DialogFragment {
                         String surname = participantSurname.getText().toString();
                         //TODO kontrola, ze jsou zadany hodnoty
                         myDB.open();
-                        myDB.insertRowParticipant(name,surname, id_eventu);
-                        Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
+                        myDB.insertRowParticipant(name, surname, id_eventu);
+                        Toast.makeText(getActivity(), "Participant added", Toast.LENGTH_LONG).show();
                         //TODO listview refresh
                         myDB.close();
                         populateListView();
@@ -96,9 +124,9 @@ public class ParticipantsList extends DialogFragment {
                             //Toast.makeText(getActivity(),"id eventu: "+l, Toast.LENGTH_LONG).show();
                             frag.setArguments(bundle);
                             fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();*/
-                    }
-                });
-                addParticipantDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                 //TODO tady
+        /*  }
+                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
@@ -107,7 +135,7 @@ public class ParticipantsList extends DialogFragment {
                 addParticipantDialog.show();
             }
         });
-
+*/ //TODO tady
         return root;
     }
 
