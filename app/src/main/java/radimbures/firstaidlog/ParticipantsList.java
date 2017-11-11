@@ -89,6 +89,8 @@ public class ParticipantsList extends DialogFragment {
                         //TODO kontrola, ze jsou zadany hodnoty
                         myDB.open();
                         myDB.insertRowParticipant(name, surname, id_eventu);
+                        long id_user = myDB.insertRowParticipant(name, surname, id_eventu);
+                        myDB.insertRowRegistr(id_eventu,id_user);
                         Toast.makeText(getActivity(), "Participant added", Toast.LENGTH_LONG).show();
                         //TODO listview refresh
                         myDB.close();
