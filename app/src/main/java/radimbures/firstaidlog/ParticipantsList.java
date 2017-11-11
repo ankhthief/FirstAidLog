@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
@@ -28,7 +29,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ParticipantsList extends DialogFragment {
+public class ParticipantsList extends Fragment {
 
     DBAdapter myDB;
     ListView participantList;
@@ -52,8 +53,9 @@ public class ParticipantsList extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View root = inflater.inflate(R.layout.fragment_participants_list, container, false);
         myDB =  new DBAdapter(getContext());
+        final FragmentManager fm = getFragmentManager();
+        final View root = inflater.inflate(R.layout.fragment_participants_list, container, false);
         participantList = root.findViewById(R.id.list_participants);
         tv_empty= root.findViewById(R.id.tv_empty);
         tv_empty.setVisibility(View.GONE);
@@ -67,6 +69,18 @@ public class ParticipantsList extends DialogFragment {
         populateListViewNew();
         registerForContextMenu(participantList);
 
+        participantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //předání id eventu a usera
+                Injuries frag = new Injuries();
+                Bundle bundle = new Bundle();
+                bundle.putLong("idparticipant", l);
+                bundle.putLong("idevent", id_eventu);
+                frag.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();
+            }
+        });
 
         add_new.setOnClickListener(new View.OnClickListener() {
             @Override

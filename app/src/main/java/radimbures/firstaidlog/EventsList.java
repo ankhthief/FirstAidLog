@@ -26,7 +26,7 @@ import android.content.ContentValues;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventsList extends DialogFragment {
+public class EventsList extends Fragment {
 
     DBAdapter myDB;
     EditText eventName;
@@ -57,7 +57,6 @@ public class EventsList extends DialogFragment {
                 Participants frag = new Participants();
                 Bundle bundle = new Bundle();
                 bundle.putLong("key", l);
-                //Toast.makeText(getActivity(),"id eventu: "+l, Toast.LENGTH_LONG).show();
                 frag.setArguments(bundle);
                 fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();
             }

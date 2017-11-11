@@ -34,8 +34,8 @@ public class DBAdapter {
 
     //table Injuries
     private static final String INJURIES_ROWID = "_id";
-    private static final String INJURIES_TITLE = "title";
-    private static final String INJURIES_DESCRIPTION = "description";
+    public static final String INJURIES_TITLE = "title";
+    public static final String INJURIES_DESCRIPTION = "description";
     private static final String INJURIES_PARTICIPANTID = "participantid";
     private static final String INJURIES_EVENTID = "eventid";
 
@@ -108,6 +108,17 @@ public class DBAdapter {
     public boolean isEmptyRegistr(Long radek) {
         boolean empty = true;
         Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_REGISTR+ " WHERE " + REGISTR_EVENTID+ "= " + radek, null);
+        if (cur != null && cur.moveToFirst()) {
+            empty = (cur.getInt (0) == 0);
+        }
+        cur.close();
+
+        return empty;
+    }
+
+    public boolean isEmptyInjuries(long participant, long event) {
+        boolean empty = true;
+        Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_INJURIES+ " WHERE " + INJURIES_EVENTID+ "= " + event + " AND " + INJURIES_PARTICIPANTID + "=" + participant, null);
         if (cur != null && cur.moveToFirst()) {
             empty = (cur.getInt (0) == 0);
         }
