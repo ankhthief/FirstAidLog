@@ -3,13 +3,11 @@ package radimbures.firstaidlog;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
@@ -21,7 +19,6 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 public class EmptyParticipantsList extends Fragment {
 
     DBAdapter myDB;
-    ListView participantList;
     long id_eventu;
     EditText participantName;
     EditText participantSurname;
@@ -39,13 +36,11 @@ public class EmptyParticipantsList extends Fragment {
         myDB =  new DBAdapter(getContext());
         // Inflate the layout for this fragment
         final View root = inflater.inflate(R.layout.fragment_empty_participants_list, container, false);
-        final FragmentManager fm = getActivity().getSupportFragmentManager();
-        FloatingActionButton fab_add = (FloatingActionButton) root.findViewById(R.id.fab_emptyList);
+        FloatingActionButton fab_add = root.findViewById(R.id.fab_emptyList);
         Bundle bundle = getArguments();
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
         }
-        //Toast.makeText(getActivity(),"id eventu: "+id_eventu, Toast.LENGTH_LONG).show();
 
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,8 +49,8 @@ public class EmptyParticipantsList extends Fragment {
                 addParticipantDialog.setTitle("Add new Participant");
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_participant, (ViewGroup) getView(), false);
                 addParticipantDialog.setView(viewInflated);
-                participantName = (EditText) viewInflated.findViewById(R.id.add_participant_name);
-                participantSurname = (EditText) viewInflated.findViewById(R.id.add_participant_surname);
+                participantName = viewInflated.findViewById(R.id.add_participant_name);
+                participantSurname = viewInflated.findViewById(R.id.add_participant_surname);
                 addParticipantDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -67,8 +62,6 @@ public class EmptyParticipantsList extends Fragment {
                         myDB.insertRowParticipant(name,surname, id_eventu);
                         Toast.makeText(getActivity(),"Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();
-                        //TODO refresh listu
-                        //fm.beginTransaction().replace(R.id.tabHost, new ParticipantsList()).commit();
                     }
                 });
                 addParticipantDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
