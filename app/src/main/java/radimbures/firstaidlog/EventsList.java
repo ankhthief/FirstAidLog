@@ -22,10 +22,6 @@ import android.widget.SimpleCursorAdapter;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import android.content.ContentValues;
 
-import static android.R.attr.fragment;
-import static android.R.attr.id;
-import static android.R.attr.value;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,8 +45,8 @@ public class EventsList extends DialogFragment {
         myDB =  new DBAdapter(getContext());
         final FragmentManager fm = getFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_events_list, container, false);
-        eventList = (ListView) root.findViewById(R.id.list_events);
-        FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab_event);
+        eventList = root.findViewById(R.id.list_events);
+        FloatingActionButton fab = root.findViewById(R.id.fab_event);
         populateListView();
         registerForContextMenu(eventList);
 
@@ -81,7 +77,7 @@ public class EventsList extends DialogFragment {
                 addEventDialog.setTitle(R.string.addEventDialog);
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
                 addEventDialog.setView(viewInflated);
-                eventName = (EditText) viewInflated.findViewById(R.id.add_event_name);
+                eventName = viewInflated.findViewById(R.id.add_event_name);
                 addEventDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -137,12 +133,13 @@ public class EventsList extends DialogFragment {
                 addEventDialog.setTitle("Edit event");
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
                 addEventDialog.setView(viewInflated);
-                eventName = (EditText) viewInflated.findViewById(R.id.add_event_name);
+                eventName = viewInflated.findViewById(R.id.add_event_name);
                 myDB.open();
                 Cursor c = myDB.db.rawQuery("SELECT * FROM events WHERE _id=="+id, null);
                 c.moveToFirst();
                 String s = c.getString(c.getColumnIndex("name"));
                 eventName.setText(s); //tady se musí načíst data z db
+                c.close();
                 addEventDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
