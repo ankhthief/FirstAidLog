@@ -99,6 +99,17 @@ public class DBAdapter {
         return empty;
     }
 
+    public boolean isEmptyRegistr(Long radek) {
+        boolean empty = true;
+        Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_REGISTR+ " WHERE " + REGISTR_EVENTID+ "= " + radek, null);
+        if (cur != null && cur.moveToFirst()) {
+            empty = (cur.getInt (0) == 0);
+        }
+        cur.close();
+
+        return empty;
+    }
+
     //close database
     public void close() {
         myDBHelper.close();
@@ -120,6 +131,14 @@ public class DBAdapter {
         if (c != null) {
             c.moveToFirst();
         }
+        return c;
+    }
+
+    public Cursor getAllRowsParticipantNew(long radek) {
+        String S = String.valueOf(radek);
+        String MY_QUERY = "SELECT p._id,p.name,p.surname FROM (" + TABLE_PARTICIPANTS + " p INNER JOIN " + TABLE_REGISTR + " r ON r." + REGISTR_PARTICIPANTID + "=p." + PARTICIPANTS_ROWID + ") INNER JOIN "
+                + TABLE_EVENTS + " e ON e." + EVENTS_ROWID + "=r." + REGISTR_EVENTID + " WHERE e." + EVENTS_ROWID + "=?";
+        Cursor c = db.rawQuery(MY_QUERY, new String[]{S});
         return c;
     }
 

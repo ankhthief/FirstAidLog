@@ -66,7 +66,8 @@ public class ParticipantsList extends DialogFragment {
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
         }
-        populateListView();
+        //populateListView();
+        populateListViewNew();
         registerForContextMenu(participantList);
 
 
@@ -94,7 +95,8 @@ public class ParticipantsList extends DialogFragment {
                         Toast.makeText(getActivity(), "Participant added", Toast.LENGTH_LONG).show();
                         //TODO listview refresh
                         myDB.close();
-                        populateListView();
+                        populateListViewNew();
+                        //populateListView();
                          /* *//*fm.beginTransaction().replace(R.id.fragment_holder, new Participants()).commit();*//*
                             Participants frag = new Participants();
                             Bundle bundle = new Bundle();
@@ -148,6 +150,30 @@ public class ParticipantsList extends DialogFragment {
         myDB.close();
     }
 
+    public void populateListViewNew() {
+        myDB.open();
+        participantList.invalidateViews();
+        cursor = myDB.getAllRowsParticipantNew(id_eventu);
+        fromParticipantNames = new String[] {DBAdapter.PARTICIPANTS_NAME, DBAdapter.PARTICIPANTS_SURNAME};
+        toViewIDs = new int[] {R.id.name_of_participant, R.id.surname_of_participant};
+        myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_participant, cursor, fromParticipantNames, toViewIDs,0 );
+        participantList.setAdapter(myCursorAdapter);
+        myCursorAdapter.notifyDataSetChanged();
+        // if (myDB.isEmptyParticipants(id_eventu)) {
+        if (myDB.isEmptyRegistr(id_eventu)) {
+            // Toast.makeText(getActivity(),"if",Toast.LENGTH_LONG).show();
+            tv_empty.setVisibility(View.VISIBLE);
+
+
+        } else {
+            //Toast.makeText(getActivity(),"else",Toast.LENGTH_LONG).show();
+
+            tv_empty.setVisibility(View.GONE);
+        }
+        myDB.close();
+
+    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -187,7 +213,8 @@ public class ParticipantsList extends DialogFragment {
                         Toast.makeText(getActivity(),"participant changed", Toast.LENGTH_LONG).show();
                         //TODO listview refresh
                         myDB.close();
-                        populateListView();
+                        populateListViewNew();
+                        //populateListView();
                          /* *//*fm.beginTransaction().replace(R.id.fragment_holder, new Participants()).commit();*//*
 
 
@@ -210,9 +237,11 @@ public class ParticipantsList extends DialogFragment {
                 return true;
             case R.id.delete_event_popup:
                 myDB.open();
-                myDB.deleteRowParticipant(id);
+                myDB.deleteRowRegistr(id);
+                //myDB.deleteRowParticipant(id);
                 Toast.makeText(getActivity(),"participant deleted", Toast.LENGTH_LONG).show();
-                populateListView();
+                populateListViewNew();
+                //populateListView();
                 myDB.close();
                 return true;
             default:
