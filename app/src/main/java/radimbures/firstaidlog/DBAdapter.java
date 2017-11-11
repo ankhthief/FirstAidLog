@@ -154,7 +154,7 @@ public class DBAdapter {
     public Cursor getAllRowsInjuries(long participantid, long eventid) {
         String S = String.valueOf(participantid);
         String K = String.valueOf(eventid);
-        String MY_QUERY = "SELECT * FROM " + TABLE_INJURIES + "WHERE " + INJURIES_PARTICIPANTID + "=" + participantid + "AND " + INJURIES_EVENTID + "=" + eventid;
+        String MY_QUERY = "SELECT * FROM " + TABLE_INJURIES + " WHERE " + INJURIES_PARTICIPANTID + "=?  AND " + INJURIES_EVENTID + "=? ";
 
         Cursor c = db.rawQuery(MY_QUERY, new String[]{S,K});
 
@@ -223,7 +223,7 @@ public class DBAdapter {
 
     //delete row from db by INJURIES_PARTICIPANTID and INJURIES_EVENTID
     public boolean deleteRowInjurie(long participantId, Long eventId) {
-        String where = INJURIES_PARTICIPANTID + "=" + participantId + "AND " + INJURIES_EVENTID + "=" + eventId;
+        String where = INJURIES_PARTICIPANTID + "=" + participantId + " AND " + INJURIES_EVENTID + "=" + eventId;
         return db.delete(TABLE_INJURIES, where, null) != 0;
 
     }

@@ -44,7 +44,7 @@ public class InjuriesList extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_injuries_list, container, false);
         // Inflate the layout for this fragment
         fab = root.findViewById(R.id.fab_injury);
-        injuriesList = root.findViewById(R.id.list_participants);
+        injuriesList = root.findViewById(R.id.list_injuries);
         tv_empty= root.findViewById(R.id.tv_empty);
         tv_empty.setVisibility(View.GONE);
         Bundle bundle = getArguments();
@@ -52,7 +52,6 @@ public class InjuriesList extends Fragment {
             id_eventu = bundle.getLong("idevent");
             id_participant = bundle.getLong("idparticipant");
         }
-
         populateListView();
 
 
@@ -63,7 +62,7 @@ public class InjuriesList extends Fragment {
 
     public void populateListView() {
         myDB.open();
-        injuriesList.invalidateViews();
+        //injuriesList.invalidateViews();
         cursor = myDB.getAllRowsInjuries(id_participant, id_eventu);
         fromInjuriesNames = new String[] {DBAdapter.INJURIES_TITLE, DBAdapter.INJURIES_DESCRIPTION};
         toViewIDs = new int[] {R.id.title_of_injury, R.id.desc_of_injury};

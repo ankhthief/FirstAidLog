@@ -54,7 +54,7 @@ public class ParticipantsList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
-        final FragmentManager fm = getFragmentManager();
+        final FragmentManager fm = getActivity().getSupportFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_participants_list, container, false);
         participantList = root.findViewById(R.id.list_participants);
         tv_empty= root.findViewById(R.id.tv_empty);
