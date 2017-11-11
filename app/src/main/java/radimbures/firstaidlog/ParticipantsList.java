@@ -59,7 +59,6 @@ public class ParticipantsList extends DialogFragment {
         participantList = (ListView) root.findViewById(R.id.list_participants);
         tv_empty= (TextView) root.findViewById(R.id.tv_empty);
         tv_empty.setVisibility(View.GONE);
-        //FloatingActionButton fab1 = (FloatingActionButton) root.findViewById(R.id.fab_participant);
         final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) root.findViewById(R.id.multiple_actions);
         final FloatingActionButton add_new = (FloatingActionButton) root.findViewById(R.id.add_new);
         final FloatingActionButton add_from_db = (FloatingActionButton) root.findViewById(R.id.add_from_db);
@@ -121,51 +120,6 @@ public class ParticipantsList extends DialogFragment {
             }
         });
 
-        //TODO tady
-/*
-        fab1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                final AlertDialog.Builder addParticipantDialog = new AlertDialog.Builder(getContext());
-                addParticipantDialog.setTitle("Add new Participant");
-                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_participant, (ViewGroup) getView(), false);
-                addParticipantDialog.setView(viewInflated);
-                participantName = (EditText) viewInflated.findViewById(R.id.add_participant_name);
-                participantSurname = (EditText) viewInflated.findViewById(R.id.add_participant_surname);
-                addParticipantDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO zde se načtou data z polí a uloží do databáze
-                        String name = participantName.getText().toString();
-                        String surname = participantSurname.getText().toString();
-                        //TODO kontrola, ze jsou zadany hodnoty
-                        myDB.open();
-                        myDB.insertRowParticipant(name, surname, id_eventu);
-                        Toast.makeText(getActivity(), "Participant added", Toast.LENGTH_LONG).show();
-                        //TODO listview refresh
-                        myDB.close();
-                        populateListView();
-                         /* *//*fm.beginTransaction().replace(R.id.fragment_holder, new Participants()).commit();*//*
-                            Participants frag = new Participants();
-                            Bundle bundle = new Bundle();
-                            bundle.putLong("key", id_eventu);
-                            //Toast.makeText(getActivity(),"id eventu: "+l, Toast.LENGTH_LONG).show();
-                            frag.setArguments(bundle);
-                            fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();*/
-        //TODO tady
-        /*
- }
-                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                addParticipantDialog.show();
-            }
-        });
-        */ //TODO tady
 
         return root;
     }

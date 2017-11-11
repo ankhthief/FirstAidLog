@@ -19,18 +19,6 @@
         android:id="@+id/list_participants">
     </ListView>
 
-    <!--
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_participant"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fab:fab_icon="@drawable/plusicon"
-        fab:fab_colorNormal="@color/colorAccent"
-        fab:fab_colorPressed="@color/colorPrimaryDark"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"/>
-        -->
-
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/multiple_actions"
         android:layout_width="wrap_content"
