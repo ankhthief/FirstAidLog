@@ -2,7 +2,6 @@ package radimbures.firstaidlog;
 
 
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,7 +35,7 @@ public class EmptyEventsList extends Fragment {
         myDB =  new DBAdapter(getContext());
 
         final View root = inflater.inflate(R.layout.fragment_empty_list, container, false);
-        FloatingActionButton fab_add = (FloatingActionButton) root.findViewById(R.id.fab_emptyList);
+        FloatingActionButton fab_add = root.findViewById(R.id.fab_emptyList);
 
         fab_add.setOnClickListener(new OnClickListener() {
             @Override
@@ -46,7 +45,7 @@ public class EmptyEventsList extends Fragment {
                 addEventDialog.setTitle(R.string.addEventDialog);
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
                 addEventDialog.setView(viewInflated);
-                eventName = (EditText) viewInflated.findViewById(R.id.add_event_name);
+                eventName = viewInflated.findViewById(R.id.add_event_name);
                 addEventDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
