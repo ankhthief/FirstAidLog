@@ -53,7 +53,7 @@ public class Injuries extends Fragment {
         mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("List of injuries"),
                 S, bundle2);
         mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Personal information"),
-                EventInfo.class, bundle2);
+                ParticipantInfo.class, bundle2);
 
 
 

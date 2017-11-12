@@ -1,16 +1,20 @@
 package radimbures.firstaidlog;
 
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
@@ -30,6 +34,8 @@ public class InjuriesList extends Fragment {
     SimpleCursorAdapter myCursorAdapter;
     String[] fromInjuriesNames;
     FloatingActionButton fab;
+    EditText injuryTitle;
+    EditText injuryDesc;
 
     public InjuriesList() {
         // Required empty public constructor
@@ -54,6 +60,37 @@ public class InjuriesList extends Fragment {
         }
         populateListView();
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder addInjuryDialog = new AlertDialog.Builder(getContext());
+                addInjuryDialog.setTitle("Add new Injury");
+                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_injury, (ViewGroup) getView(), false);
+                addInjuryDialog.setView(viewInflated);
+                injuryTitle = viewInflated.findViewById(R.id.add_injury_title);
+                injuryDesc = viewInflated.findViewById(R.id.add_injury_desc);
+                addInjuryDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //TODO zde se načtou data z polí a uloží do databáze
+                        String title = injuryTitle.getText().toString();
+                        String desc = injuryDesc.getText().toString();
+                        //TODO kontrola, ze jsou zadany hodnoty
+                        myDB.open();
+                        myDB.insertRowInjuries(title, desc, id_participant, id_eventu);
+                        Toast.makeText(getActivity(), "Injury added", Toast.LENGTH_LONG).show();
+                        myDB.close();
+                        populateListView();
+                    }
+                }) .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                addInjuryDialog.show();
+            }
+        });
 
 
         return root;
