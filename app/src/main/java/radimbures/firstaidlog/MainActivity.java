@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     DBAdapter myDB;
+    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,17 +21,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        myDB =  new DBAdapter(this);
-        myDB.open();
-
-        final FragmentManager fm = getSupportFragmentManager();
-
-        if (myDB.isEmpty()) {
-            fm.beginTransaction().replace(R.id.fragment_holder, new EmptyEventsList()).commit();
-        } else {
-            fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
-        }
-        myDB.close();
+        fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.fragment_holder, new FirstAidLog()).commit();
     }
 
     @Override

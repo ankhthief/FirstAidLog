@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.app.AlertDialog;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -31,6 +32,7 @@ public class EventsList extends Fragment {
     DBAdapter myDB;
     EditText eventName;
     ListView eventList;
+    TextView tv_empty;
 
     public EventsList() {
         // Required empty public constructor
@@ -43,8 +45,10 @@ public class EventsList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
-        final FragmentManager fm = getFragmentManager();
+        final FragmentManager fm = getActivity().getSupportFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_events_list, container, false);
+        tv_empty= root.findViewById(R.id.tv_empty);
+        tv_empty.setVisibility(View.GONE);
         eventList = root.findViewById(R.id.list_events);
         FloatingActionButton fab = root.findViewById(R.id.fab_event);
         populateListView();
@@ -86,7 +90,7 @@ public class EventsList extends Fragment {
                         myDB.insertRowEvent(str);
                         Toast.makeText(getActivity(),R.string.event_add_toast, Toast.LENGTH_LONG).show();
                         myDB.close();
-                        fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
+                        fm.beginTransaction().replace(R.id.fragment_holder, new FirstAidLog()).commit();
                     }
                 });
                 addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -112,6 +116,11 @@ public class EventsList extends Fragment {
         SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_event, cursor, fromEventNames, toViewIDs,0 );
         eventList.setAdapter(myCursorAdapter);
+        if (myDB.isEmpty()) {
+            tv_empty.setVisibility(View.VISIBLE);
+        } else {
+            tv_empty.setVisibility(View.GONE);
+        }
         myDB.close();
     }
 
@@ -167,12 +176,8 @@ public class EventsList extends Fragment {
                 myDB.open();
                 myDB.deleteRowEvent(id);
                 Toast.makeText(getActivity(),"event deleted", Toast.LENGTH_LONG).show();
-                final FragmentManager fm = getFragmentManager();
-                if (myDB.isEmpty()) {
-                    fm.beginTransaction().replace(R.id.fragment_holder, new EmptyEventsList()).commit();
-                } else {
-                    populateListView();
-                }
+                populateListView();
+                myDB.close();
                 return true;
             default:
                 return super.onContextItemSelected(item);
