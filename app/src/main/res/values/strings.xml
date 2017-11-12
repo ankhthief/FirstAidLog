@@ -17,4 +17,6 @@
     <string name="fab_add_db">Add participant from DB</string>
     <string name="edit_injury_popup">Edit Injury</string>
     <string name="delete_injury_popup">Delete Injury</string>
+    <string name="about_the_app">About the app</string>
+    <string name="useful_tips">Useful tips</string>
 </resources>
