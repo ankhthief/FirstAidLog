@@ -16,6 +16,9 @@ import android.widget.LinearLayout;
  */
 public class AddFromDB extends Fragment {
 
+    DBAdapter myDB;
+    long pocet;
+
 
     public AddFromDB() {
         // Required empty public constructor
@@ -26,12 +29,15 @@ public class AddFromDB extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        myDB =  new DBAdapter(getContext());
         final View root = inflater.inflate(R.layout.fragment_add_from_db, container, false);
         LinearLayout layout = root.findViewById(R.id.check_add_layout);
-        for(int i = 0; i < 5; i++) {
+        myDB.open();
+        pocet = myDB.getParticipantsCount();
+        for(int i = 0; i < pocet; i++) {
             CheckBox cb = new CheckBox(root.getContext());
             cb.setText("I'm dynamic! Nr." + i);
+            cb.setHeight(60);
             layout.addView(cb);
         }
 

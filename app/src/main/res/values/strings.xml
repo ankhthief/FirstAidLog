@@ -19,4 +19,6 @@
     <string name="delete_injury_popup">Delete Injury</string>
     <string name="about_the_app">About the app</string>
     <string name="useful_tips">Useful tips</string>
+    <string name="add_db_part_info">Here you can choose participants in database and add them in bulk.</string>
+    <string name="btn_add_from_db">Add selected participants to this event</string>
 </resources>

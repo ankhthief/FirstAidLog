@@ -2,6 +2,7 @@ package radimbures.firstaidlog;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.DatabaseUtils;
 import android.util.Log;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -125,6 +126,13 @@ public class DBAdapter {
         cur.close();
 
         return empty;
+    }
+
+    //number of participants in database
+    public long getParticipantsCount() {
+        long cnt  = DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
+        db.close();
+        return cnt;
     }
 
     //close database
