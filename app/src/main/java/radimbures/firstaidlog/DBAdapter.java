@@ -131,7 +131,6 @@ public class DBAdapter {
     //number of participants in database
     public long getParticipantsCount() {
         long cnt  = DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
-        db.close();
         return cnt;
     }
 
@@ -148,6 +147,15 @@ public class DBAdapter {
         }
         return c;
     }
+
+    //returns all data from table Participants
+     public Cursor getAllRowsParticipant() {
+                Cursor c = db.query(true, TABLE_PARTICIPANTS, ALL_KEYS_PARTICIPANT, null, null, null, null, null, null);
+                if (c != null) {
+                        c.moveToFirst();
+                    }
+                return c;
+            }
 
     //returns all data from table Participants in Events
     public Cursor getAllRowsParticipantNew(long radek) {

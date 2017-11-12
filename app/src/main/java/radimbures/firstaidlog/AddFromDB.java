@@ -1,6 +1,7 @@
 package radimbures.firstaidlog;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ public class AddFromDB extends Fragment {
 
     DBAdapter myDB;
     long pocet;
+    String[] names;
+    String[] surnames;
 
 
     public AddFromDB() {
@@ -34,14 +37,20 @@ public class AddFromDB extends Fragment {
         LinearLayout layout = root.findViewById(R.id.check_add_layout);
         myDB.open();
         pocet = myDB.getParticipantsCount();
+        Cursor cursor = myDB.getAllRowsParticipant();
+        cursor.moveToFirst();
         for(int i = 0; i < pocet; i++) {
             CheckBox cb = new CheckBox(root.getContext());
-            cb.setText("I'm dynamic! Nr." + i);
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String surname = cursor.getString(cursor.getColumnIndex("surname"));
+            String text = name + " " + surname;
+            cb.setText(text);
             cb.setHeight(60);
             layout.addView(cb);
+            cursor.moveToNext();
         }
 
-
+        myDB.close();
         return root;
     }
 

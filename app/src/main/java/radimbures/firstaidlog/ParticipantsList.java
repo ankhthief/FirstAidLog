@@ -121,11 +121,17 @@ public class ParticipantsList extends Fragment {
             public void onClick(View view) {
                 menuMultipleActions.collapse();
                 //TODO přidání z databáze
-                AddFromDB frag = new AddFromDB();
-                Bundle bundle = new Bundle();
-                bundle.putLong("idevent", id_eventu);
-                frag.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();
+                myDB.open();
+                if (myDB.getParticipantsCount() == 0) {
+                    Toast.makeText(getActivity(), "No participants in DB, add some first", Toast.LENGTH_LONG).show();
+                } else {
+
+                    AddFromDB frag = new AddFromDB();
+                    Bundle bundle = new Bundle();
+                    bundle.putLong("idevent", id_eventu);
+                    frag.setArguments(bundle);
+                    fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();
+                }
             }
         });
 
