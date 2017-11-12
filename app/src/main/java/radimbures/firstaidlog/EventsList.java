@@ -33,6 +33,7 @@ public class EventsList extends Fragment {
     EditText eventName;
     ListView eventList;
     TextView tv_empty;
+    FloatingActionButton fab;
 
     public EventsList() {
         // Required empty public constructor
@@ -50,7 +51,7 @@ public class EventsList extends Fragment {
         tv_empty= root.findViewById(R.id.tv_empty);
         tv_empty.setVisibility(View.GONE);
         eventList = root.findViewById(R.id.list_events);
-        FloatingActionButton fab = root.findViewById(R.id.fab_event);
+        fab = root.findViewById(R.id.fab_event);
         populateListView();
         registerForContextMenu(eventList);
 
