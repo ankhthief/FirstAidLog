@@ -4,10 +4,12 @@ package radimbures.firstaidlog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,9 +23,9 @@ public class ParticipantDatabase extends Fragment {
 
     ListView participantsDatabase;
     DBAdapter myDB;
-    SimpleCursorAdapter myCursorAdapter;
     TextView tv_empty;
     FloatingActionButton fab;
+    FragmentManager fm;
 
 
     public ParticipantDatabase() {
@@ -39,9 +41,29 @@ public class ParticipantDatabase extends Fragment {
         participantsDatabase = root.findViewById(R.id.list_participants_database);
         tv_empty= root.findViewById(R.id.tv_empty);
         tv_empty.setVisibility(View.GONE);
+        fm = getActivity().getSupportFragmentManager();
         fab = root.findViewById(R.id.fab_event);
-
         populateListView();
+
+        participantsDatabase.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                AddParticipant fragment = new AddParticipant();
+                Bundle bundle = new Bundle();
+                bundle.putLong("idparticipant", l);
+                fragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragment_holder, fragment).addToBackStack(null).commit();
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //přidání usera
+                fm.beginTransaction().replace(R.id.fragment_holder, new AddParticipant()).addToBackStack(null).commit();
+            }
+        });
 
         return root;
     }

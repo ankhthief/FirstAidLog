@@ -4,6 +4,14 @@
     tools:context="radimbures.firstaidlog.MainActivity">
 
     <item
+        android:id="@+id/add_button"
+        android:title="Save"
+        android:icon="@drawable/ic_save_white_24px"
+        app:showAsAction="always"
+        android:visible="false"
+        />
+
+    <item
         android:id="@+id/action_tips"
         android:orderInCategory="100"
         android:title="@string/useful_tips"
