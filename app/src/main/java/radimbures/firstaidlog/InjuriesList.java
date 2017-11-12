@@ -105,7 +105,7 @@ public class InjuriesList extends Fragment {
 
     public void populateListView() {
         myDB.open();
-        //injuriesList.invalidateViews();
+        injuriesList.invalidateViews();
         cursor = myDB.getAllRowsInjuries(id_participant, id_eventu);
         fromInjuriesNames = new String[] {DBAdapter.INJURIES_TITLE, DBAdapter.INJURIES_DESCRIPTION};
         toViewIDs = new int[] {R.id.title_of_injury, R.id.desc_of_injury};

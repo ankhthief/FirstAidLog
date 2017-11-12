@@ -14,10 +14,9 @@
         />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="description of injury"
         android:id="@+id/add_injury_desc"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:hint="description of injury" />
 
 </LinearLayout>
