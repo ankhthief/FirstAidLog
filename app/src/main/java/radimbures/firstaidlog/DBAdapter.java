@@ -215,15 +215,15 @@ public class DBAdapter {
         return db.delete(TABLE_PARTICIPANTS, where, null) != 0;
     }
 
-    //delete row from db by REGISTR_PARTICIPANTID
+    //deletes row from db by REGISTR_PARTICIPANTID
     public boolean deleteRowRegistr(long rowId) {
         String where = REGISTR_PARTICIPANTID + "=" + rowId;
         return db.delete(TABLE_REGISTR, where, null) != 0;
     }
 
-    //delete row from db by INJURIES_PARTICIPANTID and INJURIES_EVENTID
-    public boolean deleteRowInjurie(long participantId, Long eventId) {
-        String where = INJURIES_PARTICIPANTID + "=" + participantId + " AND " + INJURIES_EVENTID + "=" + eventId;
+    //deletes row from db by INJURIES_PARTICIPANTID and INJURIES_EVENTID
+    public boolean deleteRowInjurie(long rowId) {
+        String where = INJURIES_ROWID + "=" + rowId;
         return db.delete(TABLE_INJURIES, where, null) != 0;
 
     }
