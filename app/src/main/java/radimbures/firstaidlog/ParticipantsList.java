@@ -99,7 +99,7 @@ public class ParticipantsList extends Fragment {
                         String surname = participantSurname.getText().toString();
                         //TODO kontrola, ze jsou zadany hodnoty
                         myDB.open();
-                        long id_user = myDB.insertRowParticipant(name, surname, id_eventu);
+                        long id_user = myDB.insertRowParticipant(name, surname);
                         myDB.insertRowRegistr(id_eventu,id_user);
                         Toast.makeText(getActivity(), "Participant added", Toast.LENGTH_LONG).show();
                         myDB.close();

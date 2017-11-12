@@ -48,7 +48,7 @@ public class ParticipantDatabase extends Fragment {
         participantsDatabase.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                //uprava usera
                 AddParticipant fragment = new AddParticipant();
                 Bundle bundle = new Bundle();
                 bundle.putLong("idparticipant", l);

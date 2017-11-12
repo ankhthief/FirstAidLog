@@ -187,7 +187,7 @@ public class DBAdapter {
     }
 
     //creates dataset to add to the table Participants
-    public long insertRowParticipant(String name, String surname, Long idevent) {
+    public long insertRowParticipant(String name, String surname) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PARTICIPANTS_NAME, name);
         initialValues.put(PARTICIPANTS_SURNAME, surname);
