@@ -1,6 +1,8 @@
 package radimbures.firstaidlog;
 
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,7 +24,9 @@ public class AddParticipant extends Fragment {
     EditText name;
     EditText surname;
     DBAdapter myDB;
-
+    Long idparticipant;
+    FragmentManager fm;
+    Bundle bundle;
 
 
     public AddParticipant() {
@@ -35,9 +39,22 @@ public class AddParticipant extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
+        fm = getFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_add_participant, container, false);
         name = root.findViewById(R.id.input_name);
+
         surname = root.findViewById(R.id.input_surname);
+        bundle = getArguments();
+        if (bundle != null) {
+            idparticipant = bundle.getLong("idparticipant");
+            myDB.open();
+            Cursor c = myDB.db.rawQuery("SELECT * FROM participants WHERE _id=="+idparticipant, null);
+            c.moveToFirst();
+            name.setText(c.getString(c.getColumnIndex("name")));
+            surname.setText(c.getString(c.getColumnIndex("surname")));
+            c.close();
+            myDB.close();
+        }
 
 
         return root;
@@ -64,9 +81,14 @@ public class AddParticipant extends Fragment {
             case R.id.add_button:
                 String jmeno = name.getText().toString();
                 String prijmeni = surname.getText().toString();
-                final FragmentManager fm = getFragmentManager();
                 myDB.open();
-                myDB.insertRowParticipant(jmeno, prijmeni);
+                if (bundle != null) {
+                    ContentValues cv = new ContentValues();
+                    cv.put("name",jmeno);
+                    cv.put("surname", prijmeni);
+                    myDB.db.update("participants", cv, "_id="+idparticipant, null);
+
+                } else myDB.insertRowParticipant(jmeno, prijmeni);
                 myDB.close();
                 fm.popBackStackImmediate();
                 return true;
