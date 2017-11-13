@@ -11,9 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+
 
 import static android.content.ContentValues.TAG;
 
@@ -72,7 +71,7 @@ public class AddFromDB extends Fragment {
                     do {
                         Long event = cursor2.getLong(cursor2.getColumnIndex("eventid"));
                         Integer user = cursor2.getInt(cursor2.getColumnIndex("participantid"));
-                        if (idcko == user && event == id_eventu) existuje = true;
+                        if (idcko.equals(user) && event.equals(id_eventu)) existuje = true;
                     } while (cursor2.moveToNext());
             }
             if (!existuje) {
