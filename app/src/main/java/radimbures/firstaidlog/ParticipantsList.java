@@ -122,47 +122,6 @@ public class ParticipantsList extends Fragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final long id = info.id;
         switch(item.getItemId()) {
-            /*
-            case R.id.edit_participant_popup:
-                final android.app.AlertDialog.Builder addEventDialog = new android.app.AlertDialog.Builder(getContext());
-                addEventDialog.setTitle("Edit participant");
-                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_participant, (ViewGroup) getView(), false);
-                addEventDialog.setView(viewInflated);
-                participantName = viewInflated.findViewById(R.id.add_participant_name);
-                participantSurname = viewInflated.findViewById(R.id.add_participant_surname);
-                myDB.open();
-                Cursor c = myDB.db.rawQuery("SELECT * FROM participants WHERE _id=="+id, null);
-                c.moveToFirst();
-                String name_par = c.getString(c.getColumnIndex("name"));
-                String surname_par = c.getString(c.getColumnIndex("surname"));
-                participantName.setText(name_par); //tady se musí načíst data z db
-                participantSurname.setText(surname_par);
-                c.close();
-                addEventDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO zde se načtou data z polí a uloží do databáze
-                        String str = participantName.getText().toString();
-                        String str1 = participantSurname.getText().toString();
-                        ContentValues cv = new ContentValues();
-                        cv.put("name",str);
-                        cv.put("surname",str1);
-                        myDB.db.update("participants", cv, "_id="+id, null);
-                        Toast.makeText(getActivity(),"participant changed", Toast.LENGTH_LONG).show();
-                        myDB.close();
-                        populateListViewNew();
-                    }
-                });
-                addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                addEventDialog.show();
-                return true;
-
-                */
             case R.id.delete_participant_popup:
                 myDB.open();
                 myDB.deleteRowRegistr(id);
