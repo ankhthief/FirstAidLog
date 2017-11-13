@@ -70,12 +70,6 @@ public class EventsList extends Fragment {
             @Override
             public void onClick(View view) {
 
-                //ukáže dialog
-                //TODO vyčistit kod
-                //LayoutInflater layoutInflaterAndroid = LayoutInflater.from(root);
-                //View mView = layoutInflaterAndroid.inflate(R.layout.user_input_dialog_box, null);
-
-                ///fm.beginTransaction().replace(R.id.fragment_holder, new ParticipantsList()).addToBackStack(null).commit()
                 final AlertDialog.Builder addEventDialog = new AlertDialog.Builder(getContext());
                 addEventDialog.setTitle(R.string.addEventDialog);
                 final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
