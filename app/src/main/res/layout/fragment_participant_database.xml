@@ -22,7 +22,7 @@
         android:id="@+id/fab_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        fab:fab_icon="@drawable/plusicon"
+        fab:fab_icon="@drawable/ic_person_add_white_24px"
         fab:fab_colorNormal="@color/colorAccent"
         fab:fab_colorPressed="@color/colorPrimaryDark"
         android:layout_gravity="bottom|end"

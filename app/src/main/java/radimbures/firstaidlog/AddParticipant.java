@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 
 /**
@@ -66,17 +64,14 @@ public class AddParticipant extends Fragment {
                 String jmeno = name.getText().toString();
                 String prijmeni = surname.getText().toString();
                 final FragmentManager fm = getFragmentManager();
-                ParticipantDatabase fragment = new ParticipantDatabase();
                 myDB.open();
                 myDB.insertRowParticipant(jmeno, prijmeni);
                 myDB.close();
-                Toast.makeText(getActivity(), "SAVED", Toast.LENGTH_LONG).show();
-                //fm.beginTransaction().replace(R.id.fragment_holder, fragment).commit();
-                fm.beginTransaction().remove(this);
-                //TODO nezmizí textview s prázdnou db
+                fm.popBackStackImmediate();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

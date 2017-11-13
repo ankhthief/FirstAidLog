@@ -78,12 +78,13 @@ public class ParticipantDatabase extends Fragment {
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_participant, cursor, fromParticipantNames, toViewIDs,0 );
         participantsDatabase.setAdapter(myCursorAdapter);
         participantsDatabase.setAdapter(myCursorAdapter);
-        if (myDB.isEmpty()) {
+        if (myDB.isEmptyParticipant()) {
             tv_empty.setVisibility(View.VISIBLE);
         } else {
             tv_empty.setVisibility(View.GONE);
         }
         myDB.close();
     }
+
 
 }

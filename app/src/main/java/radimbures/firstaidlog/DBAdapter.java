@@ -128,6 +128,17 @@ public class DBAdapter {
         return empty;
     }
 
+    public boolean isEmptyParticipant () {
+        boolean empty = true;
+        Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_PARTICIPANTS, null);
+        if (cur != null && cur.moveToFirst()) {
+            empty = (cur.getInt (0) == 0);
+        }
+        cur.close();
+
+        return empty;
+    }
+
     //number of participants in database
     public long getParticipantsCount() {
         long cnt  = DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
