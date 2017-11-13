@@ -4,6 +4,7 @@ package radimbures.firstaidlog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,8 @@ public class AddFromDB extends Fragment {
     long pocet;
     Button btn_ad_group;
     Long id_eventu;
-    String[] names;
-    String[] surnames;
     Long id_participant;
+
 
 
     public AddFromDB() {
@@ -38,6 +38,7 @@ public class AddFromDB extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
+        final FragmentManager fm = getActivity().getSupportFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_add_from_db, container, false);
         final LinearLayout layout = root.findViewById(R.id.check_add_layout);
         btn_ad_group = root.findViewById(R.id.btn_add_group);
@@ -65,13 +66,19 @@ public class AddFromDB extends Fragment {
         btn_ad_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //TODO kontrola přidání duplicit a nezobrazovat již přidané členy
                 myDB.open();
-                // here I want to write into database by selected checkboxes
-                // I want to ready id of checked checkbox and pass it to id_participant
-                myDB.insertRowRegistr(id_eventu, id_participant);
+                int numChildren = layout.getChildCount();
+                for(int i=0;i<numChildren;i++){
+                    CheckBox temp;
+                    temp = (CheckBox) layout.getChildAt(i);
+                    if (temp.isChecked()) {
+                        id_participant =  (long) temp.getId();
+                        myDB.insertRowRegistr(id_eventu, id_participant);
+                    }
+                }
                 myDB.close();
-
+                fm.popBackStackImmediate();
             }
         });
 
