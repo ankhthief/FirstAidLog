@@ -24,6 +24,7 @@ public class AddParticipant extends Fragment {
     DBAdapter myDB;
 
 
+
     public AddParticipant() {
         // Required empty public constructor
     }

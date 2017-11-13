@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.database.Cursor;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +28,6 @@ public class ParticipantsList extends Fragment {
     DBAdapter myDB;
     ListView participantList;
     long id_eventu;
-    EditText participantName;
-    EditText participantSurname;
     SimpleCursorAdapter myCursorAdapter;
     Cursor cursor;
     TextView tv_empty;
