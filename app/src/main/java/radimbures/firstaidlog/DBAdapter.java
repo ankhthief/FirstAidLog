@@ -47,6 +47,8 @@ public class DBAdapter {
     private static final String REGISTR_EVENTID = "eventid";
     private static final String REGISTR_PARTICIPANTID = "participantid";
 
+    private static final String[] ALL_KEYS_REGISTR = new String[] {REGISTR_ROWID, REGISTR_EVENTID, REGISTR_PARTICIPANTID};
+
     //SQL to create table Events
     private static final String DATABASE_CREATE_SQL_EVENTS =
             "CREATE TABLE " + TABLE_EVENTS
@@ -145,6 +147,11 @@ public class DBAdapter {
         return cnt;
     }
 
+    public long getRegistCount() {
+        long cnt  = DatabaseUtils.queryNumEntries(db, TABLE_REGISTR);
+        return cnt;
+    }
+
     //close database
     public void close() {
         myDBHelper.close();
@@ -167,6 +174,14 @@ public class DBAdapter {
                     }
                 return c;
             }
+
+    public Cursor getAllRowsRegistr() {
+        Cursor c = db.query(true, TABLE_REGISTR, ALL_KEYS_REGISTR,null, null, null, null, null, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
 
     //returns all data from table Participants in Events
     public Cursor getAllRowsParticipantNew(long radek) {
