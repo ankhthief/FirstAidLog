@@ -12,7 +12,7 @@
     <string name="edit_event_popup">Edit event</string>
     <string name="delete_event_popup">Delete event</string>
     <string name="edit_participant_popup">Edit participant</string>
-    <string name="delete_participant_popup">Delete participant</string>
+    <string name="delete_participant_popup">Delete participant from this event</string>
     <string name="fab_add_new">Add new participant</string>
     <string name="fab_add_db">Add participant from DB</string>
     <string name="edit_injury_popup">Edit Injury</string>

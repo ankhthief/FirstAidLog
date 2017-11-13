@@ -1,12 +1,9 @@
 package radimbures.firstaidlog;
 
-
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -17,12 +14,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.database.Cursor;
 import android.widget.EditText;
-import android.content.DialogInterface;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 
 
 /**
@@ -58,9 +54,7 @@ public class ParticipantsList extends Fragment {
         participantList = root.findViewById(R.id.list_participants);
         tv_empty= root.findViewById(R.id.tv_empty);
         tv_empty.setVisibility(View.GONE);
-        final FloatingActionsMenu menuMultipleActions = root.findViewById(R.id.multiple_actions);
-        final FloatingActionButton add_new = root.findViewById(R.id.add_new);
-        final FloatingActionButton add_from_db = root.findViewById(R.id.add_from_db);
+        final FloatingActionButton add_group = root.findViewById(R.id.fab_add_group);
         Bundle bundle = getArguments();
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
@@ -81,45 +75,9 @@ public class ParticipantsList extends Fragment {
             }
         });
 
-        add_new.setOnClickListener(new View.OnClickListener() {
+        add_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                menuMultipleActions.collapse();
-                final AlertDialog.Builder addParticipantDialog = new AlertDialog.Builder(getContext());
-                addParticipantDialog.setTitle("Add new Participant");
-                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_participant, (ViewGroup) getView(), false);
-                addParticipantDialog.setView(viewInflated);
-                participantName = viewInflated.findViewById(R.id.add_participant_name);
-                participantSurname = viewInflated.findViewById(R.id.add_participant_surname);
-                addParticipantDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO zde se načtou data z polí a uloží do databáze
-                        String name = participantName.getText().toString();
-                        String surname = participantSurname.getText().toString();
-                        //TODO kontrola, ze jsou zadany hodnoty
-                        myDB.open();
-                        long id_user = myDB.insertRowParticipant(name, surname);
-                        myDB.insertRowRegistr(id_eventu,id_user);
-                        Toast.makeText(getActivity(), "Participant added", Toast.LENGTH_LONG).show();
-                        myDB.close();
-                        populateListViewNew();
-                    }
-                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                addParticipantDialog.show();
-            }
-        });
-
-        add_from_db.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menuMultipleActions.collapse();
-                //TODO přidání z databáze
                 myDB.open();
                 if (myDB.getParticipantsCount() == 0) {
                     Toast.makeText(getActivity(), "No participants in DB, add some first", Toast.LENGTH_LONG).show();
@@ -131,9 +89,9 @@ public class ParticipantsList extends Fragment {
                     frag.setArguments(bundle);
                     fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();
                 }
+
             }
         });
-
 
         return root;
     }
@@ -167,6 +125,7 @@ public class ParticipantsList extends Fragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final long id = info.id;
         switch(item.getItemId()) {
+            /*
             case R.id.edit_participant_popup:
                 final android.app.AlertDialog.Builder addEventDialog = new android.app.AlertDialog.Builder(getContext());
                 addEventDialog.setTitle("Edit participant");
@@ -205,6 +164,8 @@ public class ParticipantsList extends Fragment {
                 });
                 addEventDialog.show();
                 return true;
+
+                */
             case R.id.delete_participant_popup:
                 myDB.open();
                 myDB.deleteRowRegistr(id);
