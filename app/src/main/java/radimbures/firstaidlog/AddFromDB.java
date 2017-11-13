@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -53,36 +56,34 @@ public class AddFromDB extends Fragment {
         myDB.open();
         pocet = myDB.getParticipantsCount();
         pocet2 = myDB.getRegistCount();
-        Toast.makeText(getActivity(),"pocet registr= " + pocet2 + "pocet user= " + pocet, Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "useru " + Long.toString(pocet));
+        Log.i(TAG, "zaznamu " + Long.toString(pocet2));
         Cursor cursor = myDB.getAllRowsParticipant();
         Cursor cursor2 = myDB.getAllRowsRegistr();
-        Toast.makeText(getActivity(),"pocet registr2= " + cursor2.getCount(), Toast.LENGTH_SHORT).show();
         cursor.moveToFirst();
-        cursor2.moveToFirst();
-/*
         for(int i = 0; i < pocet; i++) {
             CheckBox cb = new CheckBox(root.getContext());
             String name = cursor.getString(cursor.getColumnIndex("name"));
             String surname = cursor.getString(cursor.getColumnIndex("surname"));
             idcko =  (cursor.getInt(cursor.getColumnIndex("_id")));
             String text = name + " " + surname;
-            //TODO kontrola přidání duplicit a nezobrazovat již přidané členy
-            for(int j=0; j< pocet2; j++) {
-                Integer user = cursor2.getInt(cursor2.getColumnIndex("participantid"));
-                Long event = cursor2.getLong(cursor2.getColumnIndex("eventid"));
-                if (idcko == user && event == id_eventu) existuje = true;
-                cursor2.moveToNext();
+            if (cursor2 != null)
+                if (cursor2.moveToFirst()) {
+                    do {
+                        Long event = cursor2.getLong(cursor2.getColumnIndex("eventid"));
+                        Integer user = cursor2.getInt(cursor2.getColumnIndex("participantid"));
+                        if (idcko == user && event == id_eventu) existuje = true;
+                    } while (cursor2.moveToNext());
             }
             if (!existuje) {
             cb.setText(text);
             cb.setHeight(90);
             cb.setId(idcko);
             layout.addView(cb);
-            existuje = false;
-            }
-            cursor.moveToNext();
+                cursor.moveToNext();
+            } else cursor.moveToNext(); existuje=false;
         }
-*/
+
         myDB.close();
 
         btn_ad_group.setOnClickListener(new View.OnClickListener() {
