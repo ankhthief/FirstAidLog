@@ -1,7 +1,5 @@
 package radimbures.firstaidlog;
 
-
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,17 +8,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.app.AlertDialog;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.view.MenuInflater;
 import android.database.Cursor;
 import android.widget.SimpleCursorAdapter;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import android.content.ContentValues;
 
 
 /**
@@ -29,10 +24,10 @@ import android.content.ContentValues;
 public class EventsList extends Fragment {
 
     DBAdapter myDB;
-    EditText eventName;
     ListView eventList;
     TextView tv_empty;
     FloatingActionButton fab;
+    FragmentManager fm;
 
     public EventsList() {
         // Required empty public constructor
@@ -45,7 +40,7 @@ public class EventsList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
-        final FragmentManager fm = getActivity().getSupportFragmentManager();
+        fm = getActivity().getSupportFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_events_list, container, false);
         tv_empty= root.findViewById(R.id.tv_empty);
         tv_empty.setVisibility(View.GONE);
@@ -69,31 +64,7 @@ public class EventsList extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                final AlertDialog.Builder addEventDialog = new AlertDialog.Builder(getContext());
-                addEventDialog.setTitle(R.string.addEventDialog);
-                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
-                addEventDialog.setView(viewInflated);
-                eventName = viewInflated.findViewById(R.id.add_event_name);
-                addEventDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO zde se načtou data z polí a uloží do databáze
-                        String str = eventName.getText().toString();
-                        myDB.open();
-                        myDB.insertRowEvent(str);
-                        Toast.makeText(getActivity(),R.string.event_add_toast, Toast.LENGTH_LONG).show();
-                        myDB.close();
-                        fm.beginTransaction().replace(R.id.fragment_holder, new FirstAidLog()).commit();
-                    }
-                });
-                addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                addEventDialog.show();
+                fm.beginTransaction().replace(R.id.fragment_holder, new AddEvent()).addToBackStack(null).commit();
 
             }
         });
@@ -131,40 +102,11 @@ public class EventsList extends Fragment {
         final long id = info.id;
         switch(item.getItemId()) {
             case R.id.edit_event_popup:
-                final AlertDialog.Builder addEventDialog = new AlertDialog.Builder(getContext());
-                addEventDialog.setTitle("Edit event");
-                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_event, (ViewGroup) getView(), false);
-                addEventDialog.setView(viewInflated);
-                eventName = viewInflated.findViewById(R.id.add_event_name);
-                myDB.open();
-                Cursor c = myDB.db.rawQuery("SELECT * FROM events WHERE _id=="+id, null);
-                c.moveToFirst();
-                String s = c.getString(c.getColumnIndex("name"));
-                eventName.setText(s); //tady se musí načíst data z db
-                c.close();
-                addEventDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO zde se načtou data z polí a uloží do databáze
-                        String str = eventName.getText().toString();
-
-                        ContentValues cv = new ContentValues();
-                        cv.put("name",str);
-                        myDB.db.update("events", cv, "_id="+id, null);
-
-                        Toast.makeText(getActivity(),"event changed", Toast.LENGTH_LONG).show();
-                        myDB.close();
-                        final FragmentManager fm = getFragmentManager();
-                        fm.beginTransaction().replace(R.id.fragment_holder, new EventsList()).commit();
-                    }
-                });
-                addEventDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                addEventDialog.show();
+                AddEvent fragment = new AddEvent();
+                Bundle bundle = new Bundle();
+                bundle.putLong("idevent", id);
+                fragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragment_holder, fragment).addToBackStack(null).commit();
                 return true;
             case R.id.delete_event_popup:
                 myDB.open();

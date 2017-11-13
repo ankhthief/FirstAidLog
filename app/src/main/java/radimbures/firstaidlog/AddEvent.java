@@ -19,17 +19,16 @@ import android.widget.EditText;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddParticipant extends Fragment {
+public class AddEvent extends Fragment {
 
-    EditText name;
-    EditText surname;
     DBAdapter myDB;
-    Long idparticipant;
     FragmentManager fm;
+    EditText eventName;
     Bundle bundle;
+    Long ideventu;
 
 
-    public AddParticipant() {
+    public AddEvent() {
         // Required empty public constructor
     }
 
@@ -40,22 +39,18 @@ public class AddParticipant extends Fragment {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
         fm = getFragmentManager();
-        final View root = inflater.inflate(R.layout.fragment_add_participant, container, false);
-        name = root.findViewById(R.id.input_name);
-        surname = root.findViewById(R.id.input_surname);
+        final View root = inflater.inflate(R.layout.fragment_add_event, container, false);
+        eventName = root.findViewById(R.id.input_name_event);
         bundle = getArguments();
         if (bundle != null) {
-            idparticipant = bundle.getLong("idparticipant");
+            ideventu = bundle.getLong("idevent");
             myDB.open();
-            Cursor c = myDB.db.rawQuery("SELECT * FROM participants WHERE _id=="+idparticipant, null);
+            Cursor c = myDB.db.rawQuery("SELECT * FROM events WHERE _id=="+ideventu, null);
             c.moveToFirst();
-            name.setText(c.getString(c.getColumnIndex("name")));
-            surname.setText(c.getString(c.getColumnIndex("surname")));
+            eventName.setText(c.getString(c.getColumnIndex("name")));
             c.close();
             myDB.close();
         }
-
-
         return root;
     }
 
@@ -68,26 +63,22 @@ public class AddParticipant extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_add_participant, menu);
         menu.findItem(R.id.action_tips).setVisible(false);
         menu.findItem(R.id.action_about).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_button:
-                String jmeno = name.getText().toString();
-                String prijmeni = surname.getText().toString();
                 myDB.open();
                 if (bundle != null) {
                     ContentValues cv = new ContentValues();
-                    cv.put("name",jmeno);
-                    cv.put("surname", prijmeni);
-                    myDB.db.update("participants", cv, "_id="+idparticipant, null);
-
-                } else myDB.insertRowParticipant(jmeno, prijmeni);
+                    cv.put("name", eventName.getText().toString());
+                    myDB.db.update("events", cv, "_id=" + ideventu, null);
+                } else  { myDB.insertRowEvent(eventName.getText().toString()); }
                 myDB.close();
                 fm.popBackStackImmediate();
                 return true;
@@ -95,5 +86,4 @@ public class AddParticipant extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }

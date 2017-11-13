@@ -5,16 +5,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-
-
-import static android.content.ContentValues.TAG;
 
 
 /**
@@ -55,8 +51,6 @@ public class AddFromDB extends Fragment {
         myDB.open();
         pocet = myDB.getParticipantsCount();
         pocet2 = myDB.getRegistCount();
-        Log.i(TAG, "useru " + Long.toString(pocet));
-        Log.i(TAG, "zaznamu " + Long.toString(pocet2));
         Cursor cursor = myDB.getAllRowsParticipant();
         Cursor cursor2 = myDB.getAllRowsRegistr();
         cursor.moveToFirst();
