@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lines="8"
-                android:gravity="top|left"
+                android:gravity="top|start"
                 android:maxLines="10"
                 android:minLines="6"
                 android:hint="Injury description" />
