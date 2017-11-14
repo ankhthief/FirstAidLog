@@ -1,14 +1,12 @@
 package radimbures.firstaidlog;
 
 
-import android.content.ContentValues;
-import android.content.DialogInterface;
+
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -16,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +36,7 @@ public class InjuriesList extends Fragment {
     SimpleCursorAdapter myCursorAdapter;
     String[] fromInjuriesNames;
     FloatingActionButton fab;
-    EditText injuryTitle;
-    EditText injuryDesc;
+    FragmentManager fm;
 
     public InjuriesList() {
         // Required empty public constructor
@@ -51,7 +47,7 @@ public class InjuriesList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myDB =  new DBAdapter(getContext());
-        final FragmentManager fm = getFragmentManager();
+        fm  = getActivity().getSupportFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_injuries_list, container, false);
         // Inflate the layout for this fragment
         fab = root.findViewById(R.id.fab_injury);
@@ -69,32 +65,14 @@ public class InjuriesList extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder addInjuryDialog = new AlertDialog.Builder(getContext());
-                addInjuryDialog.setTitle("Add new Injury");
-                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_injury, (ViewGroup) getView(), false);
-                addInjuryDialog.setView(viewInflated);
-                injuryTitle = viewInflated.findViewById(R.id.add_injury_title);
-                injuryDesc = viewInflated.findViewById(R.id.add_injury_desc);
-                addInjuryDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO zde se načtou data z polí a uloží do databáze
-                        String title = injuryTitle.getText().toString();
-                        String desc = injuryDesc.getText().toString();
-                        //TODO kontrola, ze jsou zadany hodnoty
-                        myDB.open();
-                        myDB.insertRowInjuries(title, desc, id_participant, id_eventu);
-                        Toast.makeText(getActivity(), "Injury added", Toast.LENGTH_LONG).show();
-                        myDB.close();
-                        populateListView();
-                    }
-                }) .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                addInjuryDialog.show();
+
+                AddInjury frag = new AddInjury();
+                Bundle bundle = new Bundle();
+                bundle.putLong("idparticipant", id_participant);
+                bundle.putLong("idevent", id_eventu);
+                bundle.putBoolean("novy", true);
+                frag.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();
             }
         });
 
@@ -133,41 +111,14 @@ public class InjuriesList extends Fragment {
         final long id = info.id;
         switch (item.getItemId()) {
             case R.id.edit_injury_popup:
-                final android.app.AlertDialog.Builder addInjuryDialog = new android.app.AlertDialog.Builder(getContext());
-                addInjuryDialog.setTitle("Edit injury");
-                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_injury, (ViewGroup) getView(), false);
-                addInjuryDialog.setView(viewInflated);
-                injuryTitle = viewInflated.findViewById(R.id.add_injury_title);
-                injuryDesc = viewInflated.findViewById(R.id.add_injury_desc);
-                myDB.open();
-                Cursor c = myDB.db.rawQuery("SELECT * FROM injuries WHERE _id==" +id, null);
-                c.moveToFirst();
-                final String title_injury = c.getString(c.getColumnIndex("title"));
-                String desc_injury = c.getString(c.getColumnIndex("description"));
-                injuryTitle.setText(title_injury);
-                injuryDesc.setText(desc_injury);
-                c.close();
-                addInjuryDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String str1 = injuryTitle.getText().toString();
-                        String str2 = injuryDesc.getText().toString();
-                        ContentValues cv = new ContentValues();
-                        cv.put("title", str1);
-                        cv.put("description",str2);
-                        myDB.db.update("injuries",cv,"_id="+id,null);
-                        Toast.makeText(getActivity(),"injury changed", Toast.LENGTH_LONG).show();
-                        myDB.close();
-                        populateListView();
-                    }
-                });
-                addInjuryDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                addInjuryDialog.show();
+                AddInjury frag = new AddInjury();
+                Bundle bundle = new Bundle();
+                bundle.putLong("idparticipant", id_eventu);
+                bundle.putLong("idevent", id_participant);
+                bundle.putLong("id", id);
+                bundle.putBoolean("novy", false);
+                frag.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();
                 return true;
             case R.id.delete_injury_popup:
                 myDB.open();
