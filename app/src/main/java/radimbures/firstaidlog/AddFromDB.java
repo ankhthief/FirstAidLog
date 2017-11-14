@@ -26,6 +26,11 @@ public class AddFromDB extends Fragment {
     Long id_participant;
     Integer idcko;
     boolean existuje;
+    FragmentManager fm;
+    View root;
+    LinearLayout layout;
+    Cursor cursor;
+    Cursor cursor2;
 
 
 
@@ -39,9 +44,9 @@ public class AddFromDB extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
-        final FragmentManager fm = getActivity().getSupportFragmentManager();
-        final View root = inflater.inflate(R.layout.fragment_add_from_db, container, false);
-        final LinearLayout layout = root.findViewById(R.id.check_add_layout);
+        fm = getActivity().getSupportFragmentManager();
+        root = inflater.inflate(R.layout.fragment_add_from_db, container, false);
+        layout = root.findViewById(R.id.check_add_layout);
         btn_ad_group = root.findViewById(R.id.btn_add_group);
         existuje = false;
         Bundle bundle = getArguments();
@@ -51,8 +56,8 @@ public class AddFromDB extends Fragment {
         myDB.open();
         pocet = myDB.getParticipantsCount();
         pocet2 = myDB.getRegistCount();
-        Cursor cursor = myDB.getAllRowsParticipant();
-        Cursor cursor2 = myDB.getAllRowsRegistr();
+        cursor = myDB.getAllRowsParticipant();
+        cursor2 = myDB.getAllRowsRegistr();
         cursor.moveToFirst();
         for(int i = 0; i < pocet; i++) {
             CheckBox cb = new CheckBox(root.getContext());
