@@ -35,6 +35,7 @@ public class AddInjury extends Fragment {
     Bundle bundle;
     Boolean novy;
     Button camera;
+    protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
 
 
     public AddInjury() {
@@ -75,7 +76,7 @@ public class AddInjury extends Fragment {
             public void onClick(View view) {
 
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivity(camera_intent);
+                startActivityForResult(camera_intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -106,8 +107,10 @@ public class AddInjury extends Fragment {
                     cv.put("title",title.getText().toString());
                     cv.put("description", desc.getText().toString());
                     myDB.db.update("injuries",cv,"_id="+id,null);
-                    //myDB.db.update("injuries", cv, "participantid="+idparticipant + "AND eventid="+idevent , null);
-                } else { myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(),idparticipant,idevent); }
+                } else {
+                    myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(),idparticipant,idevent);
+                    //TODO tady pak uložím obrázek
+                }
                 myDB.close();
                 fm.popBackStackImmediate();
                 return true;
@@ -115,5 +118,12 @@ public class AddInjury extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //TODO uložit fotku do byte_array
+
     }
 }

@@ -57,16 +57,6 @@ public class AddParticipant extends Fragment {
             name.setText(c.getString(c.getColumnIndex("name")));
             surname.setText(c.getString(c.getColumnIndex("surname")));
             status = c.getInt(c.getColumnIndex("status"));
-            /*
-            switch (status) {
-                case 1:
-                    checkbox_status.setChecked(true);
-                    break;
-                case 0:
-                    checkbox_status.setChecked(false);
-                    break;
-            }
-            */
             if (status != 1) checkbox_status.setChecked(false);
             c.close();
             myDB.close();
