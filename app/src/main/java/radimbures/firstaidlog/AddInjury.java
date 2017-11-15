@@ -4,6 +4,7 @@ package radimbures.firstaidlog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -17,7 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 
 /**
@@ -25,6 +27,7 @@ import android.widget.EditText;
  */
 public class AddInjury extends Fragment {
 
+    protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
     EditText title;
     EditText desc;
     DBAdapter myDB;
@@ -35,7 +38,9 @@ public class AddInjury extends Fragment {
     Bundle bundle;
     Boolean novy;
     Button camera;
-    protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
+    LinearLayout layout;
+    ImageView photo;
+
 
 
     public AddInjury() {
@@ -53,6 +58,8 @@ public class AddInjury extends Fragment {
         title = root.findViewById(R.id.input_injury_title);
         desc = root.findViewById(R.id.input_injury_desc);
         camera = root.findViewById(R.id.take_photo);
+        layout = root.findViewById(R.id.photo_thumbnail_layout);
+        photo = root.findViewById(R.id.photo);
         bundle = getArguments();
         if (bundle != null) {
             idparticipant = bundle.getLong("idparticipant");
@@ -123,7 +130,17 @@ public class AddInjury extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        photo.setImageBitmap(bitmap);
         //TODO uložit fotku do byte_array
+        /*
+        ImageView obr = new ImageView(getContext());
+        obr.getLayoutParams().height = 50;
+        obr.getLayoutParams().width = 50;
+        obr.setImageBitmap(bitmap);
+        obr.requestLayout();
+        layout.addView(obr);
+        */
 
     }
 }

@@ -48,6 +48,22 @@
             android:id="@+id/take_photo"
             android:text="Take photo of injury"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/photo_thumbnail_layout">
+
+
+            <!--TODO tohle předělat -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/photo"/>
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
