@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 
@@ -27,6 +28,8 @@ public class AddParticipant extends Fragment {
     Long idparticipant;
     FragmentManager fm;
     Bundle bundle;
+    Integer status;
+    CheckBox checkbox_status;
 
 
     public AddParticipant() {
@@ -43,19 +46,31 @@ public class AddParticipant extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_add_participant, container, false);
         name = root.findViewById(R.id.input_name);
         surname = root.findViewById(R.id.input_surname);
+        checkbox_status = root.findViewById(R.id.status);
+        checkbox_status.setChecked(true);
         bundle = getArguments();
         if (bundle != null) {
-            idparticipant = bundle.getLong("idparticipant");
             myDB.open();
+            idparticipant = bundle.getLong("idparticipant");
             Cursor c = myDB.db.rawQuery("SELECT * FROM participants WHERE _id=="+idparticipant, null);
             c.moveToFirst();
             name.setText(c.getString(c.getColumnIndex("name")));
             surname.setText(c.getString(c.getColumnIndex("surname")));
+            status = c.getInt(c.getColumnIndex("status"));
+            /*
+            switch (status) {
+                case 1:
+                    checkbox_status.setChecked(true);
+                    break;
+                case 0:
+                    checkbox_status.setChecked(false);
+                    break;
+            }
+            */
+            if (status != 1) checkbox_status.setChecked(false);
             c.close();
             myDB.close();
         }
-
-
         return root;
     }
 
@@ -80,14 +95,16 @@ public class AddParticipant extends Fragment {
             case R.id.add_button:
                 String jmeno = name.getText().toString();
                 String prijmeni = surname.getText().toString();
+                if (checkbox_status.isChecked()) { status = 1;}
+                else {status = 0;}
                 myDB.open();
                 if (bundle != null) {
                     ContentValues cv = new ContentValues();
+                    cv.put("status",status);
                     cv.put("name",jmeno);
                     cv.put("surname", prijmeni);
                     myDB.db.update("participants", cv, "_id="+idparticipant, null);
-
-                } else myDB.insertRowParticipant(jmeno, prijmeni);
+                } else myDB.insertRowParticipant(status, jmeno, prijmeni);
                 myDB.close();
                 fm.popBackStackImmediate();
                 return true;

@@ -22,6 +22,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:id="@+id/status"
             android:layout_weight="1"/>
 
         <android.support.design.widget.TextInputLayout

@@ -17,8 +17,9 @@ public class DBAdapter {
     private static final String TABLE_EVENTS = "events";  //database name Events
     private static final String TABLE_PARTICIPANTS = "participants"; //database name Participants
     private static final String TABLE_REGISTR = "registr"; //database name Registr
-    private static final String TABLE_INJURIES = "injuries";
-    private static final int DATABASE_VERSION = 7;  //database version. Need to increment every time DB changes
+    private static final String TABLE_INJURIES = "injuries"; //database name Injuries
+    private static final String TABLE_PHOTOS = "photos"; //table name Photos
+    private static final int DATABASE_VERSION = 9;  //database version. Need to increment every time DB changes
 
     //table Events
     private static final String EVENTS_ROWID = "_id";
@@ -28,10 +29,11 @@ public class DBAdapter {
 
     //table Participants
     private static final String PARTICIPANTS_ROWID = "_id";
+    public static final String PARTICIPANT_STATUS = "status";
     public static final String PARTICIPANTS_NAME = "name";
     public static final String PARTICIPANTS_SURNAME = "surname";
 
-    private static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME};
+    private static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANT_STATUS, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME};
 
     //table Injuries
     private static final String INJURIES_ROWID = "_id";
@@ -49,6 +51,11 @@ public class DBAdapter {
 
     private static final String[] ALL_KEYS_REGISTR = new String[] {REGISTR_ROWID, REGISTR_EVENTID, REGISTR_PARTICIPANTID};
 
+    //table Photos
+    private static final String PHOTOS_ROWID = "_id";
+    private static final String PHOTOS_PHOTO = "photo";
+    private static final String PHOTOS_INJURYID = "injuryid";
+
     //SQL to create table Events
     private static final String DATABASE_CREATE_SQL_EVENTS =
             "CREATE TABLE " + TABLE_EVENTS
@@ -60,6 +67,7 @@ public class DBAdapter {
     private static final String DATABASE_CREATE_SQL_PARTICIPANTS =
             "CREATE TABLE " + TABLE_PARTICIPANTS
                     + " (" + PARTICIPANTS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + PARTICIPANT_STATUS + " INTEGER, "
                     + PARTICIPANTS_NAME + " TEXT NOT NULL, "
                     + PARTICIPANTS_SURNAME + " TEXT NOT NULL "
                     + ");";
@@ -81,6 +89,14 @@ public class DBAdapter {
                 + INJURIES_PARTICIPANTID + " TEXT NOT NULL, "
                     + INJURIES_EVENTID + " TEXT NOT NULL"
                     + " );";
+
+    //SQL to ceate table Photos
+    private static final String DATABASE_CREATE_SQL_PHOTOS =
+            "CREATE TABLE " + TABLE_PHOTOS
+                + " (" + PHOTOS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + PHOTOS_INJURYID + " TEXT NOT NULL, "
+                + PHOTOS_PHOTO + " BLOB"
+                + " );";
 
     public DatabaseHelper myDBHelper;
     public SQLiteDatabase db;
@@ -213,8 +229,9 @@ public class DBAdapter {
     }
 
     //creates dataset to add to the table Participants
-    public long insertRowParticipant(String name, String surname) {
+    public long insertRowParticipant(Integer status, String name, String surname) {
         ContentValues initialValues = new ContentValues();
+        initialValues.put(PARTICIPANT_STATUS, status);
         initialValues.put(PARTICIPANTS_NAME, name);
         initialValues.put(PARTICIPANTS_SURNAME, surname);
 
@@ -244,6 +261,16 @@ public class DBAdapter {
         //add dataset to table Injuries
         return db.insert(TABLE_INJURIES, null, initialValues);
     }
+
+    public long insertRowPhotos(Long idinjury, byte[] image) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(PHOTOS_INJURYID, idinjury);
+        initialValues.put(PHOTOS_PHOTO, image);
+
+        return  db.insert(TABLE_PHOTOS, null, initialValues);
+    }
+
+
 
     //deletes row from db by EVENT_ROWID
     public boolean deleteRowEvent(long rowId) {
@@ -283,6 +310,7 @@ public class DBAdapter {
             _db.execSQL(DATABASE_CREATE_SQL_PARTICIPANTS);
             _db.execSQL(DATABASE_CREATE_SQL_REGISTR);
             _db.execSQL(DATABASE_CREATE_SQL_INJUERIES);
+            _db.execSQL(DATABASE_CREATE_SQL_PHOTOS);
 
         }
 
@@ -296,6 +324,7 @@ public class DBAdapter {
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGISTR);
             _db.execSQL("DROP TABLE IF EXISTS " + TABLE_INJURIES);
+            _db.execSQL("DROP TABLE IF EXISTS " + TABLE_PHOTOS);
 
             // Znovuvytvoření db:
             onCreate(_db);
