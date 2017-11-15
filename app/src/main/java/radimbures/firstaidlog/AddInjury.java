@@ -2,8 +2,10 @@ package radimbures.firstaidlog;
 
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 
@@ -31,6 +34,7 @@ public class AddInjury extends Fragment {
     FragmentManager fm;
     Bundle bundle;
     Boolean novy;
+    Button camera;
 
 
     public AddInjury() {
@@ -47,6 +51,7 @@ public class AddInjury extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_add_injury, container, false);
         title = root.findViewById(R.id.input_injury_title);
         desc = root.findViewById(R.id.input_injury_desc);
+        camera = root.findViewById(R.id.take_photo);
         bundle = getArguments();
         if (bundle != null) {
             idparticipant = bundle.getLong("idparticipant");
@@ -63,6 +68,17 @@ public class AddInjury extends Fragment {
                 myDB.close();
             }
         }
+
+
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivity(camera_intent);
+            }
+        });
+
         return root;
     }
 
