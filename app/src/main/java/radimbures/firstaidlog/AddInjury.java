@@ -1,14 +1,20 @@
 package radimbures.firstaidlog;
 
+
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,6 +64,7 @@ public class AddInjury extends Fragment {
         desc = root.findViewById(R.id.input_injury_desc);
         camera = root.findViewById(R.id.take_photo);
         layout = root.findViewById(R.id.photo_thumbnail_layout);
+        obr = new ImageView(getContext());
         bundle = getArguments();
         if (bundle != null) {
             idparticipant = bundle.getLong("idparticipant");
@@ -75,6 +82,29 @@ public class AddInjury extends Fragment {
             }
         }
 
+        obr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder imageDialog = new AlertDialog.Builder(getContext());
+                imageDialog.setTitle("Image");
+                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_image, (ViewGroup) getView(), false);
+                imageDialog.setView(viewInflated);
+                imageDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+
+                    }
+                });
+                imageDialog.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                imageDialog.show();
+            }
+        });
 
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +116,28 @@ public class AddInjury extends Fragment {
 
         return root;
     }
+
+    public void dialog() {
+        final AlertDialog.Builder imageDialog = new AlertDialog.Builder(getContext());
+        imageDialog.setTitle("Image");
+        final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_image, (ViewGroup) getView(), false);
+        imageDialog.setView(viewInflated);
+        imageDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+
+            }
+        });
+        imageDialog.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        imageDialog.show();
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -132,6 +184,7 @@ public class AddInjury extends Fragment {
         obr = new ImageView(getContext());
         obr.setImageBitmap(bitmap);
         obr.setPadding(0,0,0,10);
+        obr.setClickable(true);
         layout.addView(obr);
     }
 }
