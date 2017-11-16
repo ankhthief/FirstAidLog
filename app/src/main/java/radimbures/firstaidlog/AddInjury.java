@@ -1,6 +1,5 @@
 package radimbures.firstaidlog;
 
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -39,7 +38,7 @@ public class AddInjury extends Fragment {
     Boolean novy;
     Button camera;
     LinearLayout layout;
-    ImageView photo;
+    ImageView obr;
 
 
 
@@ -59,7 +58,6 @@ public class AddInjury extends Fragment {
         desc = root.findViewById(R.id.input_injury_desc);
         camera = root.findViewById(R.id.take_photo);
         layout = root.findViewById(R.id.photo_thumbnail_layout);
-        photo = root.findViewById(R.id.photo);
         bundle = getArguments();
         if (bundle != null) {
             idparticipant = bundle.getLong("idparticipant");
@@ -81,7 +79,6 @@ public class AddInjury extends Fragment {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(camera_intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             }
@@ -131,16 +128,10 @@ public class AddInjury extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        photo.setImageBitmap(bitmap);
         //TODO uložit fotku do byte_array
-        /*
-        ImageView obr = new ImageView(getContext());
-        obr.getLayoutParams().height = 50;
-        obr.getLayoutParams().width = 50;
+        obr = new ImageView(getContext());
         obr.setImageBitmap(bitmap);
-        obr.requestLayout();
+        obr.setPadding(0,0,0,10);
         layout.addView(obr);
-        */
-
     }
 }
