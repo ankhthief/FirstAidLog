@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,7 +26,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -47,6 +54,7 @@ public class AddInjury extends Fragment {
     RecyclerView recyclerView;
     ArrayList list;
     RecyclerView.Adapter Adapter;
+    File file;
 
 
 
@@ -92,11 +100,22 @@ public class AddInjury extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                String imagename = getImageName();
+                file = new File(pictureDirectory, imagename);
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
                 startActivityForResult(camera_intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             }
         });
 
         return root;
+    }
+
+    private String getImageName(){
+        SimpleDateFormat sfd = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String time = sfd.format(new Date());
+
+        return "image_" + time + ".jpg";
     }
 
     public void dialog() {
@@ -162,8 +181,14 @@ public class AddInjury extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        list.add(bitmap);
+
+        if(resultCode == RESULT_OK) {
+            if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+                //Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                //list.add(bitmap);
+            }
+        }
 
     }
+
 }
