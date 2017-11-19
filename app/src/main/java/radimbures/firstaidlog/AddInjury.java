@@ -49,7 +49,6 @@ public class AddInjury extends Fragment {
     Boolean novy;
     Button camera;
     LinearLayout layout;
-    ImageView obr;
     RecyclerView recyclerView;
     ArrayList list;
     RecyclerView.Adapter Adapter;
@@ -71,14 +70,12 @@ public class AddInjury extends Fragment {
         title = root.findViewById(R.id.input_injury_title);
         desc = root.findViewById(R.id.input_injury_desc);
         camera = root.findViewById(R.id.take_photo);
-        //layout = root.findViewById(R.id.photo_thumbnail_layout);
         list = new ArrayList<>();
         recyclerView = root.findViewById(R.id.gallery);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         Adapter = new Adapter(list);
         recyclerView.setAdapter(Adapter);
-        obr = new ImageView(getContext());
         bundle = getArguments();
         if (bundle != null) {
             idparticipant = bundle.getLong("idparticipant");
@@ -95,30 +92,6 @@ public class AddInjury extends Fragment {
                 myDB.close();
             }
         }
-
-        obr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final AlertDialog.Builder imageDialog = new AlertDialog.Builder(getContext());
-                imageDialog.setTitle("Image");
-                final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_image, (ViewGroup) getView(), false);
-                imageDialog.setView(viewInflated);
-                imageDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-
-                    }
-                });
-                imageDialog.setNegativeButton("delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-                imageDialog.show();
-            }
-        });
 
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,7 +152,7 @@ public class AddInjury extends Fragment {
                     myDB.db.update("injuries",cv,"_id="+id,null);
                 } else {
                     myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(),idparticipant,idevent);
-                    //TODO tady pak uložím obrázek
+                    //TODO tady pak uložím obrázky
                 }
                 myDB.close();
                 fm.popBackStackImmediate();
@@ -195,7 +168,6 @@ public class AddInjury extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         list.add(bitmap);
-        //TODO uložit fotku do byte_array
 
     }
 }

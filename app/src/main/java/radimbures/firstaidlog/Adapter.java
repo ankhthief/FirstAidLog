@@ -33,6 +33,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             public void onClick(View view) {
 
 
+                //TODO tady ukázat full image s možností smazání
                 remove(position);
             }
         });
