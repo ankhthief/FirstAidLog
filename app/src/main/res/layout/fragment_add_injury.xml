@@ -48,11 +48,13 @@
             android:id="@+id/take_photo"
             android:text="Take photo of injury"/>
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/photo_thumbnail_layout">
+            android:id="@+id/gallery">
+
+
+        </android.support.v7.widget.RecyclerView>
 
 
             <!--TODO tohle předělat -->
@@ -60,8 +62,5 @@
 
 
         </LinearLayout>
-
-
-    </LinearLayout>
 
 </ScrollView>

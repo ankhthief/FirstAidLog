@@ -15,6 +15,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +28,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import java.util.ArrayList;
 
 
 /**
@@ -45,6 +50,9 @@ public class AddInjury extends Fragment {
     Button camera;
     LinearLayout layout;
     ImageView obr;
+    RecyclerView recyclerView;
+    ArrayList list;
+    RecyclerView.Adapter Adapter;
 
 
 
@@ -63,7 +71,13 @@ public class AddInjury extends Fragment {
         title = root.findViewById(R.id.input_injury_title);
         desc = root.findViewById(R.id.input_injury_desc);
         camera = root.findViewById(R.id.take_photo);
-        layout = root.findViewById(R.id.photo_thumbnail_layout);
+        //layout = root.findViewById(R.id.photo_thumbnail_layout);
+        list = new ArrayList<>();
+        recyclerView = root.findViewById(R.id.gallery);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        Adapter = new Adapter(list);
+        recyclerView.setAdapter(Adapter);
         obr = new ImageView(getContext());
         bundle = getArguments();
         if (bundle != null) {
@@ -180,11 +194,8 @@ public class AddInjury extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        list.add(bitmap);
         //TODO uložit fotku do byte_array
-        obr = new ImageView(getContext());
-        obr.setImageBitmap(bitmap);
-        obr.setPadding(0,0,0,10);
-        obr.setClickable(true);
-        layout.addView(obr);
+
     }
 }
