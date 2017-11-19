@@ -34,9 +34,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             public void onClick(View view) {
                 AlertDialog.Builder imageDialog = new AlertDialog.Builder(view.getContext());
                 imageDialog.setTitle("Image");
-                View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_image, (ViewGroup) view,false);
+                //View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_image, (ViewGroup) view,false);
+                View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_image, null);
                 imageDialog.setView(viewInflated);
                 ImageView image = viewInflated.findViewById(R.id.fotka);
+                foto = fotky.get(position);
                 image.setImageBitmap(foto);
                 imageDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
