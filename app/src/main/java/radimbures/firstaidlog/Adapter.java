@@ -14,6 +14,7 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private  List<Bitmap> fotky;
+    private Bitmap foto;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -26,16 +27,39 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        Bitmap foto = fotky.get(position);
+        foto = fotky.get(position);
         holder.photo.setImageBitmap(foto);
         holder.photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder imageDialog = new AlertDialog.Builder(view.getContext());
+                imageDialog.setTitle("Image");
+                View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_image, (ViewGroup) view,false);
+                imageDialog.setView(viewInflated);
+                ImageView image = viewInflated.findViewById(R.id.fotka);
+                image.setImageBitmap(foto);
+                imageDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
 
+                    }
+                });
+                imageDialog.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        remove(position);
+                    }
+                });
+                imageDialog.show();
 
                 //TODO tady ukázat full image s možností smazání
-                remove(position);
+
+                //remove(position);
             }
+
+
+
         });
 
     }
@@ -48,6 +72,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void remove(int position) {
         fotky.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, fotky.size());
     }
 
     public Adapter(List<Bitmap> myDataset) {
