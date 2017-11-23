@@ -104,6 +104,20 @@ public class AddInjury extends Fragment {
                 title.setText(c.getString(c.getColumnIndex("title")));
                 desc.setText(c.getString(c.getColumnIndex("description")));
                 c.close();
+                if (!myDB.isEmptyPhotos(id)) {
+                    Cursor c2 = myDB.db.rawQuery("SELECT * FROM photos WHERE injuryid==" + id, null);
+                    if (c2 != null)
+                        if (c2.moveToFirst()) {
+                            do {
+                                String cesta = c2.getString(c2.getColumnIndex("photo"));
+                                bitmap = BitmapFactory.decodeFile(cesta);
+                                //Log.i(TAG, file.getAbsolutePath());
+                                list.add(bitmap);
+                                path.add(cesta);
+                            } while (c2.moveToNext());
+                        }
+                }
+
                 myDB.close();
             }
         }
@@ -174,9 +188,17 @@ public class AddInjury extends Fragment {
                     cv.put("title",title.getText().toString());
                     cv.put("description", desc.getText().toString());
                     myDB.db.update("injuries",cv,"_id="+id,null);
+                    /*
+                    for(int i = 0; i < list.size(); i++) {
+                        myDB.insertRowPhotos(id,path.get(i).toString());
+                    }
+                    */
+                    //TODO update obrázků
                 } else {
-                    myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(),idparticipant,idevent);
-                    //TODO tady pak uložím obrázky
+                    Long idecko = myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(),idparticipant,idevent);
+                    for(int i = 0; i < list.size(); i++) {
+                        myDB.insertRowPhotos(idecko,path.get(i).toString());
+                    }
                 }
                 myDB.close();
                 fm.popBackStackImmediate();

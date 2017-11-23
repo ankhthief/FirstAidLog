@@ -19,7 +19,7 @@ public class DBAdapter {
     private static final String TABLE_REGISTR = "registr"; //database name Registr
     private static final String TABLE_INJURIES = "injuries"; //database name Injuries
     private static final String TABLE_PHOTOS = "photos"; //table name Photos
-    private static final int DATABASE_VERSION = 9;  //database version. Need to increment every time DB changes
+    private static final int DATABASE_VERSION = 10;  //database version. Need to increment every time DB changes
 
     //table Events
     private static final String EVENTS_ROWID = "_id";
@@ -95,7 +95,7 @@ public class DBAdapter {
             "CREATE TABLE " + TABLE_PHOTOS
                 + " (" + PHOTOS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + PHOTOS_INJURYID + " TEXT NOT NULL, "
-                + PHOTOS_PHOTO + " BLOB"
+                + PHOTOS_PHOTO + " TEXT NOT NULL"
                 + " );";
 
     public DatabaseHelper myDBHelper;
@@ -145,6 +145,16 @@ public class DBAdapter {
 
         return empty;
     }
+    public boolean isEmptyPhotos(long injury) {
+        boolean empty = true;
+        Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_PHOTOS+ " WHERE " + PHOTOS_INJURYID+ "= " + injury, null);
+        if (cur != null && cur.moveToFirst()) {
+            empty = (cur.getInt (0) == 0);
+        }
+        cur.close();
+
+        return empty;
+    }
 
     public boolean isEmptyParticipant () {
         boolean empty = true;
@@ -164,6 +174,10 @@ public class DBAdapter {
 
     public long getRegistCount() {
         return DatabaseUtils.queryNumEntries(db, TABLE_REGISTR);
+    }
+
+    public long getPhotosCount() {
+        return DatabaseUtils.queryNumEntries(db, TABLE_PHOTOS);
     }
 
     //close database
@@ -257,7 +271,7 @@ public class DBAdapter {
         return db.insert(TABLE_INJURIES, null, initialValues);
     }
 
-    public long insertRowPhotos(Long idinjury, byte[] image) {
+    public long insertRowPhotos(Long idinjury, String image) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PHOTOS_INJURYID, idinjury);
         initialValues.put(PHOTOS_PHOTO, image);
