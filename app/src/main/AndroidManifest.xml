@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="radimbures.firstaidlog">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera2"/>
+    <uses-permission-sdk-23 android:name="android.permission.CAMERA" />
+    <!--<uses-feature android:name="android.hardware.camera2"/> -->
 
     <application
         android:allowBackup="true"
@@ -11,6 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name=".GenericFileProvider"
+            android:authorities="${applicationId}.radimbures.firstaidlog.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
