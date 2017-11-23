@@ -60,6 +60,7 @@ public class AddInjury extends Fragment {
     ArrayList list;
     RecyclerView.Adapter Adapter;
     File file;
+    Uri uri;
 
 
 
@@ -110,11 +111,12 @@ public class AddInjury extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                camera_intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                String imagename = getImageName();
-                file = new File(pictureDirectory, imagename);
-                Uri uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider",file);
+                //camera_intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                //File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                //String imagename = getImageName();
+                //file = new File(getOutputMediaFile());
+                uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider",getOutputMediaFile());
+                //uri = Uri.fromFile(getOutputMediaFile());
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(camera_intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             }
@@ -211,6 +213,21 @@ public class AddInjury extends Fragment {
                 camera.setEnabled(true);
             }
         }
+    }
+
+    private static File getOutputMediaFile(){
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "FirstAidLog");
+
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
     }
 
 }
