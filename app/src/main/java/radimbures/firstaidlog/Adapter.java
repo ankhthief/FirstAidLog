@@ -15,6 +15,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private  List<Bitmap> fotky;
     private Bitmap foto;
+    private int outWidth;
+    private int outHeight;
+    int inWidth;
+    int inHeight;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,10 +33,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         foto = fotky.get(position);
         final int maxSize = 300;
-        int outWidth;
-        int outHeight;
-        int inWidth = foto.getWidth();
-        int inHeight = foto.getHeight();
+        inWidth = foto.getWidth();
+        inHeight = foto.getHeight();
         if(inWidth > inHeight){
             outWidth = maxSize;
             outHeight = (inHeight * maxSize) / inWidth;
@@ -55,10 +57,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 ImageView image = viewInflated.findViewById(R.id.fotka);
                 foto = fotky.get(position);
                 final int maxSize = 850;
-                int outWidth;
-                int outHeight;
-                int inWidth = foto.getWidth();
-                int inHeight = foto.getHeight();
+                inWidth = foto.getWidth();
+                inHeight = foto.getHeight();
                 if(inWidth > inHeight){
                     outWidth = maxSize;
                     outHeight = (inHeight * maxSize) / inWidth;
