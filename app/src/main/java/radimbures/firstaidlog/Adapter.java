@@ -28,7 +28,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         foto = fotky.get(position);
-        holder.photo.setImageBitmap(foto);
+        final int maxSize = 300;
+        int outWidth;
+        int outHeight;
+        int inWidth = foto.getWidth();
+        int inHeight = foto.getHeight();
+        if(inWidth > inHeight){
+            outWidth = maxSize;
+            outHeight = (inHeight * maxSize) / inWidth;
+        } else {
+            outHeight = maxSize;
+            outWidth = (inWidth * maxSize) / inHeight;
+        }
+
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(
+                foto, outWidth, outHeight, false);
+        holder.photo.setImageBitmap(resizedBitmap);
         holder.photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,7 +54,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 imageDialog.setView(viewInflated);
                 ImageView image = viewInflated.findViewById(R.id.fotka);
                 foto = fotky.get(position);
-                image.setImageBitmap(foto);
+                final int maxSize = 850;
+                int outWidth;
+                int outHeight;
+                int inWidth = foto.getWidth();
+                int inHeight = foto.getHeight();
+                if(inWidth > inHeight){
+                    outWidth = maxSize;
+                    outHeight = (inHeight * maxSize) / inWidth;
+                } else {
+                    outHeight = maxSize;
+                    outWidth = (inWidth * maxSize) / inHeight;
+                }
+
+                Bitmap resizedFoto = Bitmap.createScaledBitmap(
+                        foto, outWidth, outHeight, false);
+                image.setImageBitmap(resizedFoto);
                 imageDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -61,6 +62,7 @@ public class AddInjury extends Fragment {
     RecyclerView.Adapter Adapter;
     File file;
     Uri uri;
+    Bitmap bitmap;
 
 
 
@@ -112,24 +114,14 @@ public class AddInjury extends Fragment {
             public void onClick(View view) {
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //camera_intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                //File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                //String imagename = getImageName();
-                //file = new File(getOutputMediaFile());
+                file = getOutputMediaFile();
                 uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider",getOutputMediaFile());
-                //uri = Uri.fromFile(getOutputMediaFile());
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(camera_intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             }
         });
 
         return root;
-    }
-
-    private String getImageName(){
-        SimpleDateFormat sfd = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String time = sfd.format(new Date());
-
-        return "image_" + time + ".jpg";
     }
 
     public void dialog() {
@@ -198,8 +190,9 @@ public class AddInjury extends Fragment {
 
         if(resultCode == RESULT_OK) {
             if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-                //Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                //list.add(bitmap);
+                //bitmap = (Bitmap) data.getExtras().get("data");
+                bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                list.add(bitmap);
             }
         }
 
