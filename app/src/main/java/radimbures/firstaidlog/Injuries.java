@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 /**
@@ -33,25 +34,23 @@ public class Injuries extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            id_eventu = bundle.getLong("key");
+            id_eventu = bundle.getLong("idevent");
             id_participant = bundle.getLong("idparticipant");
         }
-
         InjuriesList frag = new InjuriesList();
         Bundle bundle2 = new Bundle();
         bundle2.putLong("idevent", id_eventu);
         bundle2.putLong("idparticipant",id_participant);
         frag.setArguments(bundle2);
 
-        myDB =  new DBAdapter(getActivity());
-        myDB.open();
-        S = InjuriesList.class;
-        myDB.close();
+        //myDB =  new DBAdapter(getActivity());
+        //myDB.open();
+        //myDB.close();
 
         mTabHost = root.findViewById(R.id.tabHost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
         mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("List of injuries"),
-                S, bundle2);
+                InjuriesList.class, bundle2);
         mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Personal information"),
                 ParticipantInfo.class, bundle2);
 

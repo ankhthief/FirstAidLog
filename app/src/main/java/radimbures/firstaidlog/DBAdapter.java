@@ -159,13 +159,11 @@ public class DBAdapter {
 
     //number of participants in database
     public long getParticipantsCount() {
-        long cnt  = DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
-        return cnt;
+        return DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
     }
 
     public long getRegistCount() {
-        long cnt  = DatabaseUtils.queryNumEntries(db, TABLE_REGISTR);
-        return cnt;
+        return DatabaseUtils.queryNumEntries(db, TABLE_REGISTR);
     }
 
     //close database
@@ -204,8 +202,7 @@ public class DBAdapter {
         String S = String.valueOf(radek);
         String MY_QUERY = "SELECT p._id,p.name,p.surname FROM (" + TABLE_PARTICIPANTS + " p INNER JOIN " + TABLE_REGISTR + " r ON r." + REGISTR_PARTICIPANTID + "=p." + PARTICIPANTS_ROWID + ") INNER JOIN "
                 + TABLE_EVENTS + " e ON e." + EVENTS_ROWID + "=r." + REGISTR_EVENTID + " WHERE e." + EVENTS_ROWID + "=?";
-        Cursor c = db.rawQuery(MY_QUERY, new String[]{S});
-        return c;
+        return db.rawQuery(MY_QUERY, new String[]{S});
     }
 
     //returns all data from table Injuries in Event for Participant
@@ -214,9 +211,7 @@ public class DBAdapter {
         String K = String.valueOf(eventid);
         String MY_QUERY = "SELECT * FROM " + TABLE_INJURIES + " WHERE " + INJURIES_PARTICIPANTID + "=?  AND " + INJURIES_EVENTID + "=? ";
 
-        Cursor c = db.rawQuery(MY_QUERY, new String[]{S,K});
-
-        return c;
+        return db.rawQuery(MY_QUERY, new String[]{S,K});
     }
 
     //creates dataset to add to the table Events
