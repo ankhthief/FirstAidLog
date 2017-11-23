@@ -9,16 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private  List<Bitmap> fotky;
+    private List<String> cesty;
     private Bitmap foto;
+    private String cesta;
     private int outWidth;
     private int outHeight;
-    int inWidth;
-    int inHeight;
+    private int inWidth;
+    private int inHeight;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,6 +35,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         foto = fotky.get(position);
+        cesta = cesty.get(position);
         final int maxSize = 300;
         inWidth = foto.getWidth();
         inHeight = foto.getHeight();
@@ -80,14 +84,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 imageDialog.setNegativeButton("delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        cesta = cesty.get(position);
+                        File file = new File(cesta);
+                        boolean deleted = file.delete();
                         remove(position);
                     }
                 });
                 imageDialog.show();
-
-                //TODO tady ukázat full image s možností smazání
-
-                //remove(position);
             }
 
 
@@ -103,12 +106,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public void remove(int position) {
         fotky.remove(position);
+        cesty.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, fotky.size());
+
     }
 
-    public Adapter(List<Bitmap> myDataset) {
+    public Adapter(List<Bitmap> myDataset, List<String> myDataset2) {
         fotky = myDataset;
+        cesty = myDataset2;
     }
 
 

@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -61,6 +63,7 @@ public class AddInjury extends Fragment {
     ArrayList list;
     RecyclerView.Adapter Adapter;
     File file;
+    ArrayList path;
     Uri uri;
     Bitmap bitmap;
 
@@ -82,10 +85,11 @@ public class AddInjury extends Fragment {
         desc = root.findViewById(R.id.input_injury_desc);
         camera = root.findViewById(R.id.take_photo);
         list = new ArrayList<>();
+        path = new ArrayList<>();
         recyclerView = root.findViewById(R.id.gallery);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        Adapter = new Adapter(list);
+        Adapter = new Adapter(list, path);
         recyclerView.setAdapter(Adapter);
         bundle = getArguments();
         if (bundle != null) {
@@ -192,7 +196,9 @@ public class AddInjury extends Fragment {
             if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
                 //bitmap = (Bitmap) data.getExtras().get("data");
                 bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                //Log.i(TAG, file.getAbsolutePath());
                 list.add(bitmap);
+                path.add(file.getAbsolutePath());
             }
         }
 
