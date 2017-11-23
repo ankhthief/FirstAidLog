@@ -188,12 +188,11 @@ public class AddInjury extends Fragment {
                     cv.put("title",title.getText().toString());
                     cv.put("description", desc.getText().toString());
                     myDB.db.update("injuries",cv,"_id="+id,null);
-                    /*
+                    //TODO tady to nějak nefunguje
+                    myDB.db.rawQuery("DELETE FROM photos WHERE injuryid ==" +id, null);
                     for(int i = 0; i < list.size(); i++) {
                         myDB.insertRowPhotos(id,path.get(i).toString());
                     }
-                    */
-                    //TODO update obrázků
                 } else {
                     Long idecko = myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(),idparticipant,idevent);
                     for(int i = 0; i < list.size(); i++) {
