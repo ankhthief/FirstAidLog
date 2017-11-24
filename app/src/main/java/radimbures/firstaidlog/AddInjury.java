@@ -142,27 +142,6 @@ public class AddInjury extends Fragment {
         return root;
     }
 
-    public void dialog() {
-        final AlertDialog.Builder imageDialog = new AlertDialog.Builder(getContext());
-        imageDialog.setTitle("Image");
-        final View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_image, (ViewGroup) getView(), false);
-        imageDialog.setView(viewInflated);
-        imageDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-
-            }
-        });
-        imageDialog.setNegativeButton("delete", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        imageDialog.show();
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

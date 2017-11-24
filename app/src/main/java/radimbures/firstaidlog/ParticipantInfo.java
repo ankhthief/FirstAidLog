@@ -1,9 +1,14 @@
 package radimbures.firstaidlog;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -22,6 +35,7 @@ public class ParticipantInfo extends Fragment {
     TextView name;
     long id_eventu;
     long id_participant;
+    File pdfko;
 
 
     public ParticipantInfo() {
@@ -50,10 +64,21 @@ public class ParticipantInfo extends Fragment {
         c.close();
         name.setText(nameString);
 
+
+
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(),"export karty účastníka", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(),"export karty účastníka", Toast.LENGTH_LONG).show();
+
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    //camera.setEnabled(false);
+                    ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+                }
+                pdfko = getOutputMediaFile();
+
+
+
             }
         });
 
@@ -61,6 +86,31 @@ public class ParticipantInfo extends Fragment {
         myDB.close();
         return root;
 
+    }
+
+    private static File getOutputMediaFile(){
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "FirstAidLog/PDF");
+
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "PDF_"+ timeStamp + ".pdf");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                //camera.setEnabled(true);
+            }
+        }
     }
 
 }
