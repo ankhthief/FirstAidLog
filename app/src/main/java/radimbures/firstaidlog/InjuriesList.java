@@ -123,6 +123,8 @@ public class InjuriesList extends Fragment {
             case R.id.delete_injury_popup:
                 myDB.open();
                 myDB.deleteRowInjurie(id);
+                //TODO promazat i fotky z úložiště
+                myDB.db.delete("photos","injuryid" + "='"+id+"'",null);
                 Toast.makeText(getActivity(),"injury deleted", Toast.LENGTH_LONG).show();
                 populateListView();
                 myDB.close();
