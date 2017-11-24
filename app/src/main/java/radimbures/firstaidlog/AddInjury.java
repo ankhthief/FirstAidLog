@@ -215,8 +215,8 @@ public class AddInjury extends Fragment {
     }
 
     private static File getOutputMediaFile(){
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "FirstAidLog");
+        //File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "FirstAidLog");
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(),"FirstAidLog");
 
         if (!mediaStorageDir.exists()){
             if (!mediaStorageDir.mkdirs()){
