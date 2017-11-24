@@ -2,11 +2,15 @@ package radimbures.firstaidlog;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +39,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +52,8 @@ public class ParticipantInfo extends Fragment {
     TextView name;
     long id_eventu;
     long id_participant;
-    File pdfko;
+    Uri path;
+    File pdfFile;
 
 
     public ParticipantInfo() {
@@ -149,26 +158,52 @@ public class ParticipantInfo extends Fragment {
     // Method for opening a pdf file
     private void viewPdf(String file, String directory) {
 
-        File pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/" + file);
-        //uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider",getOutputMediaFile());
-        //Uri path = Uri.fromFile(pdfFile);
-        Uri path = FileProvider.getUriForFile(getContext(),BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider",pdfFile);
-
-        //Toast.makeText(getActivity(),"problém s otevřením", Toast.LENGTH_LONG).show();
-
-        //TODO tady to nefunguje
-        // Setting the intent for pdf reader
-        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-        pdfIntent.setDataAndType(path, "application/pdf");
-        pdfIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        Intent intent1 = Intent.createChooser(pdfIntent, "Open With");
-        startActivity(intent1);
-
-        try {
-            startActivity(pdfIntent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), "Can't read pdf file", Toast.LENGTH_SHORT).show();
+        pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/" + file);
+        if (Build.VERSION.SDK_INT > 21) {
+            path = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider", pdfFile);
+        } else {
+            path = Uri.fromFile(pdfFile);
         }
+
+
+        AlertDialog.Builder pdfDialog = new AlertDialog.Builder(getContext());
+        pdfDialog.setTitle("Image");
+        View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_pdf, null);
+        pdfDialog.setView(viewInflated);
+
+        pdfDialog.setPositiveButton("Prohlédnout", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+                pdfIntent.setDataAndType(path, "application/pdf");
+                pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
+                startActivity(pdfIntent);
+
+            }
+        });
+        pdfDialog.setNegativeButton("poslat", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+
+                if(pdfFile.exists()) {
+                    intentShareFile.setType("application/pdf");
+                    intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
+
+                    intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                            "Sharing File...");
+                    intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File...");
+
+                    startActivity(Intent.createChooser(intentShareFile, "Share File"));
+                }
+            }
+        });
+        pdfDialog.show();
+
+
+
+
+
     }
 
 }
