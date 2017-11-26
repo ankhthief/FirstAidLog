@@ -89,6 +89,7 @@ public class AddInjury extends Fragment {
         recyclerView = root.findViewById(R.id.gallery);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //TODO kontrola jestli nebyla fotka smazána
         Adapter = new Adapter(list, path);
         recyclerView.setAdapter(Adapter);
         bundle = getArguments();

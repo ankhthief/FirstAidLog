@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -62,6 +64,7 @@ public class ParticipantInfo extends Fragment {
     String nameString;
     String filename1;
     String path;
+    Image image;
 
 
     public ParticipantInfo() {
@@ -187,7 +190,9 @@ public class ParticipantInfo extends Fragment {
             Font paraFont= new Font(Font.FontFamily.COURIER);
             p1.setAlignment(Paragraph.ALIGN_CENTER);
             p1.setFont(paraFont);
-
+            image = Image.getInstance(path+"/IMG_20171126_131825.jpg");
+            image.scalePercent(10);
+            doc.add(image);
             //add paragraph to document
             doc.add(p1);
 
