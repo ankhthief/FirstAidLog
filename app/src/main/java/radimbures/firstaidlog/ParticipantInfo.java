@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,12 @@ public class ParticipantInfo extends Fragment {
     long id_participant;
     Uri path;
     File pdfFile;
+    Button show;
+    Button share;
+    TextView filename;
+    FloatingActionButton fab2;
+    String nameString;
+    String filename1;
 
 
     public ParticipantInfo() {
@@ -67,7 +74,10 @@ public class ParticipantInfo extends Fragment {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
         final View root = inflater.inflate(R.layout.fragment_participant_info, container, false);
-        FloatingActionButton fab2 = root.findViewById(R.id.fab_backup_participant);
+        fab2 = root.findViewById(R.id.fab_backup_participant);
+        show = root.findViewById(R.id.show);
+        share = root.findViewById(R.id.share);
+        filename = root.findViewById(R.id.filename);
         Bundle bundle = getArguments();
         if (bundle != null) {
             id_eventu = bundle.getLong("idevent");
@@ -78,9 +88,38 @@ public class ParticipantInfo extends Fragment {
         myDB.open();
         Cursor c = myDB.db.rawQuery("SELECT p.name, p.surname FROM (participants p INNER JOIN registr r ON r.participantid=p._id) INNER JOIN events e ON e._id=r.eventid WHERE e._id==" + id_eventu+ " AND p._id=="+id_participant, null);
         c.moveToFirst();
-        final String nameString = c.getString(c.getColumnIndex("name"))+ " " + c.getString(c.getColumnIndex("surname"));
+        nameString = c.getString(c.getColumnIndex("name"))+ " " + c.getString(c.getColumnIndex("surname"));
+        Cursor c1 = myDB.db.rawQuery("SELECT name FROM events WHERE _id="+id_eventu, null);
+        c1.moveToFirst();
+        filename1 = c.getString(c.getColumnIndex("name"))+ c.getString(c.getColumnIndex("surname"))+"_"+c1.getString(c1.getColumnIndex("name"))+".pdf";
         c.close();
+        c1.close();
         name.setText(nameString);
+
+        show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewPdf(filename1, "FirstAidLog");
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+
+                if(pdfFile.exists()) {
+                    intentShareFile.setType("application/pdf");
+                    intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
+
+                    intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                            "Sharing File...");
+                    intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File...");
+
+                    startActivity(Intent.createChooser(intentShareFile, "Share File"));
+                }
+            }
+        });
 
 
 
@@ -127,7 +166,7 @@ public class ParticipantInfo extends Fragment {
             if(!dir.exists())
                 dir.mkdirs();
 
-            File file = new File(dir, "newFile.pdf");
+            File file = new File(dir, filename1);
             FileOutputStream fOut = new FileOutputStream(file);
 
             PdfWriter.getInstance(doc, fOut);
@@ -152,7 +191,11 @@ public class ParticipantInfo extends Fragment {
             doc.close();
         }
 
-        viewPdf("newFile.pdf", "FirstAidLog");
+        filename.setText(filename1);
+        show.setEnabled(true);
+        share.setEnabled(true);
+
+        //viewPdf("newFile.pdf", "FirstAidLog");
     }
 
     // Method for opening a pdf file
@@ -164,8 +207,12 @@ public class ParticipantInfo extends Fragment {
         } else {
             path = Uri.fromFile(pdfFile);
         }
+        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+        pdfIntent.setDataAndType(path, "application/pdf");
+        pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
+        startActivity(pdfIntent);
 
-
+/*
         AlertDialog.Builder pdfDialog = new AlertDialog.Builder(getContext());
         pdfDialog.setTitle("Image");
         View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_pdf, null);
@@ -200,7 +247,7 @@ public class ParticipantInfo extends Fragment {
         });
         pdfDialog.show();
 
-
+*/
 
 
 

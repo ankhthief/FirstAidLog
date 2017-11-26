@@ -92,10 +92,6 @@ public class Tips extends Fragment {
             cb.setHeight(105);
             layout2.addView(cb);
         }
-
-
-
-
         return root;
     }
 

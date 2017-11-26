@@ -8,11 +8,48 @@
     android:paddingTop="16dp"
     tools:context="radimbures.firstaidlog.ParticipantInfo">
 
-    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/filename"
+                android:textSize="15sp"
+                android:text="Generate pdf report using export button bellow"
+                />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            >
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/show"
+                android:enabled="false"
+                android:text="Show"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/share"
+                android:enabled="false"
+                android:text="Share"/>
+        </LinearLayout>
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/name" />
+
+    </LinearLayout>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_backup_participant"
