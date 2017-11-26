@@ -220,46 +220,6 @@ public class ParticipantInfo extends Fragment {
         pdfIntent.setDataAndType(path1, "application/pdf");
         pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
         startActivity(pdfIntent);
-
-/*
-        AlertDialog.Builder pdfDialog = new AlertDialog.Builder(getContext());
-        pdfDialog.setTitle("Image");
-        View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_pdf, null);
-        pdfDialog.setView(viewInflated);
-
-        pdfDialog.setPositiveButton("Prohlédnout", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-                pdfIntent.setDataAndType(path, "application/pdf");
-                pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
-                startActivity(pdfIntent);
-
-            }
-        });
-        pdfDialog.setNegativeButton("poslat", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-
-                if(pdfFile.exists()) {
-                    intentShareFile.setType("application/pdf");
-                    intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
-
-                    intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                            "Sharing File...");
-                    intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File...");
-
-                    startActivity(Intent.createChooser(intentShareFile, "Share File"));
-                }
-            }
-        });
-        pdfDialog.show();
-
-*/
-
-
-
     }
 
 }
