@@ -111,10 +111,15 @@ public class AddInjury extends Fragment {
                         if (c2.moveToFirst()) {
                             do {
                                 String cesta = c2.getString(c2.getColumnIndex("photo"));
-                                bitmap = BitmapFactory.decodeFile(cesta);
-                                //Log.i(TAG, file.getAbsolutePath());
-                                list.add(bitmap);
-                                path.add(cesta);
+                                boolean fileExists =  new File(cesta).isFile();
+                                if (!fileExists) {
+                                    myDB.db.delete("photos","photo" + "='"+cesta+"'",null);
+                                } else {
+                                    bitmap = BitmapFactory.decodeFile(cesta);
+                                    //Log.i(TAG, file.getAbsolutePath());
+                                    list.add(bitmap);
+                                    path.add(cesta);
+                                }
                             } while (c2.moveToNext());
                         }
                 }

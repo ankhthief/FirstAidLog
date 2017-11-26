@@ -3,6 +3,7 @@ package radimbures.firstaidlog;
 
 
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +35,7 @@ public class InjuriesList extends Fragment {
     long id_eventu;
     long id_participant;
     Cursor cursor;
+    Cursor cur;
     int[] toViewIDs;
     SimpleCursorAdapter myCursorAdapter;
     String[] fromInjuriesNames;
@@ -123,7 +127,17 @@ public class InjuriesList extends Fragment {
             case R.id.delete_injury_popup:
                 myDB.open();
                 myDB.deleteRowInjurie(id);
-                //TODO promazat i fotky z úložiště
+                cur = myDB.db.rawQuery("SELECT * FROM photos where injuryid="+id, null);
+                if (cur != null)
+                    if (cur.moveToFirst()) {
+                        do {
+                            String cesta =  cur.getString(cur.getColumnIndex("photo"));
+                            boolean fileExists =  new File(cesta).isFile();
+                            File file = new File(cesta);
+                            boolean deleted = file.delete();
+                        } while (cur.moveToNext());
+                    }
+                //cur.close();
                 myDB.db.delete("photos","injuryid" + "='"+id+"'",null);
                 Toast.makeText(getActivity(),"injury deleted", Toast.LENGTH_LONG).show();
                 populateListView();
