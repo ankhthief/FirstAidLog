@@ -53,7 +53,7 @@ public class ParticipantInfo extends Fragment {
     TextView name;
     long id_eventu;
     long id_participant;
-    Uri path;
+    Uri path1;
     File pdfFile;
     Button show;
     Button share;
@@ -61,6 +61,7 @@ public class ParticipantInfo extends Fragment {
     FloatingActionButton fab2;
     String nameString;
     String filename1;
+    String path;
 
 
     public ParticipantInfo() {
@@ -74,6 +75,7 @@ public class ParticipantInfo extends Fragment {
         // Inflate the layout for this fragment
         myDB =  new DBAdapter(getContext());
         final View root = inflater.inflate(R.layout.fragment_participant_info, container, false);
+        path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FirstAidLog";
         fab2 = root.findViewById(R.id.fab_backup_participant);
         show = root.findViewById(R.id.show);
         share = root.findViewById(R.id.share);
@@ -95,6 +97,13 @@ public class ParticipantInfo extends Fragment {
         c.close();
         c1.close();
         name.setText(nameString);
+        boolean fileExists =  new File(path+"/"+filename1).isFile();
+        if (fileExists) {
+            filename.setText(filename1);
+            show.setEnabled(true);
+            share.setEnabled(true);
+        }
+
 
         show.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +169,7 @@ public class ParticipantInfo extends Fragment {
         Document doc = new Document();
 
         try {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FirstAidLog";
+
 
             File dir = new File(path);
             if(!dir.exists())
@@ -203,12 +212,12 @@ public class ParticipantInfo extends Fragment {
 
         pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/" + file);
         if (Build.VERSION.SDK_INT > 21) {
-            path = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider", pdfFile);
+            path1 = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider", pdfFile);
         } else {
-            path = Uri.fromFile(pdfFile);
+            path1 = Uri.fromFile(pdfFile);
         }
         Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-        pdfIntent.setDataAndType(path, "application/pdf");
+        pdfIntent.setDataAndType(path1, "application/pdf");
         pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
         startActivity(pdfIntent);
 
