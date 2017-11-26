@@ -28,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -35,6 +37,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,6 +68,8 @@ public class ParticipantInfo extends Fragment {
     String filename1;
     String path;
     Image image;
+    String eventName;
+    Cursor zraneni;
 
 
     public ParticipantInfo() {
@@ -96,7 +101,8 @@ public class ParticipantInfo extends Fragment {
         nameString = c.getString(c.getColumnIndex("name"))+ " " + c.getString(c.getColumnIndex("surname"));
         Cursor c1 = myDB.db.rawQuery("SELECT name FROM events WHERE _id="+id_eventu, null);
         c1.moveToFirst();
-        filename1 = c.getString(c.getColumnIndex("name"))+ c.getString(c.getColumnIndex("surname"))+"_"+c1.getString(c1.getColumnIndex("name"))+".pdf";
+        eventName = c1.getString(c1.getColumnIndex("name"));
+        filename1 = c.getString(c.getColumnIndex("name"))+ c.getString(c.getColumnIndex("surname"))+"_"+eventName+".pdf";
         c.close();
         c1.close();
         name.setText(nameString);
@@ -125,8 +131,8 @@ public class ParticipantInfo extends Fragment {
                     intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
 
                     intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                            "Sharing File...");
-                    intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File...");
+                            "Zdravotní deník pro " + nameString + " z akce " +eventName);
+                    intentShareFile.putExtra(Intent.EXTRA_TEXT, "Dobrý den, v příloze zasílám pdf se záznamy ze zdravotního deníku vašeho dítěte.");
 
                     startActivity(Intent.createChooser(intentShareFile, "Share File"));
                 }
@@ -162,7 +168,6 @@ public class ParticipantInfo extends Fragment {
         if (requestCode == 0) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                //camera.setEnabled(true);
             }
         }
     }
@@ -186,15 +191,47 @@ public class ParticipantInfo extends Fragment {
             //open the document
             doc.open();
 
-            Paragraph p1 = new Paragraph(text);
-            Font paraFont= new Font(Font.FontFamily.COURIER);
+            Paragraph p1 = new Paragraph("Medical Report for  "+text + ", "+eventName);
+            Font paraFont= new Font(Font.FontFamily.TIMES_ROMAN, 15,Font.NORMAL, BaseColor.BLUE);
+            Font nadpis = new Font(Font.FontFamily.HELVETICA,15, Font.BOLD);
             p1.setAlignment(Paragraph.ALIGN_CENTER);
-            p1.setFont(paraFont);
-            image = Image.getInstance(path+"/IMG_20171126_131825.jpg");
+            p1.setFont(nadpis);
+            DottedLineSeparator dottedline = new DottedLineSeparator();
+            dottedline.setOffset(-2);
+            dottedline.setGap(2f);
+            p1.add(dottedline);
+            p1.add(Chunk.NEWLINE);
+            Paragraph p2 = new Paragraph();
+            p2.setAlignment(Paragraph.ALIGN_LEFT);
+            p2.setFont(paraFont);
+
+
+
+            myDB.open();
+            zraneni = myDB.getAllRowsInjuries(id_participant, id_eventu);
+            if (zraneni != null)
+                if (zraneni.moveToFirst()) {
+                    do {
+
+                        String title = zraneni.getString(zraneni.getColumnIndex("title"));
+                        String description = zraneni.getString(zraneni.getColumnIndex("description"));
+                        Chunk c = new Chunk(title, paraFont);
+                        p2.add(c);
+                        p2.add(Chunk.NEWLINE);
+                        Chunk d = new Chunk(description, paraFont);
+                        p2.add(d);
+                        p2.add(dottedline);
+                        p2.add(Chunk.NEWLINE);
+                    } while (zraneni.moveToNext());
+                }
+
+
+            image = Image.getInstance(path+"/IMG_20171126_160003.jpg");
             image.scalePercent(10);
-            doc.add(image);
-            //add paragraph to document
+
             doc.add(p1);
+            doc.add(p2);
+            //doc.add(image);
 
         } catch (DocumentException de) {
             Log.e("PDFCreator", "DocumentException:" + de);
@@ -202,17 +239,15 @@ public class ParticipantInfo extends Fragment {
             Log.e("PDFCreator", "ioException:" + e);
         }
         finally {
+            myDB.close();
             doc.close();
         }
 
         filename.setText(filename1);
         show.setEnabled(true);
         share.setEnabled(true);
-
-        //viewPdf("newFile.pdf", "FirstAidLog");
     }
 
-    // Method for opening a pdf file
     private void viewPdf(String file, String directory) {
 
         pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/" + file);
