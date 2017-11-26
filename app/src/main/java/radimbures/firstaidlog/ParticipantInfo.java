@@ -206,9 +206,7 @@ public class ParticipantInfo extends Fragment {
             Paragraph p2 = new Paragraph();
             p2.setAlignment(Paragraph.ALIGN_LEFT);
             p2.setFont(paraFont);
-
-
-
+            doc.add(p1);
             myDB.open();
             zraneni = myDB.getAllRowsInjuries(id_participant, id_eventu);
             if (zraneni != null)
@@ -218,46 +216,28 @@ public class ParticipantInfo extends Fragment {
                         String title = zraneni.getString(zraneni.getColumnIndex("title"));
                         String description = zraneni.getString(zraneni.getColumnIndex("description"));
                         Long idcko = zraneni.getLong(zraneni.getColumnIndex("_id"));
-                        Chunk c = new Chunk(title + idcko, paraFont);
+                        Chunk c = new Chunk(title, paraFont);
                         p2.add(c);
                         p2.add(Chunk.NEWLINE);
                         Chunk d = new Chunk(description, paraFont);
                         p2.add(d);
-                        p2.add(dottedline);
                         p2.add(Chunk.NEWLINE);
-
-/*
-                        //fotky = myDB.getAllPhotos(idcko);
-                        fotky = myDB.db.rawQuery("SELECT * FROM photos WHERE injuryid=" + idcko, null);
+                        fotky = myDB.getAllPhotos(idcko);
                         if (fotky != null)
                             if (fotky.moveToFirst()) {
                                 do {
-                                    String cesta = fotky.getString(zraneni.getColumnIndex("photo"));
-                                    Log.e(TAG, cesta);
-                                    Chunk e = new Chunk(cesta, paraFont);
-                                    p2.add(e);
-
-
+                                    String cesta = fotky.getString(fotky.getColumnIndex("photo"));
                                     image = Image.getInstance(cesta);
-                                    image.scalePercent(10);
-                                    doc.add(image);
-
+                                    image.scalePercent(2);
+                                    p2.add(image);
                                 } while (fotky.moveToNext());
                             }
-
-*/
-
-
+                            p2.add(dottedline);
+                        p2.add(Chunk.NEWLINE);
                     } while (zraneni.moveToNext());
                 }
-
-
-            //image = Image.getInstance(path+"/IMG_20171126_160003.jpg");
-            //image.scalePercent(10);
-
-            doc.add(p1);
+            p2.add(Chunk.NEWLINE);
             doc.add(p2);
-            //doc.add(image);
 
         } catch (DocumentException de) {
             Log.e("PDFCreator", "DocumentException:" + de);
