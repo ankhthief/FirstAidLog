@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
@@ -70,6 +71,7 @@ public class ParticipantInfo extends Fragment {
     Image image;
     String eventName;
     Cursor zraneni;
+    Cursor fotky;
 
 
     public ParticipantInfo() {
@@ -215,19 +217,43 @@ public class ParticipantInfo extends Fragment {
 
                         String title = zraneni.getString(zraneni.getColumnIndex("title"));
                         String description = zraneni.getString(zraneni.getColumnIndex("description"));
-                        Chunk c = new Chunk(title, paraFont);
+                        Long idcko = zraneni.getLong(zraneni.getColumnIndex("_id"));
+                        Chunk c = new Chunk(title + idcko, paraFont);
                         p2.add(c);
                         p2.add(Chunk.NEWLINE);
                         Chunk d = new Chunk(description, paraFont);
                         p2.add(d);
                         p2.add(dottedline);
                         p2.add(Chunk.NEWLINE);
+
+/*
+                        //fotky = myDB.getAllPhotos(idcko);
+                        fotky = myDB.db.rawQuery("SELECT * FROM photos WHERE injuryid=" + idcko, null);
+                        if (fotky != null)
+                            if (fotky.moveToFirst()) {
+                                do {
+                                    String cesta = fotky.getString(zraneni.getColumnIndex("photo"));
+                                    Log.e(TAG, cesta);
+                                    Chunk e = new Chunk(cesta, paraFont);
+                                    p2.add(e);
+
+
+                                    image = Image.getInstance(cesta);
+                                    image.scalePercent(10);
+                                    doc.add(image);
+
+                                } while (fotky.moveToNext());
+                            }
+
+*/
+
+
                     } while (zraneni.moveToNext());
                 }
 
 
-            image = Image.getInstance(path+"/IMG_20171126_160003.jpg");
-            image.scalePercent(10);
+            //image = Image.getInstance(path+"/IMG_20171126_160003.jpg");
+            //image.scalePercent(10);
 
             doc.add(p1);
             doc.add(p2);

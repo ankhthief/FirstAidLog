@@ -228,6 +228,12 @@ public class DBAdapter {
         return db.rawQuery(MY_QUERY, new String[]{S,K});
     }
 
+    public Cursor getAllPhotos(long injuryid) {
+        String S = String.valueOf(injuryid);
+        String MY_QUERY = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + PHOTOS_INJURYID + "=?";
+
+        return db.rawQuery(MY_QUERY, new String[]{S});
+    }
     //creates dataset to add to the table Events
     public long insertRowEvent(String name) {
         ContentValues initialValues = new ContentValues();
