@@ -21,4 +21,5 @@
     <string name="useful_tips">Useful tips</string>
     <string name="add_db_part_info">Here you can choose participants in database and add them in bulk.</string>
     <string name="btn_add_from_db">Add selected participants to this event</string>
+    <string name="starting_date">Starting date</string>
 </resources>
