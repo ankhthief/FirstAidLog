@@ -1,6 +1,7 @@
 package radimbures.firstaidlog;
 
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -13,7 +14,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 /**
@@ -26,6 +32,12 @@ public class AddEvent extends Fragment {
     EditText eventName;
     Bundle bundle;
     Long ideventu;
+    Calendar myCalendarStart;
+    Calendar myCalendarEnd;
+    EditText startdate;
+    EditText enddate;
+    DatePickerDialog.OnDateSetListener StartDate;
+    DatePickerDialog.OnDateSetListener EndDate;
 
 
     public AddEvent() {
@@ -41,6 +53,10 @@ public class AddEvent extends Fragment {
         fm = getFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_add_event, container, false);
         eventName = root.findViewById(R.id.input_name_event);
+        startdate = root.findViewById(R.id.input_datestart_event);
+        enddate = root.findViewById(R.id.input_dateend_event);
+        myCalendarStart = Calendar.getInstance();
+        myCalendarEnd = Calendar.getInstance();
         bundle = getArguments();
         if (bundle != null) {
             ideventu = bundle.getLong("idevent");
@@ -51,6 +67,54 @@ public class AddEvent extends Fragment {
             c.close();
             myDB.close();
         }
+
+       StartDate = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendarStart.set(Calendar.YEAR, year);
+                myCalendarStart.set(Calendar.MONTH, monthOfYear);
+                myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabelStart();
+            }
+
+        };
+
+        startdate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(getContext(), StartDate, myCalendarStart
+                        .get(Calendar.YEAR), myCalendarStart.get(Calendar.MONTH),
+                        myCalendarStart.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        EndDate = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendarEnd.set(Calendar.YEAR, year);
+                myCalendarEnd.set(Calendar.MONTH, monthOfYear);
+                myCalendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabelEnd();
+            }
+
+        };
+
+        enddate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(getContext(), EndDate, myCalendarEnd
+                        .get(Calendar.YEAR), myCalendarEnd.get(Calendar.MONTH),
+                        myCalendarEnd.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
         return root;
     }
 
@@ -59,6 +123,20 @@ public class AddEvent extends Fragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+    }
+
+    private void updateLabelStart() {
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        startdate.setText(sdf.format(myCalendarStart.getTime()));
+    }
+
+    private void updateLabelEnd() {
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        enddate.setText(sdf.format(myCalendarEnd.getTime()));
     }
 
     @Override

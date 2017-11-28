@@ -63,7 +63,10 @@
                 android:id="@+id/input_datestart_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:drawableStart="@android:drawable/ic_menu_my_calendar"
                 android:hint="@string/starting_date" />
         </android.support.design.widget.TextInputLayout>
@@ -78,7 +81,10 @@
                     android:id="@+id/input_dateend_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="date"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:drawableStart="@android:drawable/ic_menu_my_calendar"
                     android:hint="Ending date" />
             </android.support.design.widget.TextInputLayout>
