@@ -6,8 +6,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +32,13 @@ public class AddEvent extends Fragment {
     DBAdapter myDB;
     FragmentManager fm;
     EditText eventName;
+    EditText eventLocation;
+    EditText leaderName;
+    EditText leaderEmail;
+    EditText leaderPhone;
+    EditText medicName;
+    EditText medicEmail;
+    EditText medicPhone;
     Bundle bundle;
     Long ideventu;
     Calendar myCalendarStart;
@@ -38,6 +47,7 @@ public class AddEvent extends Fragment {
     EditText enddate;
     DatePickerDialog.OnDateSetListener StartDate;
     DatePickerDialog.OnDateSetListener EndDate;
+    Boolean formOk;
 
 
     public AddEvent() {
@@ -53,10 +63,18 @@ public class AddEvent extends Fragment {
         fm = getFragmentManager();
         final View root = inflater.inflate(R.layout.fragment_add_event, container, false);
         eventName = root.findViewById(R.id.input_name_event);
+        eventLocation = root.findViewById(R.id.input_location_event);
         startdate = root.findViewById(R.id.input_datestart_event);
         enddate = root.findViewById(R.id.input_dateend_event);
+        leaderName = root.findViewById(R.id.input_nameleader_event);
+        leaderEmail = root.findViewById(R.id.input_emailleader_event);
+        leaderPhone = root.findViewById(R.id.input_phoneleader_event);
+        medicName = root.findViewById(R.id.input_namemedic_event);
+        medicEmail = root.findViewById(R.id.input_emailmedic_event);
+        medicPhone = root.findViewById(R.id.input_phonemedic_event);
         myCalendarStart = Calendar.getInstance();
         myCalendarEnd = Calendar.getInstance();
+        formOk = false;
         bundle = getArguments();
         if (bundle != null) {
             ideventu = bundle.getLong("idevent");
@@ -147,10 +165,107 @@ public class AddEvent extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    public void validation (View root) {
+
+        final TextInputLayout layoutName = root.findViewById(R.id.input_layout_name);
+        final TextInputLayout layoutLocation = root.findViewById(R.id.input_layout_location);
+        final TextInputLayout layoutLeaderName = root.findViewById(R.id.input_layout_nameleader);
+        final TextInputLayout layoutLeaderEmail = root.findViewById(R.id.input_layout_emailleader);
+        final TextInputLayout layoutLeaderPhone = root.findViewById(R.id.input_layout_phoneleader);
+        final TextInputLayout layoutMedicName = root.findViewById(R.id.input_layout_namemedic);
+        final TextInputLayout layoutMedicEmail = root.findViewById(R.id.input_layout_emailmedic);
+        final TextInputLayout layoutMedicPhone = root.findViewById(R.id.input_layout_phonemedic);
+        final TextInputLayout layoutDateStart = root.findViewById(R.id.input_layout_datestart);
+        final TextInputLayout layoutDateEnd = root.findViewById(R.id.input_layout_dateend);
+
+        if(!TextUtils.isEmpty(eventName.getText().toString())) {
+            layoutName.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutName.setError("Name must be filled!");
+            layoutName.setErrorEnabled(true);
+            formOk = false;
+        }
+        if(!TextUtils.isEmpty(eventLocation.getText().toString())) {
+            layoutLocation.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutLocation.setError("Location must be filled!");
+            layoutLocation.setErrorEnabled(true);
+            formOk = false;
+        }
+        if(!TextUtils.isEmpty(startdate.getText().toString())) {
+            layoutDateStart.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutDateStart.setError("Start date must be filled!");
+            layoutDateStart.setErrorEnabled(true);
+            formOk = false;
+        }
+        if(!TextUtils.isEmpty(enddate.getText().toString())) {
+            layoutDateEnd.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutDateEnd.setError("End date must be filled!");
+            layoutDateEnd.setErrorEnabled(true);
+            formOk = false;
+        }
+        if(!TextUtils.isEmpty(leaderName.getText().toString())) {
+            layoutLeaderName.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutLeaderName.setError("Leader name must be filled!");
+            layoutLeaderName.setErrorEnabled(true);
+            formOk = false;
+        }
+        if(!TextUtils.isEmpty(leaderEmail.getText().toString())) {
+            layoutLeaderEmail.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutLeaderEmail.setError("Leader email must be filled!");
+            layoutLeaderEmail.setErrorEnabled(true);
+            formOk = false;
+        }
+        if(!TextUtils.isEmpty(leaderPhone.getText().toString())) {
+            layoutLeaderPhone.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutLeaderPhone.setError("Leader phone number must be filled!");
+            layoutLeaderPhone.setErrorEnabled(true);
+            formOk = false;
+        }
+        if(!TextUtils.isEmpty(medicName.getText().toString())) {
+            layoutMedicName.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutMedicName.setError("Medic name must be filled!");
+            layoutMedicName.setErrorEnabled(true);
+            formOk = false;
+        }
+        if(!TextUtils.isEmpty(medicEmail.getText().toString())) {
+            layoutMedicEmail.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutMedicEmail.setError("Medic email must be filled!");
+            layoutMedicEmail.setErrorEnabled(true);
+            formOk = false;
+        }
+        if(!TextUtils.isEmpty(medicPhone.getText().toString())) {
+            layoutMedicPhone.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutMedicPhone.setError("Medic phone number must be filled!");
+            layoutMedicPhone.setErrorEnabled(true);
+            formOk = false;
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_button:
+                validation(getView());
+                if (formOk) {
                 myDB.open();
                 if (bundle != null) {
                     ContentValues cv = new ContentValues();
@@ -159,7 +274,9 @@ public class AddEvent extends Fragment {
                 } else  { myDB.insertRowEvent(eventName.getText().toString()); }
                 myDB.close();
                 fm.popBackStackImmediate();
+
                 return true;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
