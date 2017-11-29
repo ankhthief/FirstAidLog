@@ -15,7 +15,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +25,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,6 +56,9 @@ public class AddIncident extends Fragment {
     protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
     EditText title;
     EditText desc;
+    EditText date;
+    EditText time;
+    EditText medication;
     DBAdapter myDB;
     Long idparticipant;
     Long idevent;
@@ -72,8 +78,7 @@ public class AddIncident extends Fragment {
     Cursor c2;
     Calendar myCalendar;
     DatePickerDialog.OnDateSetListener Date;
-    EditText date;
-    EditText time;
+    Boolean formOk;
 
 
 
@@ -94,6 +99,8 @@ public class AddIncident extends Fragment {
         camera = root.findViewById(R.id.take_photo);
         date = root.findViewById(R.id.input_incident_date);
         time = root.findViewById(R.id.input_incident_time);
+        medication = root.findViewById(R.id.input_incident_descmedic);
+        formOk = false;
         myCalendar = Calendar.getInstance();
         list = new ArrayList<>();
         path = new ArrayList<>();
@@ -194,7 +201,6 @@ public class AddIncident extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //camera_intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 file = getOutputMediaFile();
                 uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider",getOutputMediaFile());
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -205,6 +211,58 @@ public class AddIncident extends Fragment {
         return root;
     }
 
+
+    public void validation (View root) {
+
+        final TextInputLayout layoutTitle = root.findViewById(R.id.input_layout_title);
+        final TextInputLayout layoutDate = root.findViewById(R.id.input_layout_date);
+        final TextInputLayout layoutTime = root.findViewById(R.id.input_layout_time);
+        final TextInputLayout layoutDesc = root.findViewById(R.id.input_layout_desc);
+        final TextInputLayout layoutMedication = root.findViewById(R.id.input_layout_descmedic);
+
+
+        if (!TextUtils.isEmpty(title.getText().toString())) {
+            layoutTitle.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutTitle.setError("Title must be filled!");
+            layoutTitle.setErrorEnabled(true);
+            formOk = false;
+        }
+        if (!TextUtils.isEmpty(date.getText().toString())) {
+            layoutDate.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutDate.setError("Date must be filled!");
+            layoutDate.setErrorEnabled(true);
+            formOk = false;
+        }
+        if (!TextUtils.isEmpty(time.getText().toString())) {
+            layoutTime.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutTime.setError("Time date must be filled!");
+            layoutTime.setErrorEnabled(true);
+            formOk = false;
+        }
+        if (!TextUtils.isEmpty(desc.getText().toString())) {
+            layoutDesc.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutDesc.setError("Description must be filled!");
+            layoutDesc.setErrorEnabled(true);
+            formOk = false;
+        }
+        if (!TextUtils.isEmpty(medication.getText().toString())) {
+            layoutMedication.setErrorEnabled(false);
+            formOk = true;
+        } else {
+            layoutMedication.setError("Description of medication must be filled!");
+            layoutMedication.setErrorEnabled(true);
+            formOk = false;
+        }
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -224,26 +282,30 @@ public class AddIncident extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_button:
-                myDB.open();
-                if (!novy) {
-                    ContentValues cv = new ContentValues();
-                    cv.put("title",title.getText().toString());
-                    cv.put("description", desc.getText().toString());
-                    myDB.db.update("injuries",cv,"_id="+id,null);
-                    //myDB.db.rawQuery("DELETE FROM photos WHERE injuryid ==" +id, null);
-                    myDB.db.delete("photos","injuryid" + "='"+id+"'",null);
-                    for(int i = 0; i < list.size(); i++) {
-                        myDB.insertRowPhotos(id,path.get(i).toString());
+
+                validation(getView());
+                if (formOk) {
+                    myDB.open();
+                    if (!novy) {
+                        ContentValues cv = new ContentValues();
+                        cv.put("title", title.getText().toString());
+                        cv.put("description", desc.getText().toString());
+                        myDB.db.update("injuries", cv, "_id=" + id, null);
+                        //myDB.db.rawQuery("DELETE FROM photos WHERE injuryid ==" +id, null);
+                        myDB.db.delete("photos", "injuryid" + "='" + id + "'", null);
+                        for (int i = 0; i < list.size(); i++) {
+                            myDB.insertRowPhotos(id, path.get(i).toString());
+                        }
+                    } else {
+                        Long idecko = myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(), idparticipant, idevent);
+                        for (int i = 0; i < list.size(); i++) {
+                            myDB.insertRowPhotos(idecko, path.get(i).toString());
+                        }
                     }
-                } else {
-                    Long idecko = myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(),idparticipant,idevent);
-                    for(int i = 0; i < list.size(); i++) {
-                        myDB.insertRowPhotos(idecko,path.get(i).toString());
-                    }
+                    myDB.close();
+                    fm.popBackStackImmediate();
+                    return true;
                 }
-                myDB.close();
-                fm.popBackStackImmediate();
-                return true;
             default:
 
         return super.onOptionsItemSelected(item);
@@ -274,7 +336,7 @@ public class AddIncident extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 0) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
@@ -293,7 +355,7 @@ public class AddIncident extends Fragment {
             }
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
     }
