@@ -2,6 +2,9 @@ package radimbures.firstaidlog;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,13 +30,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TimePicker;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -63,6 +70,10 @@ public class AddIncident extends Fragment {
     Uri uri;
     Bitmap bitmap;
     Cursor c2;
+    Calendar myCalendar;
+    DatePickerDialog.OnDateSetListener Date;
+    EditText date;
+    EditText time;
 
 
 
@@ -81,6 +92,9 @@ public class AddIncident extends Fragment {
         title = root.findViewById(R.id.input_incident_title);
         desc = root.findViewById(R.id.input_incident_desc);
         camera = root.findViewById(R.id.take_photo);
+        date = root.findViewById(R.id.input_incident_date);
+        time = root.findViewById(R.id.input_incident_time);
+        myCalendar = Calendar.getInstance();
         list = new ArrayList<>();
         path = new ArrayList<>();
         recyclerView = root.findViewById(R.id.gallery);
@@ -125,6 +139,51 @@ public class AddIncident extends Fragment {
                 myDB.close();
             }
         }
+
+        Date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabelDate();
+            }
+
+        };
+
+        date.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(getContext(), Date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        time.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+
+            }
+        });
+
+
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             camera.setEnabled(false);
@@ -191,6 +250,12 @@ public class AddIncident extends Fragment {
     }
     }
 
+    private void updateLabelDate() {
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        date.setText(sdf.format(myCalendar.getTime()));
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

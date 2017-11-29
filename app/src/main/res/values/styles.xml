@@ -22,4 +22,8 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="TabText">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>
