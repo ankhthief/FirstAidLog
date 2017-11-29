@@ -33,14 +33,16 @@
                 android:layout_weight="1"
                 android:id="@+id/show"
                 android:enabled="false"
-                android:text="Show"/>
+                android:text="@string/show"
+                tools:ignore="ButtonStyle" />
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/share"
                 android:enabled="false"
-                android:text="Share"/>
+                android:text="@string/share"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
 
 

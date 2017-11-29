@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     tools:context="radimbures.firstaidlog.Participants">
 
-    <!-- TODO: Update blank fragment layout -->
-
 
     <android.support.v4.app.FragmentTabHost
         android:id="@+id/tabHost"

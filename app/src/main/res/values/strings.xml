@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">First Aid Log</string>
     <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
@@ -23,4 +21,39 @@
     <string name="btn_add_from_db">Add selected participants to this event</string>
     <string name="starting_date">Starting date</string>
     <string name="photo">photo</string>
+    <string name="event">Event</string>
+    <string name="name_of_an_event">Name of an event</string>
+    <string name="location_of_an_event">Location of an event</string>
+    <string name="ending_date">Ending date</string>
+    <string name="event_leader">Event leader</string>
+    <string name="full_name_of_event_leader">Full name of event leader</string>
+    <string name="email_adress_of_event_leader">Email address of event leader</string>
+    <string name="phone_number_of_event_leader">Phone number of event leader</string>
+    <string name="medic">Medic</string>
+    <string name="full_name_of_a_medic">Full name of a medic</string>
+    <string name="email_adress_of_medic">Email address of medic</string>
+    <string name="phone_number_of_medic">Phone number of medic</string>
+    <string name="participant_info">Participant info</string>
+    <string name="is_user_active">Is user active?</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="personal_identification_number">Personal identification number</string>
+    <string name="insurence_company">Insurance company</string>
+    <string name="notes_optional">Notes (optional)</string>
+    <string name="contact_to_parents">Contact to parents</string>
+    <string name="email_to_parents">Email to parents</string>
+    <string name="phone_number_to_parents">Phone number to parents</string>
+    <string name="incident_title">Incident title</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="incident_description">Incident description</string>
+    <string name="description_of_medication">Description of medication</string>
+    <string name="take_photo_of_indicent">Take photo of Indicent</string>
+    <string name="oh_no_it_seems_that_there_s_no_data_to_display_start_adding_some_using_button">Oh no, it seems that there\'s no data to display. Start adding some using + button.</string>
+    <string name="show">Show</string>
+    <string name="share">Share</string>
+    <string name="recommended_equipment_for_the_first_aid_kit">Recommended equipment for the first aid kit</string>
+    <string name="medicinal_products">Medicinal products</string>
+    <string name="bandage_and_other_medical_supplies">Bandage and other medical supplies</string>
+    <string name="other_equipment">Other equipment</string>
 </resources>

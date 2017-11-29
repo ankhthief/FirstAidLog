@@ -69,10 +69,10 @@ public class AddIncident extends Fragment {
     Button camera;
     LinearLayout layout;
     RecyclerView recyclerView;
-    ArrayList list;
+    ArrayList<Bitmap> list;
     RecyclerView.Adapter Adapter;
     File file;
-    ArrayList path;
+    ArrayList<String> path;
     Uri uri;
     Bitmap bitmap;
     Cursor c2;
@@ -107,7 +107,6 @@ public class AddIncident extends Fragment {
         recyclerView = root.findViewById(R.id.gallery);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        //TODO kontrola jestli nebyla fotka smazána
         Adapter = new Adapter(list, path);
         recyclerView.setAdapter(Adapter);
         bundle = getArguments();
@@ -291,15 +290,14 @@ public class AddIncident extends Fragment {
                         cv.put("title", title.getText().toString());
                         cv.put("description", desc.getText().toString());
                         myDB.db.update("injuries", cv, "_id=" + id, null);
-                        //myDB.db.rawQuery("DELETE FROM photos WHERE injuryid ==" +id, null);
                         myDB.db.delete("photos", "injuryid" + "='" + id + "'", null);
                         for (int i = 0; i < list.size(); i++) {
-                            myDB.insertRowPhotos(id, path.get(i).toString());
+                            myDB.insertRowPhotos(id, path.get(i));
                         }
                     } else {
                         Long idecko = myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(), idparticipant, idevent);
                         for (int i = 0; i < list.size(); i++) {
-                            myDB.insertRowPhotos(idecko, path.get(i).toString());
+                            myDB.insertRowPhotos(idecko, path.get(i));
                         }
                     }
                     myDB.close();
@@ -346,7 +344,6 @@ public class AddIncident extends Fragment {
     }
 
     private static File getOutputMediaFile(){
-        //File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "FirstAidLog");
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory(),"FirstAidLog");
 
         if (!mediaStorageDir.exists()){

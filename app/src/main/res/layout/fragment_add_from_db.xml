@@ -8,8 +8,6 @@
     android:paddingTop="16dp"
     tools:context="radimbures.firstaidlog.AddFromDB">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

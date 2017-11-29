@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Event"
+            android:text="@string/event"
             android:textSize="25sp"
             android:textColor="@color/colorAccent"/>
 
@@ -29,7 +29,7 @@
             android:id="@+id/input_name_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name of an event" />
+            android:hint="@string/name_of_an_event" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -41,14 +41,15 @@
                 android:id="@+id/input_location_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Location of an event" />
+                android:hint="@string/location_of_an_event" />
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:weightSum="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_datestart"
@@ -81,7 +82,7 @@
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:hint="Ending date" />
+                    android:hint="@string/ending_date" />
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
@@ -89,7 +90,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Event leader"
+            android:text="@string/event_leader"
             android:textSize="25sp"
             android:textColor="@color/colorAccent"/>
 
@@ -102,7 +103,7 @@
                 android:id="@+id/input_nameleader_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Full name of event leader" />
+                android:hint="@string/full_name_of_event_leader" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -116,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@android:drawable/sym_action_email"
                 android:inputType="textEmailAddress"
-                android:hint="Email adress of event leader" />
+                android:hint="@string/email_adress_of_event_leader" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -129,13 +130,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="Phone number of event leader" />
+                android:hint="@string/phone_number_of_event_leader" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Medic"
+            android:text="@string/medic"
             android:textSize="25sp"
             android:textColor="@color/colorAccent"/>
 
@@ -148,7 +149,7 @@
                 android:id="@+id/input_namemedic_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Full name of a medic" />
+                android:hint="@string/full_name_of_a_medic" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -162,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@android:drawable/sym_action_email"
                 android:inputType="textEmailAddress"
-                android:hint="Email adress of medic" />
+                android:hint="@string/email_adress_of_medic" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -175,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="Phone number of medic" />
+                android:hint="@string/phone_number_of_medic" />
         </android.support.design.widget.TextInputLayout>
 
 

@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Participant info"
+            android:text="@string/participant_info"
             android:textSize="25sp"
             android:textColor="@color/colorAccent"/>
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_weight="1"
-            android:text="Is user active?"/>
+            android:text="@string/is_user_active"/>
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
                 android:id="@+id/input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name" />
+                android:hint="@string/name" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -61,7 +61,7 @@
                 android:id="@+id/input_surname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Surname" />
+                android:hint="@string/surname" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -76,20 +76,20 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:digits="0,1,2,3,4,5,6,7,8,9,/"
-                android:hint="Personal identification number" />
+                android:hint="@string/personal_identification_number" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_insurence"
+            android:id="@+id/input_layout_insurance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/input_insurence"
+                android:id="@+id/input_insurance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Insurence company" />
+                android:hint="@string/insurence_company" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -102,14 +102,14 @@
                 android:id="@+id/input_notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Notes (optional)" />
+                android:hint="@string/notes_optional" />
 
         </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Contact to parents"
+            android:text="@string/contact_to_parents"
             android:textSize="25sp"
             android:textColor="@color/colorAccent"/>
 
@@ -123,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Email to parents" />
+                android:hint="@string/email_to_parents" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -137,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="Phone number to parents" />
+                android:hint="@string/phone_number_to_parents" />
 
         </android.support.design.widget.TextInputLayout>
 

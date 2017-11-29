@@ -27,7 +27,7 @@ public class AddParticipant extends Fragment {
     EditText name;
     EditText surname;
     EditText rc;
-    EditText insurenceCompany;
+    EditText insuranceCompany;
     EditText notes;
     EditText parentEmail;
     EditText parentPhone;
@@ -55,7 +55,7 @@ public class AddParticipant extends Fragment {
         name = root.findViewById(R.id.input_name);
         surname = root.findViewById(R.id.input_surname);
         rc = root.findViewById(R.id.input_rc);
-        insurenceCompany = root.findViewById(R.id.input_insurence);
+        insuranceCompany = root.findViewById(R.id.input_insurance);
         formOk = false;
         notes = root.findViewById(R.id.input_notes);
         parentEmail= root.findViewById(R.id.input_parentsemail);
@@ -98,7 +98,7 @@ public class AddParticipant extends Fragment {
         final TextInputLayout layoutName = root.findViewById(R.id.input_layout_name);
         final TextInputLayout layoutSurname = root.findViewById(R.id.input_layout_surname);
         final TextInputLayout layoutRc= root.findViewById(R.id.input_layout_rc);
-        final TextInputLayout layoutInsurence = root.findViewById(R.id.input_layout_insurence);
+        final TextInputLayout layoutInsurance = root.findViewById(R.id.input_layout_insurance);
         final TextInputLayout layoutParentsEmail = root.findViewById(R.id.input_layout_parentsemail);
         final TextInputLayout layoutParentsPhone = root.findViewById(R.id.input_layout_parentsphone);
 
@@ -126,12 +126,12 @@ public class AddParticipant extends Fragment {
             layoutRc.setErrorEnabled(true);
             formOk = false;
         }
-        if (!TextUtils.isEmpty(insurenceCompany.getText().toString())) {
-            layoutInsurence.setErrorEnabled(false);
+        if (!TextUtils.isEmpty(insuranceCompany.getText().toString())) {
+            layoutInsurance.setErrorEnabled(false);
             formOk = true;
         } else {
-            layoutInsurence.setError("Insurence company must be filled!");
-            layoutInsurence.setErrorEnabled(true);
+            layoutInsurance.setError("Insurance company must be filled!");
+            layoutInsurance.setErrorEnabled(true);
             formOk = false;
         }
         if (!TextUtils.isEmpty(parentEmail.getText().toString())) {

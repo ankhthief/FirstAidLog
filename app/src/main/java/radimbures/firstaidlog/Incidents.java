@@ -17,7 +17,6 @@ public class Incidents extends Fragment {
     public long id_eventu;
     public long id_participant;
     DBAdapter myDB;
-    Class S;
 
     public Incidents() {
         // Required empty public constructor
@@ -41,10 +40,6 @@ public class Incidents extends Fragment {
         bundle2.putLong("idevent", id_eventu);
         bundle2.putLong("idparticipant",id_participant);
         frag.setArguments(bundle2);
-
-        //myDB =  new DBAdapter(getActivity());
-        //myDB.open();
-        //myDB.close();
 
         mTabHost = root.findViewById(R.id.tabHost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);

@@ -18,14 +18,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="Recommended equipment for the first aid kit" />
+        android:text="@string/recommended_equipment_for_the_first_aid_kit" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textColor="@color/colorAccent"
-            android:text="Medicinal products" />
+            android:text="@string/medicinal_products" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textColor="@color/colorAccent"
-            android:text="Bandage and other medical supplies" />
+            android:text="@string/bandage_and_other_medical_supplies" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textColor="@color/colorAccent"
-            android:text="Other equipment" />
+            android:text="@string/other_equipment" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:id="@+id/tv_empty"
         android:layout_height="match_parent"
-        android:text="Oh no, it seems that there's no data to display. Start adding some using + button." />
+        android:text="@string/oh_no_it_seems_that_there_s_no_data_to_display_start_adding_some_using_button" />
 
 
     <ListView
