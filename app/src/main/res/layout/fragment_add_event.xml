@@ -28,7 +28,6 @@
         <EditText
             android:id="@+id/input_name_event"
             android:layout_width="match_parent"
-            android:drawableStart="@android:drawable/ic_menu_edit"
             android:layout_height="wrap_content"
             android:hint="Name of an event" />
         </android.support.design.widget.TextInputLayout>
@@ -42,7 +41,6 @@
                 android:id="@+id/input_location_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@android:drawable/ic_menu_compass"
                 android:hint="Location of an event" />
         </android.support.design.widget.TextInputLayout>
 
@@ -66,7 +64,6 @@
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:drawableStart="@android:drawable/ic_menu_my_calendar"
                 android:hint="@string/starting_date" />
         </android.support.design.widget.TextInputLayout>
 
@@ -84,7 +81,6 @@
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:drawableStart="@android:drawable/ic_menu_my_calendar"
                     android:hint="Ending date" />
             </android.support.design.widget.TextInputLayout>
 
@@ -106,7 +102,6 @@
                 android:id="@+id/input_nameleader_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@android:drawable/ic_menu_edit"
                 android:hint="Full name of event leader" />
         </android.support.design.widget.TextInputLayout>
 
@@ -133,7 +128,6 @@
                 android:id="@+id/input_phoneleader_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@android:drawable/ic_menu_call"
                 android:inputType="phone"
                 android:hint="Phone number of event leader" />
         </android.support.design.widget.TextInputLayout>
@@ -154,7 +148,6 @@
                 android:id="@+id/input_namemedic_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@android:drawable/ic_menu_edit"
                 android:hint="Full name of a medic" />
         </android.support.design.widget.TextInputLayout>
 
@@ -181,7 +174,6 @@
                 android:id="@+id/input_phonemedic_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@android:drawable/ic_menu_call"
                 android:inputType="phone"
                 android:hint="Phone number of medic" />
         </android.support.design.widget.TextInputLayout>

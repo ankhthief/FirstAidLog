@@ -54,9 +54,9 @@ public class AddFromDB extends Fragment {
             id_eventu = bundle.getLong("idevent");
         }
         myDB.open();
-        pocet = myDB.getParticipantsCount();
+        pocet = myDB.getParticipantsCountActive();
         pocet2 = myDB.getRegistCount();
-        cursor = myDB.getAllRowsParticipant();
+        cursor = myDB.db.rawQuery("SELECT * FROM participants WHERE status=1",null);
         cursor2 = myDB.getAllRowsRegistr();
         cursor.moveToFirst();
         for(int i = 0; i < pocet; i++) {

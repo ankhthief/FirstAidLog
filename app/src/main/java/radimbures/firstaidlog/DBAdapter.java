@@ -118,6 +118,7 @@ public class DBAdapter {
         if (cur != null && cur.moveToFirst()) {
             empty = (cur.getInt (0) == 0);
         }
+        assert cur != null;
         cur.close();
 
         return empty;
@@ -130,6 +131,7 @@ public class DBAdapter {
         if (cur != null && cur.moveToFirst()) {
             empty = (cur.getInt (0) == 0);
         }
+        assert cur != null;
         cur.close();
 
         return empty;
@@ -141,6 +143,7 @@ public class DBAdapter {
         if (cur != null && cur.moveToFirst()) {
             empty = (cur.getInt (0) == 0);
         }
+        assert cur != null;
         cur.close();
 
         return empty;
@@ -151,6 +154,7 @@ public class DBAdapter {
         if (cur != null && cur.moveToFirst()) {
             empty = (cur.getInt (0) == 0);
         }
+        assert cur != null;
         cur.close();
 
         return empty;
@@ -162,6 +166,7 @@ public class DBAdapter {
         if (cur != null && cur.moveToFirst()) {
             empty = (cur.getInt (0) == 0);
         }
+        assert cur != null;
         cur.close();
 
         return empty;
@@ -170,6 +175,13 @@ public class DBAdapter {
     //number of participants in database
     public long getParticipantsCount() {
         return DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
+    }
+
+    //number of participants in database
+    public long getParticipantsCountActive() {
+        //return DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
+        String s = "1";
+        return DatabaseUtils.longForQuery(db,"SELECT COUNT(*) FROM " + TABLE_PARTICIPANTS + " WHERE " + PARTICIPANT_STATUS + "=?", new String[] {s});
     }
 
     public long getRegistCount() {
