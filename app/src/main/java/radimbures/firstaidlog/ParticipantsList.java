@@ -63,7 +63,7 @@ public class ParticipantsList extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //předání id eventu a usera
-                Injuries frag = new Injuries();
+                Incidents frag = new Incidents();
                 Bundle bundle = new Bundle();
                 bundle.putLong("idparticipant", l);
                 bundle.putLong("idevent", id_eventu);

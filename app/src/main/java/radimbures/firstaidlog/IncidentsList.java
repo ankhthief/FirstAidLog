@@ -3,7 +3,6 @@ package radimbures.firstaidlog;
 
 
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,7 +26,7 @@ import java.io.File;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InjuriesList extends Fragment {
+public class IncidentsList extends Fragment {
 
     DBAdapter myDB;
     ListView injuriesList;
@@ -42,7 +41,7 @@ public class InjuriesList extends Fragment {
     FloatingActionButton fab;
     FragmentManager fm;
 
-    public InjuriesList() {
+    public IncidentsList() {
         // Required empty public constructor
     }
 
@@ -70,7 +69,7 @@ public class InjuriesList extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AddInjury frag = new AddInjury();
+                AddIncident frag = new AddIncident();
                 Bundle bundle = new Bundle();
                 bundle.putLong("idparticipant", id_participant);
                 bundle.putLong("idevent", id_eventu);
@@ -115,7 +114,7 @@ public class InjuriesList extends Fragment {
         final long id = info.id;
         switch (item.getItemId()) {
             case R.id.edit_injury_popup:
-                AddInjury frag = new AddInjury();
+                AddIncident frag = new AddIncident();
                 Bundle bundle = new Bundle();
                 bundle.putLong("idparticipant", id_eventu);
                 bundle.putLong("idevent", id_participant);

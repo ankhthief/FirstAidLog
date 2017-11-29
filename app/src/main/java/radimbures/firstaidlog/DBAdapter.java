@@ -17,7 +17,7 @@ public class DBAdapter {
     private static final String TABLE_EVENTS = "events";  //database name Events
     private static final String TABLE_PARTICIPANTS = "participants"; //database name Participants
     private static final String TABLE_REGISTR = "registr"; //database name Registr
-    private static final String TABLE_INJURIES = "injuries"; //database name Injuries
+    private static final String TABLE_INJURIES = "injuries"; //database name Incidents
     private static final String TABLE_PHOTOS = "photos"; //table name Photos
     private static final int DATABASE_VERSION = 10;  //database version. Need to increment every time DB changes
 
@@ -35,7 +35,7 @@ public class DBAdapter {
 
     private static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANT_STATUS, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME};
 
-    //table Injuries
+    //table Incidents
     private static final String INJURIES_ROWID = "_id";
     public static final String INJURIES_TITLE = "title";
     public static final String INJURIES_DESCRIPTION = "description";
@@ -80,7 +80,7 @@ public class DBAdapter {
                     + REGISTR_PARTICIPANTID + " TEXT NOT NULL"
                     + ");";
 
-    //SQL to create table Injuries
+    //SQL to create table Incidents
     private static final String DATABASE_CREATE_SQL_INJUERIES =
             "CREATE TABLE " + TABLE_INJURIES
                 + " (" + INJURIES_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -219,7 +219,7 @@ public class DBAdapter {
         return db.rawQuery(MY_QUERY, new String[]{S});
     }
 
-    //returns all data from table Injuries in Event for Participant
+    //returns all data from table Incidents in Event for Participant
     public Cursor getAllRowsInjuries(long participantid, long eventid) {
         String S = String.valueOf(participantid);
         String K = String.valueOf(eventid);
@@ -264,7 +264,7 @@ public class DBAdapter {
         return db.insert(TABLE_REGISTR, null, initialValues);
     }
 
-    //creates dataset to add to the table Injuries
+    //creates dataset to add to the table Incidents
     public long insertRowInjuries(String title, String description, Long idparticipant, Long idevent) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(INJURIES_TITLE, title);
@@ -273,7 +273,7 @@ public class DBAdapter {
         initialValues.put(INJURIES_EVENTID, idevent);
 
 
-        //add dataset to table Injuries
+        //add dataset to table Incidents
         return db.insert(TABLE_INJURIES, null, initialValues);
     }
 

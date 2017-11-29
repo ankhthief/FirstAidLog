@@ -8,7 +8,6 @@
     android:paddingTop="16dp"
     tools:context="radimbures.firstaidlog.AddEvent">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
