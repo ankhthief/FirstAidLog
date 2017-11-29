@@ -23,7 +23,7 @@ public class DBAdapter {
 
     //table Events
     private static final String EVENTS_ROWID = "_id";
-    public static final String EVENTS_NAME = "name";
+    static final String EVENTS_NAME = "name";
 
     private static final String[] ALL_KEYS_EVENT = new String[] {EVENTS_ROWID, EVENTS_NAME};
 

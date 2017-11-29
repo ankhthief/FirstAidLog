@@ -115,7 +115,6 @@
                 android:id="@+id/input_emailleader_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@android:drawable/sym_action_email"
                 android:inputType="textEmailAddress"
                 android:hint="@string/email_adress_of_event_leader" />
         </android.support.design.widget.TextInputLayout>
@@ -161,7 +160,6 @@
                 android:id="@+id/input_emailmedic_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@android:drawable/sym_action_email"
                 android:inputType="textEmailAddress"
                 android:hint="@string/email_adress_of_medic" />
         </android.support.design.widget.TextInputLayout>
