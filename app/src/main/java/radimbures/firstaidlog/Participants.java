@@ -47,9 +47,9 @@ public class Participants extends Fragment {
 
         mTabHost = root.findViewById(R.id.tabHost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
-        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("List of participants"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator(getString(R.string.list_participants)),
                 ParticipantsList.class, bundle1);
-        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Event information"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator(getString(R.string.event_info)),
                 EventInfo.class, bundle1);
 
 

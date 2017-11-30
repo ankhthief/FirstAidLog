@@ -43,9 +43,9 @@ public class Incidents extends Fragment {
 
         mTabHost = root.findViewById(R.id.tabHost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
-        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("List of injuries"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator(getString(R.string.incident_list)),
                 IncidentsList.class, bundle2);
-        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Personal information"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator(getString(R.string.personal_info)),
                 ParticipantInfo.class, bundle2);
 
 

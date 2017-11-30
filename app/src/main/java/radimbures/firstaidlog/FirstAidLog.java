@@ -32,9 +32,9 @@ public class FirstAidLog extends Fragment {
 
         mTabHost = root.findViewById(R.id.tabHost);
         mTabHost.setup(getContext(), getChildFragmentManager(), android.R.id.tabcontent);
-        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("Events"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator(getString(R.string.events)),
                 EventsList.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Participants database"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator(getString(R.string.participant_db)),
                 ParticipantDatabase.class, null);
 
         return root;

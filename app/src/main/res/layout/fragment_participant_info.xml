@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/filename"
                 android:textSize="15sp"
-                android:text="Generate pdf report using export button bellow"
+                android:text="@string/generate_pdf_report_using_export_button_bellow"
                 />
 
         <LinearLayout

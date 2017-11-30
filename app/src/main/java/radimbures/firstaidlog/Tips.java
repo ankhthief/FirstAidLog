@@ -35,43 +35,43 @@ public class Tips extends Fragment {
         layout1 = root.findViewById(R.id.check_bandage_layout);
         layout2 = root.findViewById(R.id.check_other_layout);
         String[] medicalproducts = {
-                "tablets or suppositories for headache, teeth (analgesics)",
-                "tablets or suppositories to reduce elevated temperature (antipyretics)",
-                "anti-nausea tablets (vehicle antiemetics)",
-                "charcoal",
-                "nasal drops for nasal breathing (otorhinolaryngology)",
-                "drops, solution (syrup) or cough tablets (antitussive, expectorant)",
-                "mouthpiece for disinfection of oral cavity and pharyngeal pain (stomatology)",
-                "ointment or healing accelerator such as burns (dexpanthenol spray)",
-                "eye drops or eye ointment with disinfectant effect, eye water for eye flushing (ophthalmology)",
-                "ointment or gel when insect bites (local antihistamines)",
-                "tablets with systemic allergic reaction (total antihistamine)",
-                "a product for skin disinfection and surface wounds",
-                "disinfectant on the wound site",
-                "inert ointment or grease"
+                getString(R.string.tips1),
+                getString(R.string.tips2),
+                getString(R.string.tips3),
+                getString(R.string.tips4),
+                getString(R.string.tips5),
+                getString(R.string.tips6),
+                getString(R.string.tips7),
+                getString(R.string.tips8),
+                getString(R.string.tips9),
+                getString(R.string.tips10),
+                getString(R.string.tips11),
+                getString(R.string.tips12),
+                getString(R.string.tips13),
+                getString(R.string.tips14)
         };
-        String[] bandage = {
-                "gauze hydrophilic folded sterile compression, various sizes",
-                "patch on coil, different dimensions",
-                "wound dressing, different sizes",
-                "elastic bandage, various dimensions",
-                "Bandage sterile, various sizes",
-                "throttle bandage",
-                "scarf triple",
-                "cotton wool and cellulose wadding",
-                "medical thermometer",
-                "resuscitation strap",
-                "anatomical tweezers",
-                "surgical tweezers straight",
-                "Medical wooden blades",
-                "medical rubber gloves",
-                "PVC stripper 45 x 55 cm",
-                "fixation plates, various dimensions"
+        String[] bandage = new String[]{
+                getString(R.string.tips15),
+                getString(R.string.tips16),
+                getString(R.string.tips17),
+                getString(R.string.tips18),
+                getString(R.string.tips19),
+                getString(R.string.tips20),
+                getString(R.string.tips21),
+                getString(R.string.tips22),
+                getString(R.string.tips23),
+                getString(R.string.tips24),
+                getString(R.string.tips25),
+                getString(R.string.tips26),
+                getString(R.string.tips27),
+                getString(R.string.tips28),
+                getString(R.string.tips29),
+                getString(R.string.tips30)
         };
 
         String[] other = {
-                "scissors",
-                "closing pins, various sizes"
+                getString(R.string.tips31),
+                getString(R.string.tips32)
         };
 
         for (String medicalproduct : medicalproducts) {
