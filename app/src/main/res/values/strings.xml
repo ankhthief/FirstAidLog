@@ -56,4 +56,9 @@
     <string name="medicinal_products">Medicinal products</string>
     <string name="bandage_and_other_medical_supplies">Bandage and other medical supplies</string>
     <string name="other_equipment">Other equipment</string>
+    <string name="overview">Overview</string>
+    <string name="author">Author</string>
+    <string name="about_text">This app was developed as a diploma thesis on CULS (Czech University of Life Sciences Prague). Main purpose is to help volunteer medics on public events like summer camps to maintain medical recods more efficiently.</string>
+    <string name="contact">Radim Bureš - radim.bures@gmail.com</string>
+    <string name="rate">Rate FirstAidLog on Google Play</string>
 </resources>
