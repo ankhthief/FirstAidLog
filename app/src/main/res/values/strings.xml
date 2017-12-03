@@ -100,4 +100,5 @@
     <string name="personal_info">Personal information</string>
     <string name="generate_pdf_report_using_export_button_bellow">Generate pdf report using export button bellow</string>
     <string name="no_particpants_in_db">No participants in DB, add some first</string>
+    <string name="date_separator">-</string>
 </resources>

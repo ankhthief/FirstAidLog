@@ -97,8 +97,8 @@ public class ParticipantsList extends Fragment {
         myDB.open();
         participantList.invalidateViews();
         cursor = myDB.getAllRowsParticipantNew(id_eventu);
-        fromParticipantNames = new String[] {DBAdapter.PARTICIPANTS_NAME, DBAdapter.PARTICIPANTS_SURNAME};
-        toViewIDs = new int[] {R.id.name_of_participant, R.id.surname_of_participant};
+        fromParticipantNames = new String[] {DBAdapter.PARTICIPANTS_NAME, DBAdapter.PARTICIPANTS_SURNAME, DBAdapter.PARTICIPANTS_PIN};
+        toViewIDs = new int[] {R.id.name_of_participant, R.id.surname_of_participant, R.id.personal_number22};
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_participant, cursor, fromParticipantNames, toViewIDs,0 );
         participantList.setAdapter(myCursorAdapter);
         myCursorAdapter.notifyDataSetChanged();

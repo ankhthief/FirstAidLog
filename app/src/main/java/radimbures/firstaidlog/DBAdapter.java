@@ -41,7 +41,7 @@ public class DBAdapter {
     private static final String PARTICIPANT_STATUS = "status";
     static final String PARTICIPANTS_NAME = "name";
     static final String PARTICIPANTS_SURNAME = "surname";
-    private static final String PARTICIPANTS_PIN = "personalnumber";
+    static final String PARTICIPANTS_PIN = "personalnumber";
     private static final String PARTICIPANTS_INSURANCE = "insurance";
     private static final String PARTICIPANTS_NOTES = "notes";
     private static final String PARTICIPANTS_PARENTSEMAIL = "parentsemail";
@@ -211,7 +211,6 @@ public class DBAdapter {
 
     //number of participants in database
     long getParticipantsCountActive() {
-        //return DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
         String s = "1";
         return DatabaseUtils.longForQuery(db,"SELECT COUNT(*) FROM " + TABLE_PARTICIPANTS + " WHERE " + PARTICIPANT_STATUS + "=?", new String[] {s});
     }
@@ -279,7 +278,7 @@ public class DBAdapter {
         return db.rawQuery(MY_QUERY, new String[]{S});
     }
     //creates dataset to add to the table Events
-    long insertRowEvent(String name, String location, String startdate, String enddate, String leadername, String leaderemail, String leaderphone, String medicname, String medicemail, String medicphone) {
+    void insertRowEvent(String name, String location, String startdate, String enddate, String leadername, String leaderemail, String leaderphone, String medicname, String medicemail, String medicphone) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(EVENTS_NAME, name);
         initialValues.put(EVENTS_LOCATION, location);
@@ -293,11 +292,11 @@ public class DBAdapter {
         initialValues.put(EVENTS_MEDICPHONE, medicphone);
 
         //add dataset to table Events
-        return db.insert(TABLE_EVENTS, null, initialValues);
+        db.insert(TABLE_EVENTS, null, initialValues);
     }
 
     //creates dataset to add to the table Participants
-    long insertRowParticipant(Integer status, String name, String surname, String personalnumber, String insurance, String notes, String parentsemail, String parentsphone) {
+    void insertRowParticipant(Integer status, String name, String surname, String personalnumber, String insurance, String notes, String parentsemail, String parentsphone) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PARTICIPANT_STATUS, status);
         initialValues.put(PARTICIPANTS_NAME, name);
@@ -309,17 +308,17 @@ public class DBAdapter {
         initialValues.put(PARTICIPANTS_PARENTSPHONE, parentsphone);
 
         //add dataset to table Participants
-        return db.insert(TABLE_PARTICIPANTS, null, initialValues);
+        db.insert(TABLE_PARTICIPANTS, null, initialValues);
     }
 
     //creates dataset to add to the table Registr
-    long insertRowRegistr(Long idevent, Long idparticipant) {
+    void insertRowRegistr(Long idevent, Long idparticipant) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(REGISTR_EVENTID, idevent);
         initialValues.put(REGISTR_PARTICIPANTID, idparticipant);
 
         //add dataset to table Registr
-        return db.insert(TABLE_REGISTR, null, initialValues);
+        db.insert(TABLE_REGISTR, null, initialValues);
     }
 
     //creates dataset to add to the table Incidents
@@ -338,12 +337,12 @@ public class DBAdapter {
         return db.insert(TABLE_INCIDENTS, null, initialValues);
     }
 
-    long insertRowPhotos(Long idinjury, String image) {
+    void insertRowPhotos(Long idinjury, String image) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PHOTOS_INJURYID, idinjury);
         initialValues.put(PHOTOS_PHOTO, image);
 
-        return  db.insert(TABLE_PHOTOS, null, initialValues);
+        db.insert(TABLE_PHOTOS, null, initialValues);
     }
 
 

@@ -72,8 +72,8 @@ public class ParticipantDatabase extends Fragment {
     public void populateListView() {
         myDB.open();
         Cursor cursor = myDB.getAllRowsParticipant();
-        String[] fromParticipantNames = new String[] {DBAdapter.PARTICIPANTS_NAME, DBAdapter.PARTICIPANTS_SURNAME};
-        int[] toViewIDs = new int[] {R.id.name_of_participant, R.id.surname_of_participant};
+        String[] fromParticipantNames = new String[] {DBAdapter.PARTICIPANTS_NAME, DBAdapter.PARTICIPANTS_SURNAME,DBAdapter.PARTICIPANTS_PIN};
+        int[] toViewIDs = new int[] {R.id.name_of_participant, R.id.surname_of_participant, R.id.personal_number22};
         SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_participant, cursor, fromParticipantNames, toViewIDs,0 );
         participantsDatabase.setAdapter(myCursorAdapter);
