@@ -101,5 +101,21 @@
     <string name="personal_info">Účastník - souhrn</string>
     <string name="generate_pdf_report_using_export_button_bellow">PDF report vygenerujete kliknutím na tlačítko Export dole</string>
     <string name="no_particpants_in_db">Žádný účastník v databázi, nejdřív nějaké přidejte</string>
-    <string name="date_separator">&#160;-&#160;</string>
+    <string name="date_separator">&#160;-&#160;;</string>
+    <string name="share_file">Sdílet soubor</string>
+    <string name="email_text">Dobrý den, v příloze zasílám pdf se záznamy ze zdravotního deníku vašeho dítěte.
+        \n
+        \n
+        S pozdravem
+        \n
+        Vedení tábora</string>
+    <string name="email_sub1">Zdravotní deník pro&#160;</string>
+    <string name="email_subject2">&#160;z akce&#160;</string>
+    <string name="pdf_title">Zdravotní deník pro</string>
+    <string name="personal_identification_number2">Rodné číslo: %1$s</string>
+    <string name="insurence_company2">Pojišťovna: %1$s</string>
+    <string name="notes_optional2">Poznámky: %1$s</string>
+    <string name="email_to_parents2">Email na rodiče: %1$s</string>
+    <string name="phone_number_to_parents2">Číslo na rodiče: %1$s</string>
+    <string name="medical_report_pdf">Zdravotní deník v PDF</string>
 </resources>

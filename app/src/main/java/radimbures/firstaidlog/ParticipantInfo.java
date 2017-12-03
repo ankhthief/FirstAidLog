@@ -150,12 +150,12 @@ public class ParticipantInfo extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + "FirstAidLog" + "/" + filename1);
 
                 if(pdfFile.exists()) {
                     intentShareFile.setType("application/pdf");
                     intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
-
-                    intentShareFile.putExtra(Intent.EXTRA_EMAIL, email);
+                    intentShareFile.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
                     intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
                             getString(R.string.email_sub1) + nameString + getString(R.string.email_subject2) +eventName);
                     intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_text));
