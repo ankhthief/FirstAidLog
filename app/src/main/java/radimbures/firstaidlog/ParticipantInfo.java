@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -57,6 +58,11 @@ public class ParticipantInfo extends Fragment {
 
     DBAdapter myDB;
     TextView name;
+    TextView rc;
+    TextView ins_company;
+    TextView notes;
+    TextView parents_email;
+    TextView parents_phone;
     long id_eventu;
     long id_participant;
     Uri path1;
@@ -72,6 +78,7 @@ public class ParticipantInfo extends Fragment {
     String eventName;
     Cursor zraneni;
     Cursor fotky;
+    String email;
 
 
     public ParticipantInfo() {
@@ -88,8 +95,14 @@ public class ParticipantInfo extends Fragment {
         path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FirstAidLog";
         fab2 = root.findViewById(R.id.fab_backup_participant);
         show = root.findViewById(R.id.show);
+        notes = root.findViewById(R.id.notes);
+        ins_company = root.findViewById(R.id.ins_company);
         share = root.findViewById(R.id.share);
+        parents_email = root.findViewById(R.id.parents_email);
+        parents_phone = root.findViewById(R.id.parents_phone);
+        rc = root.findViewById(R.id.rc);
         filename = root.findViewById(R.id.filename);
+        Resources res = getResources();
         Bundle bundle = getArguments();
         if (bundle != null) {
             id_eventu = bundle.getLong("idevent");
@@ -98,9 +111,20 @@ public class ParticipantInfo extends Fragment {
 
         name = root.findViewById(R.id.name);
         myDB.open();
-        Cursor c = myDB.db.rawQuery("SELECT p.name, p.surname FROM (participants p INNER JOIN registr r ON r.participantid=p._id) INNER JOIN events e ON e._id=r.eventid WHERE e._id==" + id_eventu+ " AND p._id=="+id_participant, null);
+        Cursor c = myDB.db.rawQuery("SELECT p.name, p.surname, p.personalnumber, p.insurance, p.notes, p.parentsemail, p.parentsphone FROM (participants p INNER JOIN registr r ON r.participantid=p._id) INNER JOIN events e ON e._id=r.eventid WHERE e._id==" + id_eventu+ " AND p._id=="+id_participant, null);
         c.moveToFirst();
         nameString = c.getString(c.getColumnIndex("name"))+ " " + c.getString(c.getColumnIndex("surname"));
+        String s = res.getString(R.string.personal_identification_number2, c.getString(c.getColumnIndex("personalnumber")));
+        String s2 = res.getString(R.string.insurence_company2, c.getString(c.getColumnIndex("insurance")));
+        String s3 = res.getString(R.string.notes_optional2, c.getString(c.getColumnIndex("notes")));
+        email = c.getString(c.getColumnIndex("parentsemail"));
+        String s4 = res.getString(R.string.email_to_parents2, email);
+        String s5 = res.getString(R.string.phone_number_to_parents2, c.getString(c.getColumnIndex("parentsphone")));
+        rc.setText(s);
+        ins_company.setText(s2);
+        notes.setText(s3);
+        parents_email.setText(s4);
+        parents_phone.setText(s5);
         Cursor c1 = myDB.db.rawQuery("SELECT name FROM events WHERE _id="+id_eventu, null);
         c1.moveToFirst();
         eventName = c1.getString(c1.getColumnIndex("name"));
@@ -114,7 +138,6 @@ public class ParticipantInfo extends Fragment {
             show.setEnabled(true);
             share.setEnabled(true);
         }
-
 
         show.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,11 +155,12 @@ public class ParticipantInfo extends Fragment {
                     intentShareFile.setType("application/pdf");
                     intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
 
+                    intentShareFile.putExtra(Intent.EXTRA_EMAIL, email);
                     intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                            "Zdravotní deník pro " + nameString + " z akce " +eventName);
-                    intentShareFile.putExtra(Intent.EXTRA_TEXT, "Dobrý den, v příloze zasílám pdf se záznamy ze zdravotního deníku vašeho dítěte.");
+                            getString(R.string.email_sub1) + nameString + getString(R.string.email_subject2) +eventName);
+                    intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_text));
 
-                    startActivity(Intent.createChooser(intentShareFile, "Share File"));
+                    startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
                 }
             }
         });
@@ -146,10 +170,7 @@ public class ParticipantInfo extends Fragment {
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getActivity(),"export karty účastníka", Toast.LENGTH_LONG).show();
-
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    //Toast.makeText(getActivity(),"problém", Toast.LENGTH_SHORT).show();
                     ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
                 }
 
@@ -193,7 +214,7 @@ public class ParticipantInfo extends Fragment {
             //open the document
             doc.open();
 
-            Paragraph p1 = new Paragraph("Medical Report for  "+text + ", "+eventName);
+            Paragraph p1 = new Paragraph(getString(R.string.pdf_title)+text + ", "+eventName);
             Font paraFont= new Font(Font.FontFamily.TIMES_ROMAN, 15,Font.NORMAL, BaseColor.BLUE);
             Font nadpis = new Font(Font.FontFamily.HELVETICA,15, Font.BOLD);
             p1.setAlignment(Paragraph.ALIGN_CENTER);

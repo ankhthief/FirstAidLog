@@ -101,4 +101,14 @@
     <string name="generate_pdf_report_using_export_button_bellow">Generate pdf report using export button bellow</string>
     <string name="no_particpants_in_db">No participants in DB, add some first</string>
     <string name="date_separator">&#160;-&#160;;</string>
+    <string name="share_file">Share File</string>
+    <string name="email_text">Dobrý den, v příloze zasílám pdf se záznamy ze zdravotního deníku vašeho dítěte.</string>
+    <string name="email_sub1">Zdravotní deník pro</string>
+    <string name="email_subject2">z akce</string>
+    <string name="pdf_title">Medical Report for</string>
+    <string name="personal_identification_number2">Personal identification number: %1$s</string>
+    <string name="insurence_company2">Insurance company: %1$s</string>
+    <string name="notes_optional2">Notes: %1$s</string>
+    <string name="email_to_parents2">Email to parents: %1$s</string>
+    <string name="phone_number_to_parents2">Phone number to parents: %1$s</string>
 </resources>

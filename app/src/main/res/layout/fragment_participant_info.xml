@@ -49,8 +49,34 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
         android:id="@+id/name" />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rc" />
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/ins_company" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/notes" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autoLink="email"
+            android:id="@+id/parents_email" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:autoLink="phone"
+            android:linksClickable="true"
+            android:id="@+id/parents_phone" />
     </LinearLayout>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
