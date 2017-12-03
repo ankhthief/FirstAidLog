@@ -37,6 +37,7 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 
@@ -213,16 +214,18 @@ public class ParticipantInfo extends Fragment {
 
             //open the document
             doc.open();
-
-            Paragraph p1 = new Paragraph(getString(R.string.pdf_title)+text + ", "+eventName);
-            Font paraFont= new Font(Font.FontFamily.TIMES_ROMAN, 15,Font.NORMAL, BaseColor.BLUE);
-            Font nadpis = new Font(Font.FontFamily.HELVETICA,15, Font.BOLD);
+            Font paraFont= new Font(Font.FontFamily.HELVETICA, 18,Font.NORMAL, BaseColor.BLACK);
+            Font nadpis = new Font(Font.FontFamily.HELVETICA,18, Font.BOLD, BaseColor.BLACK);
+            Font nadpish1 = new Font(Font.FontFamily.HELVETICA,25, Font.BOLD, BaseColor.BLACK);
+            Font nadpish2 = new Font(Font.FontFamily.HELVETICA,20, Font.BOLD, BaseColor.BLUE);
+            Paragraph p1 = new Paragraph(getString(R.string.pdf_title)+ " " +text + ", "+eventName, nadpish1);
             p1.setAlignment(Paragraph.ALIGN_CENTER);
-            p1.setFont(nadpis);
+            p1.add(Chunk.NEWLINE);
             DottedLineSeparator dottedline = new DottedLineSeparator();
             dottedline.setOffset(-2);
             dottedline.setGap(2f);
             p1.add(dottedline);
+            p1.add(Chunk.NEWLINE);
             p1.add(Chunk.NEWLINE);
             Paragraph p2 = new Paragraph();
             p2.setAlignment(Paragraph.ALIGN_LEFT);
@@ -236,12 +239,32 @@ public class ParticipantInfo extends Fragment {
 
                         String title = zraneni.getString(zraneni.getColumnIndex("title"));
                         String description = zraneni.getString(zraneni.getColumnIndex("description"));
+                        String popis = zraneni.getString(zraneni.getColumnIndex("medication"));
+                        String datum = zraneni.getString(zraneni.getColumnIndex("date"));
+                        String cas = zraneni.getString(zraneni.getColumnIndex("time"));
                         Long idcko = zraneni.getLong(zraneni.getColumnIndex("_id"));
-                        Chunk c = new Chunk(title, paraFont);
+                        Chunk c = new Chunk(title + " - ", nadpish2);
                         p2.add(c);
+                        Chunk c1 = new Chunk(" ", paraFont);
+                        p2.add(c1);
+                        Chunk c2 = new Chunk(datum, nadpish2);
+                        p2.add(c2);
+                        Chunk c4 = new Chunk(" ", paraFont);
+                        p2.add(c4);
+                        Chunk c3 = new Chunk(cas, nadpish2);
+                        p2.add(c3);
+                        p2.add(Chunk.NEWLINE);
+                        Chunk e2 = new Chunk(getResources().getString(R.string.incident_description) + ":", nadpis);
+                        p2.add(e2);
                         p2.add(Chunk.NEWLINE);
                         Chunk d = new Chunk(description, paraFont);
                         p2.add(d);
+                        p2.add(Chunk.NEWLINE);
+                        Chunk e1 = new Chunk(getResources().getString(R.string.description_of_medication) + ":", nadpis);
+                        p2.add(e1);
+                        p2.add(Chunk.NEWLINE);
+                        Chunk e = new Chunk(popis, paraFont);
+                        p2.add(e);
                         p2.add(Chunk.NEWLINE);
                         fotky = myDB.getAllPhotos(idcko);
                         if (fotky != null)
@@ -253,7 +276,9 @@ public class ParticipantInfo extends Fragment {
                                     p2.add(image);
                                 } while (fotky.moveToNext());
                             }
+                        p2.add(Chunk.NEWLINE);
                             p2.add(dottedline);
+                        p2.add(Chunk.NEWLINE);
                         p2.add(Chunk.NEWLINE);
                     } while (zraneni.moveToNext());
                 }
