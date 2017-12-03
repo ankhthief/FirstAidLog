@@ -76,8 +76,8 @@ public class EventsList extends Fragment {
     public void populateListView() {
         myDB.open();
         Cursor cursor = myDB.getAllRowsEvent();
-        String[] fromEventNames = new String[] {DBAdapter.EVENTS_NAME};
-        int[] toViewIDs = new int[] {R.id.name_of_event};
+        String[] fromEventNames = new String[] {DBAdapter.EVENTS_NAME, DBAdapter.EVENTS_LOCATION, DBAdapter.EVENTS_STARTDATE, DBAdapter.EVENTS_ENDDATE};
+        int[] toViewIDs = new int[] {R.id.name_of_event, R.id.location_of_event, R.id.date_start, R.id.date_end};
         SimpleCursorAdapter myCursorAdapter;
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_event, cursor, fromEventNames, toViewIDs,0 );
         eventList.setAdapter(myCursorAdapter);

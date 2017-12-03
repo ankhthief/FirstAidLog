@@ -24,9 +24,9 @@ public class DBAdapter {
     //table Events
     private static final String EVENTS_ROWID = "_id";
     static final String EVENTS_NAME = "name";
-    private static final String EVENTS_LOCATION = "location";
-    private static final String EVENTS_STARTDATE = "startdate";
-    private static final String EVENTS_ENDDATE = "enddate";
+    static final String EVENTS_LOCATION = "location";
+    static final String EVENTS_STARTDATE = "startdate";
+    static final String EVENTS_ENDDATE = "enddate";
     private static final String EVENTS_LEADERNAME = "leadername";
     private static final String EVENTS_LEADEREMAIL = "leaderemail";
     private static final String EVENTS_LEADERPHONE = "leaderphone";
