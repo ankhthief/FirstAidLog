@@ -87,13 +87,13 @@ public class IncidentsList extends Fragment {
     public void populateListView() {
         myDB.open();
         injuriesList.invalidateViews();
-        cursor = myDB.getAllRowsInjuries(id_participant, id_eventu);
-        fromInjuriesNames = new String[] {DBAdapter.INJURIES_TITLE, DBAdapter.INJURIES_DESCRIPTION};
+        cursor = myDB.getAllRowsIncidents(id_participant, id_eventu);
+        fromInjuriesNames = new String[] {DBAdapter.INCIDENTS_TITLE, DBAdapter.INCIDENTS_DESCRIPTION};
         toViewIDs = new int[] {R.id.title_of_injury, R.id.desc_of_injury};
         myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_injurie, cursor, fromInjuriesNames, toViewIDs,0 );
         injuriesList.setAdapter(myCursorAdapter);
         myCursorAdapter.notifyDataSetChanged();
-        if (myDB.isEmptyInjuries(id_participant, id_eventu)) {
+        if (myDB.isEmptyIncidents(id_participant, id_eventu)) {
             tv_empty.setVisibility(View.VISIBLE);
         } else {
             tv_empty.setVisibility(View.GONE);
@@ -125,7 +125,7 @@ public class IncidentsList extends Fragment {
                 return true;
             case R.id.delete_injury_popup:
                 myDB.open();
-                myDB.deleteRowInjurie(id);
+                myDB.deleteRowIncident(id);
                 cur = myDB.db.rawQuery("SELECT * FROM photos where injuryid="+id, null);
                 if (cur != null)
                     if (cur.moveToFirst()) {
@@ -138,7 +138,6 @@ public class IncidentsList extends Fragment {
                     }
                 //cur.close();
                 myDB.db.delete("photos","injuryid" + "='"+id+"'",null);
-                Toast.makeText(getActivity(),"injury deleted", Toast.LENGTH_LONG).show();
                 populateListView();
                 myDB.close();
                 return true;

@@ -117,10 +117,13 @@ public class AddIncident extends Fragment {
             novy = bundle.getBoolean("novy");
             if (!novy) {
                 myDB.open();
-                Cursor c = myDB.db.rawQuery("SELECT * FROM injuries WHERE _id==" + id, null);
+                Cursor c = myDB.db.rawQuery("SELECT * FROM incidents WHERE _id==" + id, null);
                 c.moveToFirst();
                 title.setText(c.getString(c.getColumnIndex("title")));
                 desc.setText(c.getString(c.getColumnIndex("description")));
+                date.setText(c.getString(c.getColumnIndex("date")));
+                time.setText(c.getString(c.getColumnIndex("time")));
+                medication.setText(c.getString(c.getColumnIndex("medication")));
                 c.close();
                 if (!myDB.isEmptyPhotos(id)) {
                     c2 = myDB.db.rawQuery("SELECT * FROM photos WHERE injuryid==" + id, null);
@@ -289,13 +292,16 @@ public class AddIncident extends Fragment {
                         ContentValues cv = new ContentValues();
                         cv.put("title", title.getText().toString());
                         cv.put("description", desc.getText().toString());
-                        myDB.db.update("injuries", cv, "_id=" + id, null);
+                        cv.put("date",date.getText().toString());
+                        cv.put("time",time.getText().toString());
+                        cv.put("medication",medication.getText().toString());
+                        myDB.db.update("incidents", cv, "_id=" + id, null);
                         myDB.db.delete("photos", "injuryid" + "='" + id + "'", null);
                         for (int i = 0; i < list.size(); i++) {
                             myDB.insertRowPhotos(id, path.get(i));
                         }
                     } else {
-                        Long idecko = myDB.insertRowInjuries(title.getText().toString(), desc.getText().toString(), idparticipant, idevent);
+                        Long idecko = myDB.insertRowIncidents(title.getText().toString(), desc.getText().toString(), idparticipant, idevent, date.getText().toString(),time.getText().toString(), medication.getText().toString());
                         for (int i = 0; i < list.size(); i++) {
                             myDB.insertRowPhotos(idecko, path.get(i));
                         }

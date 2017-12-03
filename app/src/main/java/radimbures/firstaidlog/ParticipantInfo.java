@@ -208,7 +208,7 @@ public class ParticipantInfo extends Fragment {
             p2.setFont(paraFont);
             doc.add(p1);
             myDB.open();
-            zraneni = myDB.getAllRowsInjuries(id_participant, id_eventu);
+            zraneni = myDB.getAllRowsIncidents(id_participant, id_eventu);
             if (zraneni != null)
                 if (zraneni.moveToFirst()) {
                     do {
