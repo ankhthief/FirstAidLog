@@ -19,30 +19,37 @@ public class DBAdapter {
     private static final String TABLE_REGISTR = "registr"; //database name Registr
     private static final String TABLE_INJURIES = "injuries"; //database name Incidents
     private static final String TABLE_PHOTOS = "photos"; //table name Photos
-    private static final int DATABASE_VERSION = 10;  //database version. Need to increment every time DB changes
+    private static final int DATABASE_VERSION = 11;  //database version. Need to increment every time DB changes
 
     //table Events
     private static final String EVENTS_ROWID = "_id";
-    static final String EVENTS_NAME = "name";
+    public static final String EVENTS_NAME = "name";
+    private static final String EVENTS_LOCATION = "location";
+    private static final String EVENTS_STARTDATE = "startdate";
+    private static final String EVENTS_ENDDATE = "enddate";
+    private static final String EVENTS_LEADERNAME = "leadername";
+    private static final String EVENTS_LEADEREMAIL = "leaderemail";
+    private static final String EVENTS_LEADERPHONE = "leaderphone";
+    private static final String EVENTS_MEDICNAME = "medicname";
+    private static final String EVENTS_MEDICEMAIL = "medicemail";
+    private static final String EVENTS_MEDICPHONE = "medicphone";
 
-    private static final String[] ALL_KEYS_EVENT = new String[] {EVENTS_ROWID, EVENTS_NAME};
+    private static final String[] ALL_KEYS_EVENT = new String[] {EVENTS_ROWID, EVENTS_NAME, EVENTS_LOCATION, EVENTS_STARTDATE, EVENTS_ENDDATE, EVENTS_LEADERNAME, EVENTS_LEADEREMAIL, EVENTS_LEADERPHONE, EVENTS_MEDICNAME, EVENTS_MEDICEMAIL, EVENTS_MEDICPHONE};
 
     //table Participants
     private static final String PARTICIPANTS_ROWID = "_id";
-    public static final String PARTICIPANT_STATUS = "status";
-    public static final String PARTICIPANTS_NAME = "name";
-    public static final String PARTICIPANTS_SURNAME = "surname";
+    private static final String PARTICIPANT_STATUS = "status";
+    static final String PARTICIPANTS_NAME = "name";
+    static final String PARTICIPANTS_SURNAME = "surname";
 
     private static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANT_STATUS, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME};
 
     //table Incidents
     private static final String INJURIES_ROWID = "_id";
-    public static final String INJURIES_TITLE = "title";
-    public static final String INJURIES_DESCRIPTION = "description";
+    static final String INJURIES_TITLE = "title";
+    static final String INJURIES_DESCRIPTION = "description";
     private static final String INJURIES_PARTICIPANTID = "participantid";
     private static final String INJURIES_EVENTID = "eventid";
-
-    private static final String[] ALL_KEYS_INJURIES = new String[] {INJURIES_ROWID, INJURIES_TITLE, INJURIES_DESCRIPTION, INJURIES_PARTICIPANTID, INJURIES_EVENTID};
 
     //table Registr
     private static final String REGISTR_ROWID = "_id";
@@ -60,7 +67,16 @@ public class DBAdapter {
     private static final String DATABASE_CREATE_SQL_EVENTS =
             "CREATE TABLE " + TABLE_EVENTS
                     + " (" + EVENTS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + EVENTS_NAME + " TEXT NOT NULL"
+                    + EVENTS_NAME + " TEXT NOT NULL, "
+                    + EVENTS_LOCATION + " TEXT NOT NULL, "
+                    + EVENTS_STARTDATE + " TEXT NOT NULL, "
+                    + EVENTS_ENDDATE + " TEXT NOT NULL, "
+                    + EVENTS_LEADERNAME + " TEXT NOT NULL, "
+                    + EVENTS_LEADEREMAIL + " TEXT NOT NULL, "
+                    + EVENTS_LEADERPHONE + " TEXT NOT NULL, "
+                    + EVENTS_MEDICNAME + " TEXT NOT NULL, "
+                    + EVENTS_MEDICEMAIL + " TEXT NOT NULL, "
+                    + EVENTS_MEDICPHONE + " TEXT NOT NULL "
                     + ");";
 
     //SQL to create table Participants
@@ -98,8 +114,8 @@ public class DBAdapter {
                 + PHOTOS_PHOTO + " TEXT NOT NULL"
                 + " );";
 
-    public DatabaseHelper myDBHelper;
-    public SQLiteDatabase db;
+    private DatabaseHelper myDBHelper;
+    SQLiteDatabase db;
 
     public DBAdapter(Context ctx) {
         myDBHelper = new DatabaseHelper(ctx);
@@ -125,7 +141,7 @@ public class DBAdapter {
     }
 
     //checks if is no Participant on this Event
-    public boolean isEmptyRegistr(Long radek) {
+    boolean isEmptyRegistr(Long radek) {
         boolean empty = true;
         Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_REGISTR+ " WHERE " + REGISTR_EVENTID+ "= " + radek, null);
         if (cur != null && cur.moveToFirst()) {
@@ -137,7 +153,7 @@ public class DBAdapter {
         return empty;
     }
 
-    public boolean isEmptyInjuries(long participant, long event) {
+    boolean isEmptyInjuries(long participant, long event) {
         boolean empty = true;
         Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_INJURIES+ " WHERE " + INJURIES_EVENTID+ "= " + event + " AND " + INJURIES_PARTICIPANTID + "=" + participant, null);
         if (cur != null && cur.moveToFirst()) {
@@ -148,7 +164,7 @@ public class DBAdapter {
 
         return empty;
     }
-    public boolean isEmptyPhotos(long injury) {
+    boolean isEmptyPhotos(long injury) {
         boolean empty = true;
         Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_PHOTOS+ " WHERE " + PHOTOS_INJURYID+ "= " + injury, null);
         if (cur != null && cur.moveToFirst()) {
@@ -160,7 +176,7 @@ public class DBAdapter {
         return empty;
     }
 
-    public boolean isEmptyParticipant () {
+    boolean isEmptyParticipant() {
         boolean empty = true;
         Cursor cur = db.rawQuery("SELECT COUNT(*) from "+TABLE_PARTICIPANTS, null);
         if (cur != null && cur.moveToFirst()) {
@@ -173,18 +189,18 @@ public class DBAdapter {
     }
 
     //number of participants in database
-    public long getParticipantsCount() {
+    long getParticipantsCount() {
         return DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
     }
 
     //number of participants in database
-    public long getParticipantsCountActive() {
+    long getParticipantsCountActive() {
         //return DatabaseUtils.queryNumEntries(db, TABLE_PARTICIPANTS);
         String s = "1";
         return DatabaseUtils.longForQuery(db,"SELECT COUNT(*) FROM " + TABLE_PARTICIPANTS + " WHERE " + PARTICIPANT_STATUS + "=?", new String[] {s});
     }
 
-    public long getRegistCount() {
+    long getRegistCount() {
         return DatabaseUtils.queryNumEntries(db, TABLE_REGISTR);
     }
 
@@ -198,7 +214,7 @@ public class DBAdapter {
     }
 
     //returns all data from table Events
-    public Cursor getAllRowsEvent() {
+    Cursor getAllRowsEvent() {
         Cursor c = 	db.query(true, TABLE_EVENTS, ALL_KEYS_EVENT, null, null, null, null, null, null);
         if (c != null) {
             c.moveToFirst();
@@ -207,7 +223,7 @@ public class DBAdapter {
     }
 
     //returns all data from table Participants
-     public Cursor getAllRowsParticipant() {
+    Cursor getAllRowsParticipant() {
                 Cursor c = db.query(true, TABLE_PARTICIPANTS, ALL_KEYS_PARTICIPANT, null, null, null, null, null, null);
                 if (c != null) {
                         c.moveToFirst();
@@ -215,7 +231,7 @@ public class DBAdapter {
                 return c;
             }
 
-    public Cursor getAllRowsRegistr() {
+    Cursor getAllRowsRegistr() {
         Cursor c = db.query(true, TABLE_REGISTR, ALL_KEYS_REGISTR,null, null, null, null, null, null);
         if (c != null) {
             c.moveToFirst();
@@ -224,7 +240,7 @@ public class DBAdapter {
     }
 
     //returns all data from table Participants in Events
-    public Cursor getAllRowsParticipantNew(long radek) {
+    Cursor getAllRowsParticipantNew(long radek) {
         String S = String.valueOf(radek);
         String MY_QUERY = "SELECT p._id,p.name,p.surname FROM (" + TABLE_PARTICIPANTS + " p INNER JOIN " + TABLE_REGISTR + " r ON r." + REGISTR_PARTICIPANTID + "=p." + PARTICIPANTS_ROWID + ") INNER JOIN "
                 + TABLE_EVENTS + " e ON e." + EVENTS_ROWID + "=r." + REGISTR_EVENTID + " WHERE e." + EVENTS_ROWID + "=?";
@@ -232,7 +248,7 @@ public class DBAdapter {
     }
 
     //returns all data from table Incidents in Event for Participant
-    public Cursor getAllRowsInjuries(long participantid, long eventid) {
+    Cursor getAllRowsInjuries(long participantid, long eventid) {
         String S = String.valueOf(participantid);
         String K = String.valueOf(eventid);
         String MY_QUERY = "SELECT * FROM " + TABLE_INJURIES + " WHERE " + INJURIES_PARTICIPANTID + "=?  AND " + INJURIES_EVENTID + "=? ";
@@ -240,23 +256,32 @@ public class DBAdapter {
         return db.rawQuery(MY_QUERY, new String[]{S,K});
     }
 
-    public Cursor getAllPhotos(long injuryid) {
+    Cursor getAllPhotos(long injuryid) {
         String S = String.valueOf(injuryid);
         String MY_QUERY = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + PHOTOS_INJURYID + "=?";
 
         return db.rawQuery(MY_QUERY, new String[]{S});
     }
     //creates dataset to add to the table Events
-    public long insertRowEvent(String name) {
+    long insertRowEvent(String name, String location, String startdate, String enddate, String leadername, String leaderemail, String leaderphone, String medicname, String medicemail, String medicphone) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(EVENTS_NAME, name);
+        initialValues.put(EVENTS_LOCATION, location);
+        initialValues.put(EVENTS_STARTDATE, startdate);
+        initialValues.put(EVENTS_ENDDATE, enddate);
+        initialValues.put(EVENTS_LEADERNAME, leadername);
+        initialValues.put(EVENTS_LEADEREMAIL, leaderemail);
+        initialValues.put(EVENTS_LEADERPHONE, leaderphone);
+        initialValues.put(EVENTS_MEDICNAME, medicname);
+        initialValues.put(EVENTS_MEDICEMAIL, medicemail);
+        initialValues.put(EVENTS_MEDICPHONE, medicphone);
 
         //add dataset to table Events
         return db.insert(TABLE_EVENTS, null, initialValues);
     }
 
     //creates dataset to add to the table Participants
-    public long insertRowParticipant(Integer status, String name, String surname) {
+    long insertRowParticipant(Integer status, String name, String surname) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PARTICIPANT_STATUS, status);
         initialValues.put(PARTICIPANTS_NAME, name);
@@ -267,7 +292,7 @@ public class DBAdapter {
     }
 
     //creates dataset to add to the table Registr
-    public long insertRowRegistr(Long idevent, Long idparticipant) {
+    long insertRowRegistr(Long idevent, Long idparticipant) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(REGISTR_EVENTID, idevent);
         initialValues.put(REGISTR_PARTICIPANTID, idparticipant);
@@ -277,7 +302,7 @@ public class DBAdapter {
     }
 
     //creates dataset to add to the table Incidents
-    public long insertRowInjuries(String title, String description, Long idparticipant, Long idevent) {
+    long insertRowInjuries(String title, String description, Long idparticipant, Long idevent) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(INJURIES_TITLE, title);
         initialValues.put(INJURIES_DESCRIPTION, description);
@@ -289,7 +314,7 @@ public class DBAdapter {
         return db.insert(TABLE_INJURIES, null, initialValues);
     }
 
-    public long insertRowPhotos(Long idinjury, String image) {
+    long insertRowPhotos(Long idinjury, String image) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PHOTOS_INJURYID, idinjury);
         initialValues.put(PHOTOS_PHOTO, image);
@@ -300,7 +325,7 @@ public class DBAdapter {
 
 
     //deletes row from db by EVENT_ROWID
-    public boolean deleteRowEvent(long rowId) {
+    boolean deleteRowEvent(long rowId) {
         String where = EVENTS_ROWID + "=" + rowId;
         return db.delete(TABLE_EVENTS, where, null) != 0;
     }
@@ -312,13 +337,13 @@ public class DBAdapter {
     }
 
     //deletes row from db by REGISTR_PARTICIPANTID
-    public boolean deleteRowRegistr(long rowId) {
+    boolean deleteRowRegistr(long rowId) {
         String where = REGISTR_PARTICIPANTID + "=" + rowId;
         return db.delete(TABLE_REGISTR, where, null) != 0;
     }
 
     //deletes row from db by INJURIES_PARTICIPANTID and INJURIES_EVENTID
-    public boolean deleteRowInjurie(long rowId) {
+    boolean deleteRowInjurie(long rowId) {
         String where = INJURIES_ROWID + "=" + rowId;
         return db.delete(TABLE_INJURIES, where, null) != 0;
 

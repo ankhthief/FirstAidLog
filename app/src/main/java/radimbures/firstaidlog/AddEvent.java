@@ -82,6 +82,15 @@ public class AddEvent extends Fragment {
             Cursor c = myDB.db.rawQuery("SELECT * FROM events WHERE _id=="+ideventu, null);
             c.moveToFirst();
             eventName.setText(c.getString(c.getColumnIndex("name")));
+            eventLocation.setText(c.getString(c.getColumnIndex("location")));
+            startdate.setText(c.getString(c.getColumnIndex("startdate")));
+            enddate.setText(c.getString(c.getColumnIndex("enddate")));
+            leaderName.setText(c.getString(c.getColumnIndex("leadername")));
+            leaderEmail.setText(c.getString(c.getColumnIndex("leaderemail")));
+            leaderPhone.setText(c.getString(c.getColumnIndex("leaderphone")));
+            medicName.setText(c.getString(c.getColumnIndex("medicname")));
+            medicEmail.setText(c.getString(c.getColumnIndex("medicemail")));
+            medicPhone.setText(c.getString(c.getColumnIndex("medicphone")));
             c.close();
             myDB.close();
         }
@@ -270,8 +279,17 @@ public class AddEvent extends Fragment {
                 if (bundle != null) {
                     ContentValues cv = new ContentValues();
                     cv.put("name", eventName.getText().toString());
+                    cv.put("location", eventLocation.getText().toString());
+                    cv.put("startdate", startdate.getText().toString());
+                    cv.put("enddate", enddate.getText().toString());
+                    cv.put("leadername", leaderName.getText().toString());
+                    cv.put("leaderemail", leaderEmail.getText().toString());
+                    cv.put("leaderphone", leaderPhone.getText().toString());
+                    cv.put("medicname", medicName.getText().toString());
+                    cv.put("medicemail", medicEmail.getText().toString());
+                    cv.put("medicphone", medicPhone.getText().toString());
                     myDB.db.update("events", cv, "_id=" + ideventu, null);
-                } else  { myDB.insertRowEvent(eventName.getText().toString()); }
+                } else  { myDB.insertRowEvent(eventName.getText().toString(), eventLocation.getText().toString(), startdate.getText().toString(), enddate.getText().toString(), leaderName.getText().toString(), leaderEmail.getText().toString(), leaderPhone.getText().toString(), medicName.getText().toString(), medicEmail.getText().toString(), medicPhone.getText().toString()); }
                 myDB.close();
                 fm.popBackStackImmediate();
 

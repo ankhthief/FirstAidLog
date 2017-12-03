@@ -100,4 +100,5 @@
     <string name="incident_list">Záznamy</string>
     <string name="personal_info">Účastník - souhrn</string>
     <string name="generate_pdf_report_using_export_button_bellow">PDF report vygenerujete kliknutím na tlačítko Export dole</string>
+    <string name="no_particpants_in_db">Žádný účastník v databázi, nejdřív nějaké přidejte</string>
 </resources>

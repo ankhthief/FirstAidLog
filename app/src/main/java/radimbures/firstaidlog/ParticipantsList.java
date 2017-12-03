@@ -77,7 +77,7 @@ public class ParticipantsList extends Fragment {
             public void onClick(View view) {
                 myDB.open();
                 if (myDB.getParticipantsCount() == 0) {
-                    Toast.makeText(getActivity(), "No participants in DB, add some first", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.no_particpants_in_db, Toast.LENGTH_LONG).show();
                 } else {
 
                     AddFromDB frag = new AddFromDB();
