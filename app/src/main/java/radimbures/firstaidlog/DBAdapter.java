@@ -52,11 +52,11 @@ public class DBAdapter {
     //table Incidents
     private static final String INCIDENTS_ROWID = "_id";
     static final String INCIDENTS_TITLE = "title";
-    static final String INCIDENTS_DESCRIPTION = "description";
+    private static final String INCIDENTS_DESCRIPTION = "description";
     private static final String INCIDENTS_PARTICIPANTID = "participantid";
     private static final String INCIDENTS_EVENTID = "eventid";
-    private static final String INCIDENTS_DATE = "date";
-    private static final String INCIDENTS_TIME = "time";
+    static final String INCIDENTS_DATE = "date";
+    static final String INCIDENTS_TIME = "time";
     private static final String INCIDENTS_MEDICATION = "medication";
 
     //table Registr

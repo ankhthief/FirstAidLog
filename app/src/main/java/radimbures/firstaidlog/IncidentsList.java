@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
@@ -88,9 +87,9 @@ public class IncidentsList extends Fragment {
         myDB.open();
         injuriesList.invalidateViews();
         cursor = myDB.getAllRowsIncidents(id_participant, id_eventu);
-        fromInjuriesNames = new String[] {DBAdapter.INCIDENTS_TITLE, DBAdapter.INCIDENTS_DESCRIPTION};
-        toViewIDs = new int[] {R.id.title_of_injury, R.id.desc_of_injury};
-        myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_injurie, cursor, fromInjuriesNames, toViewIDs,0 );
+        fromInjuriesNames = new String[] {DBAdapter.INCIDENTS_TITLE, DBAdapter.INCIDENTS_DATE, DBAdapter.INCIDENTS_TIME};
+        toViewIDs = new int[] {R.id.title_of_injury, R.id.incident_date, R.id.incident_time};
+        myCursorAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row_incident, cursor, fromInjuriesNames, toViewIDs,0 );
         injuriesList.setAdapter(myCursorAdapter);
         myCursorAdapter.notifyDataSetChanged();
         if (myDB.isEmptyIncidents(id_participant, id_eventu)) {
