@@ -72,6 +72,11 @@ public class AddParticipant extends Fragment {
             surname.setText(c.getString(c.getColumnIndex("surname")));
             status = c.getInt(c.getColumnIndex("status"));
             if (status != 1) checkbox_status.setChecked(false);
+            rc.setText(c.getString(c.getColumnIndex("personalnumber")));
+            insuranceCompany.setText(c.getString(c.getColumnIndex("insurance")));
+            notes.setText(c.getString(c.getColumnIndex("notes")));
+            parentEmail.setText(c.getString(c.getColumnIndex("parentsemail")));
+            parentPhone.setText(c.getString(c.getColumnIndex("parentsphone")));
             c.close();
             myDB.close();
         }
@@ -172,8 +177,13 @@ public class AddParticipant extends Fragment {
                         cv.put("status", status);
                         cv.put("name", jmeno);
                         cv.put("surname", prijmeni);
+                        cv.put("personalnumber", rc.getText().toString());
+                        cv.put("insurance", insuranceCompany.getText().toString());
+                        cv.put("notes", notes.getText().toString());
+                        cv.put("parentsemail", parentEmail.getText().toString());
+                        cv.put("parentsphone", parentPhone.getText().toString());
                         myDB.db.update("participants", cv, "_id=" + idparticipant, null);
-                    } else myDB.insertRowParticipant(status, jmeno, prijmeni);
+                    } else myDB.insertRowParticipant(status, jmeno, prijmeni, rc.getText().toString(), insuranceCompany.getText().toString(), notes.getText().toString(), parentEmail.getText().toString(), parentPhone.getText().toString());
                     myDB.close();
                     fm.popBackStackImmediate();
                     return true;

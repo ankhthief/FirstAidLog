@@ -74,8 +74,6 @@
                 android:id="@+id/input_rc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:digits="0,1,2,3,4,5,6,7,8,9,/"
                 android:hint="@string/personal_identification_number" />
 
         </android.support.design.widget.TextInputLayout>

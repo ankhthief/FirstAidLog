@@ -19,11 +19,11 @@ public class DBAdapter {
     private static final String TABLE_REGISTR = "registr"; //database name Registr
     private static final String TABLE_INJURIES = "injuries"; //database name Incidents
     private static final String TABLE_PHOTOS = "photos"; //table name Photos
-    private static final int DATABASE_VERSION = 11;  //database version. Need to increment every time DB changes
+    private static final int DATABASE_VERSION = 12;  //database version. Need to increment every time DB changes
 
     //table Events
     private static final String EVENTS_ROWID = "_id";
-    public static final String EVENTS_NAME = "name";
+    static final String EVENTS_NAME = "name";
     private static final String EVENTS_LOCATION = "location";
     private static final String EVENTS_STARTDATE = "startdate";
     private static final String EVENTS_ENDDATE = "enddate";
@@ -41,8 +41,13 @@ public class DBAdapter {
     private static final String PARTICIPANT_STATUS = "status";
     static final String PARTICIPANTS_NAME = "name";
     static final String PARTICIPANTS_SURNAME = "surname";
+    private static final String PARTICIPANTS_PIN = "personalnumber";
+    private static final String PARTICIPANTS_INSURANCE = "insurance";
+    private static final String PARTICIPANTS_NOTES = "notes";
+    private static final String PARTICIPANTS_PARENTSEMAIL = "parentsemail";
+    private static final String PARTICIPANTS_PARENTSPHONE = "parentsphone";
 
-    private static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANT_STATUS, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME};
+    private static final String[] ALL_KEYS_PARTICIPANT = new String[]  {PARTICIPANTS_ROWID, PARTICIPANT_STATUS, PARTICIPANTS_NAME, PARTICIPANTS_SURNAME, PARTICIPANTS_PIN, PARTICIPANTS_INSURANCE, PARTICIPANTS_NOTES, PARTICIPANTS_PARENTSEMAIL, PARTICIPANTS_PARENTSPHONE};
 
     //table Incidents
     private static final String INJURIES_ROWID = "_id";
@@ -85,7 +90,12 @@ public class DBAdapter {
                     + " (" + PARTICIPANTS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + PARTICIPANT_STATUS + " INTEGER, "
                     + PARTICIPANTS_NAME + " TEXT NOT NULL, "
-                    + PARTICIPANTS_SURNAME + " TEXT NOT NULL "
+                    + PARTICIPANTS_PIN + " TEXT NOT NULL, "
+                    + PARTICIPANTS_INSURANCE + " TEXT NOT NULL, "
+                    + PARTICIPANTS_NOTES + " TEXT, "
+                    + PARTICIPANTS_SURNAME + " TEXT NOT NULL, "
+                    + PARTICIPANTS_PARENTSEMAIL + " TEXT NOT NULL, "
+                    + PARTICIPANTS_PARENTSPHONE + " TEXT NOT NULL "
                     + ");";
 
     //SQL to create table Registr
@@ -242,7 +252,7 @@ public class DBAdapter {
     //returns all data from table Participants in Events
     Cursor getAllRowsParticipantNew(long radek) {
         String S = String.valueOf(radek);
-        String MY_QUERY = "SELECT p._id,p.name,p.surname FROM (" + TABLE_PARTICIPANTS + " p INNER JOIN " + TABLE_REGISTR + " r ON r." + REGISTR_PARTICIPANTID + "=p." + PARTICIPANTS_ROWID + ") INNER JOIN "
+        String MY_QUERY = "SELECT p._id,p.name,p.surname,p.personalnumber,p.insurance,p.notes,p.parentsemail,p.parentsphone FROM (" + TABLE_PARTICIPANTS + " p INNER JOIN " + TABLE_REGISTR + " r ON r." + REGISTR_PARTICIPANTID + "=p." + PARTICIPANTS_ROWID + ") INNER JOIN "
                 + TABLE_EVENTS + " e ON e." + EVENTS_ROWID + "=r." + REGISTR_EVENTID + " WHERE e." + EVENTS_ROWID + "=?";
         return db.rawQuery(MY_QUERY, new String[]{S});
     }
@@ -281,11 +291,16 @@ public class DBAdapter {
     }
 
     //creates dataset to add to the table Participants
-    long insertRowParticipant(Integer status, String name, String surname) {
+    long insertRowParticipant(Integer status, String name, String surname, String personalnumber, String insurance, String notes, String parentsemail, String parentsphone) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(PARTICIPANT_STATUS, status);
         initialValues.put(PARTICIPANTS_NAME, name);
         initialValues.put(PARTICIPANTS_SURNAME, surname);
+        initialValues.put(PARTICIPANTS_PIN, personalnumber);
+        initialValues.put(PARTICIPANTS_INSURANCE, insurance);
+        initialValues.put(PARTICIPANTS_NOTES, notes);
+        initialValues.put(PARTICIPANTS_PARENTSEMAIL, parentsemail);
+        initialValues.put(PARTICIPANTS_PARENTSPHONE, parentsphone);
 
         //add dataset to table Participants
         return db.insert(TABLE_PARTICIPANTS, null, initialValues);
