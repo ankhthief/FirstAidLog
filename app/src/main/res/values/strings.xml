@@ -117,4 +117,11 @@
     <string name="email_to_parents2">Email to parents: %1$s</string>
     <string name="phone_number_to_parents2">Phone number to parents: %1$s</string>
     <string name="medical_report_pdf">Medical report in PDF</string>
+    <string name="full_name_of_event_leader2">Full name of event leader: %1$s</string>
+    <string name="email_adress_of_event_leader2">Email address of event leader: %1$s</string>
+    <string name="phone_number_of_event_leader2">Phone number of event leader: %1$s</string>
+    <string name="full_name_of_a_medic2">Full name of a medic: %1$s</string>
+    <string name="email_adress_of_medic2">Email address of medic: %1$s</string>
+    <string name="phone_number_of_medic2">Phone number of medic: %1$s</string>
+    <string name="number_of_partincipants">Number of participants: %1$s</string>
 </resources>

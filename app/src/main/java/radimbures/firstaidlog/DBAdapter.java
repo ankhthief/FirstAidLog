@@ -215,6 +215,11 @@ public class DBAdapter {
         return DatabaseUtils.longForQuery(db,"SELECT COUNT(*) FROM " + TABLE_PARTICIPANTS + " WHERE " + PARTICIPANT_STATUS + "=?", new String[] {s});
     }
 
+    long getParticipantsCountEvent(Long eventid) {
+        String s = eventid.toString();
+        return DatabaseUtils.longForQuery(db,"SELECT COUNT(*) FROM " + TABLE_REGISTR + " WHERE " + REGISTR_EVENTID + "=?", new String[] {s});
+    }
+
     long getRegistCount() {
         return DatabaseUtils.queryNumEntries(db, TABLE_REGISTR);
     }

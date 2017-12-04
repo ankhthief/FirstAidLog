@@ -3,13 +3,109 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
     tools:context="radimbures.firstaidlog.EventInfo">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="tady bude souhrnné info o akci" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:text="@string/medical_report_pdf"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/filename_event"
+            android:textSize="15sp"
+            android:text="@string/generate_pdf_report_using_export_button_bellow"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            >
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/show_event"
+                android:enabled="false"
+                android:text="@string/show"
+                tools:ignore="ButtonStyle" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/share_event"
+                android:enabled="false"
+                android:text="@string/share"
+                tools:ignore="ButtonStyle" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
+            android:id="@+id/name_event" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/partic_count__event" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/location_event" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/dates_event" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/leadername_event" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autoLink="email"
+            android:id="@+id/leaderemail_event" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:autoLink="phone"
+            android:linksClickable="true"
+            android:id="@+id/leaderphone_event" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/medicname_event" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autoLink="email"
+            android:id="@+id/medicemail_event" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:autoLink="phone"
+            android:linksClickable="true"
+            android:id="@+id/medicphone_event" />
+
+    </LinearLayout>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_backup"

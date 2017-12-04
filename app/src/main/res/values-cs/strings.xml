@@ -118,4 +118,11 @@
     <string name="email_to_parents2">Email na rodiče: %1$s</string>
     <string name="phone_number_to_parents2">Číslo na rodiče: %1$s</string>
     <string name="medical_report_pdf">Zdravotní deník v PDF</string>
+    <string name="full_name_of_event_leader2">Jméno vedoucí akce: %1$s</string>
+    <string name="email_adress_of_event_leader2">Email na vedoucího akce: %1$s</string>
+    <string name="phone_number_of_event_leader2">Telefon na vedoucího akce: %1$s</string>
+    <string name="full_name_of_a_medic2">Jméno zdravotníka akce: %1$s</string>
+    <string name="email_adress_of_medic2">Email zdravotníka akce: %1$s</string>
+    <string name="phone_number_of_medic2">Číslo na zdravotníka akce: %1$s</string>
+    <string name="number_of_partincipants">Počet účastníků: %1$s</string>
 </resources>
