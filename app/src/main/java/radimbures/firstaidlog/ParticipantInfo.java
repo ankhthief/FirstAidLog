@@ -175,7 +175,7 @@ public class ParticipantInfo extends Fragment {
                     ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
                 }
 
-                createandDisplayPdf(nameString);
+                createPdf(nameString);
 
 
 
@@ -196,7 +196,7 @@ public class ParticipantInfo extends Fragment {
         }
     }
 
-    public void createandDisplayPdf(String text) {
+    public void createPdf(String text) {
 
         Document doc = new Document();
 

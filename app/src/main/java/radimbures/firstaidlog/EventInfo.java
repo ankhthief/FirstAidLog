@@ -1,10 +1,20 @@
 package radimbures.firstaidlog;
 
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +23,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.DottedLineSeparator;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
 
 /**
@@ -36,6 +62,8 @@ public class EventInfo extends Fragment {
     Button show;
     Long id_eventu;
     Resources res;
+    File pdfFile;
+    Uri path1;
 
 
     public EventInfo() {
@@ -75,7 +103,38 @@ public class EventInfo extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+                }
                 Toast.makeText(getActivity(),"export karty akce", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                /*
+                pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + "FirstAidLog" + "/" + filename1);
+
+                if(pdfFile.exists()) {
+                    intentShareFile.setType("application/pdf");
+                    intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
+                    intentShareFile.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+                    intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                            getString(R.string.email_sub1) + nameString + getString(R.string.email_subject2) +eventName);
+                    intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_text));
+
+                    startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
+
+                }*/
+            }
+        });
+
+        show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //viewPdf(filename1, "FirstAidLog");
             }
         });
 
@@ -110,6 +169,134 @@ public class EventInfo extends Fragment {
         count.setText(s7);
         C.close();
         myDB.close();
+    }
+
+    private void viewPdf(String file, String directory) {
+
+        pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/" + file);
+        if (Build.VERSION.SDK_INT > 21) {
+            path1 = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".radimbures.firstaidlog.provider", pdfFile);
+        } else {
+            path1 = Uri.fromFile(pdfFile);
+        }
+        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+        pdfIntent.setDataAndType(path1, "application/pdf");
+        pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
+        startActivity(pdfIntent);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            }
+        }
+    }
+
+    public void createPdf(String text) {
+
+        Document doc = new Document();
+ /*
+        try {
+
+
+            File dir = new File(path);
+            if(!dir.exists())
+                dir.mkdirs();
+
+            File file = new File(dir, filename1);
+            FileOutputStream fOut = new FileOutputStream(file);
+
+            PdfWriter.getInstance(doc, fOut);
+
+            //open the document
+            doc.open();
+            Font paraFont= new Font(Font.FontFamily.HELVETICA, 18,Font.NORMAL, BaseColor.BLACK);
+            Font nadpis = new Font(Font.FontFamily.HELVETICA,18, Font.BOLD, BaseColor.BLACK);
+            Font nadpish1 = new Font(Font.FontFamily.HELVETICA,25, Font.BOLD, BaseColor.BLACK);
+            Font nadpish2 = new Font(Font.FontFamily.HELVETICA,20, Font.BOLD, BaseColor.BLUE);
+            Paragraph p1 = new Paragraph(getString(R.string.pdf_title)+ " " +text + ", "+eventName, nadpish1);
+            p1.setAlignment(Paragraph.ALIGN_CENTER);
+            p1.add(Chunk.NEWLINE);
+            DottedLineSeparator dottedline = new DottedLineSeparator();
+            dottedline.setOffset(-2);
+            dottedline.setGap(2f);
+            p1.add(dottedline);
+            p1.add(Chunk.NEWLINE);
+            p1.add(Chunk.NEWLINE);
+            Paragraph p2 = new Paragraph();
+            p2.setAlignment(Paragraph.ALIGN_LEFT);
+            p2.setFont(paraFont);
+            doc.add(p1);
+            myDB.open();
+
+            zraneni = myDB.getAllRowsIncidents(id_participant, id_eventu);
+            if (zraneni != null)
+                if (zraneni.moveToFirst()) {
+                    do {
+
+                        String title = zraneni.getString(zraneni.getColumnIndex("title"));
+                        String description = zraneni.getString(zraneni.getColumnIndex("description"));
+                        String popis = zraneni.getString(zraneni.getColumnIndex("medication"));
+                        String datum = zraneni.getString(zraneni.getColumnIndex("date"));
+                        String cas = zraneni.getString(zraneni.getColumnIndex("time"));
+                        Long idcko = zraneni.getLong(zraneni.getColumnIndex("_id"));
+                        Chunk c = new Chunk(title + " - ", nadpish2);
+                        p2.add(c);
+                        Chunk c1 = new Chunk(" ", paraFont);
+                        p2.add(c1);
+                        Chunk c2 = new Chunk(datum, nadpish2);
+                        p2.add(c2);
+                        Chunk c4 = new Chunk(" ", paraFont);
+                        p2.add(c4);
+                        Chunk c3 = new Chunk(cas, nadpish2);
+                        p2.add(c3);
+                        p2.add(Chunk.NEWLINE);
+                        Chunk e2 = new Chunk(getResources().getString(R.string.incident_description) + ":", nadpis);
+                        p2.add(e2);
+                        p2.add(Chunk.NEWLINE);
+                        Chunk d = new Chunk(description, paraFont);
+                        p2.add(d);
+                        p2.add(Chunk.NEWLINE);
+                        Chunk e1 = new Chunk(getResources().getString(R.string.description_of_medication) + ":", nadpis);
+                        p2.add(e1);
+                        p2.add(Chunk.NEWLINE);
+                        Chunk e = new Chunk(popis, paraFont);
+                        p2.add(e);
+                        p2.add(Chunk.NEWLINE);
+                        fotky = myDB.getAllPhotos(idcko);
+                        if (fotky != null)
+                            if (fotky.moveToFirst()) {
+                                do {
+                                    String cesta = fotky.getString(fotky.getColumnIndex("photo"));
+                                    image = Image.getInstance(cesta);
+                                    image.scalePercent(2);
+                                    p2.add(image);
+                                } while (fotky.moveToNext());
+                            }
+                        p2.add(Chunk.NEWLINE);
+                        p2.add(dottedline);
+                        p2.add(Chunk.NEWLINE);
+                        p2.add(Chunk.NEWLINE);
+                    } while (zraneni.moveToNext());
+                }
+            p2.add(Chunk.NEWLINE);
+            doc.add(p2);
+
+        } catch (DocumentException de) {
+            Log.e("PDFCreator", "DocumentException:" + de);
+        } catch (IOException e) {
+            Log.e("PDFCreator", "ioException:" + e);
+        }
+        finally {
+            myDB.close();
+            doc.close();
+        }
+
+
+        filename_event.setText(filename1); */
+        show.setEnabled(true);
+        share.setEnabled(true);
     }
 
 }
