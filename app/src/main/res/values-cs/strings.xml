@@ -109,6 +109,12 @@
         S pozdravem
         \n
         Vedení tábora</string>
+    <string name="email_text1">Nazdar, Posílám Zdravotní deník z naší akce.
+        \n
+        \n
+        S pozdravem
+        \n
+        Vedení tábora</string>
     <string name="email_sub1">Zdravotní deník pro&#160;</string>
     <string name="email_subject2">&#160;z akce&#160;</string>
     <string name="pdf_title">Zdravotní deník pro </string>

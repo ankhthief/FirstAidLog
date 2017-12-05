@@ -108,6 +108,12 @@
         Best Regards
         \n
         Event management</string>
+    <string name="email_text1">Hi, I\'m sending medical report from our event.
+        \n
+        \n
+        Best Regards
+        \n
+        Event management</string>
     <string name="email_sub1">Medical report for&#160;</string>
     <string name="email_subject2">&#160;from event&#160;</string>
     <string name="pdf_title">Medical Report for </string>

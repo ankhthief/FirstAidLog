@@ -136,8 +136,8 @@ public class EventInfo extends Fragment {
                     intentShareFile.setType("application/pdf");
                     intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
                     intentShareFile.putExtra(Intent.EXTRA_EMAIL, new String[]{email_leader, email_medic});
-                    //intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                    //        getString(R.string.email_sub1) + nameString + getString(R.string.email_subject2) +eventName);
+                    intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                            getString(R.string.email_sub1)  + name_event);
                     intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_text));
 
                     startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
