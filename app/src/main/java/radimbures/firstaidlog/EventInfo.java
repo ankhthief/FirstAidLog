@@ -64,6 +64,13 @@ public class EventInfo extends Fragment {
     Resources res;
     File pdfFile;
     Uri path1;
+    String namestring;
+    String path;
+    String filename1;
+    String s2;
+    String s5;
+    String email_leader;
+    String email_medic;
 
 
     public EventInfo() {
@@ -93,12 +100,19 @@ public class EventInfo extends Fragment {
         count = root.findViewById(R.id.partic_count__event);
         share = root.findViewById(R.id.share_event);
         show = root.findViewById(R.id.show_event);
+        path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FirstAidLog";
         res = getResources();
         Bundle bundle = getArguments();
         if (bundle != null) {
             id_eventu = bundle.getLong("key");
         }
         eventinfo();
+        boolean fileExists =  new File(path+"/"+filename1).isFile();
+        if (fileExists) {
+            filename_event.setText(filename1);
+            show.setEnabled(true);
+            share.setEnabled(true);
+        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +120,7 @@ public class EventInfo extends Fragment {
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
                 }
-                Toast.makeText(getActivity(),"export karty akce", Toast.LENGTH_LONG).show();
+                createPdf(namestring);
             }
         });
 
@@ -114,27 +128,28 @@ public class EventInfo extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-                /*
+
                 pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + "FirstAidLog" + "/" + filename1);
 
                 if(pdfFile.exists()) {
+                    //TODO odeslání emailu
                     intentShareFile.setType("application/pdf");
                     intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
-                    intentShareFile.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
-                    intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                            getString(R.string.email_sub1) + nameString + getString(R.string.email_subject2) +eventName);
+                    intentShareFile.putExtra(Intent.EXTRA_EMAIL, new String[]{email_leader, email_medic});
+                    //intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                    //        getString(R.string.email_sub1) + nameString + getString(R.string.email_subject2) +eventName);
                     intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_text));
 
                     startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
 
-                }*/
+                }
             }
         });
 
         show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //viewPdf(filename1, "FirstAidLog");
+                viewPdf(filename1, "FirstAidLog");
             }
         });
 
@@ -150,16 +165,20 @@ public class EventInfo extends Fragment {
         Cursor C = myDB.db.rawQuery("SELECT * FROM events WHERE _id =" + id_eventu,null);
         C.moveToFirst();
         name_event.setText(C.getString(C.getColumnIndex("name")));
+        namestring = C.getString(C.getColumnIndex("name"));
         location_event.setText(C.getString(C.getColumnIndex("location")));
         String s = C.getString(C.getColumnIndex("startdate")) + res.getString(R.string.date_separator) + C.getString(C.getColumnIndex("enddate"));
         dates_event.setText(s);
+        email_leader = C.getString(C.getColumnIndex("leaderemail"));
+        email_medic = C.getString(C.getColumnIndex("medicemail"));
         String s1 = res.getString(R.string.full_name_of_event_leader2, C.getString(C.getColumnIndex("leadername")));
-        String s2 = res.getString(R.string.email_adress_of_event_leader2, C.getString(C.getColumnIndex("leaderemail")));
+        s2 = res.getString(R.string.email_adress_of_event_leader2, C.getString(C.getColumnIndex("leaderemail")));
         String s3 = res.getString(R.string.phone_number_of_event_leader2, C.getString(C.getColumnIndex("leaderphone")));
         String s4 = res.getString(R.string.full_name_of_a_medic2, C.getString(C.getColumnIndex("medicname")));
-        String s5 = res.getString(R.string.email_adress_of_medic2, C.getString(C.getColumnIndex("medicemail")));
+        s5 = res.getString(R.string.email_adress_of_medic2, C.getString(C.getColumnIndex("medicemail")));
         String s6 = res.getString(R.string.phone_number_of_medic2, C.getString(C.getColumnIndex("medicphone")));
         String s7 = res.getString(R.string.number_of_partincipants, Long.toString(myDB.getParticipantsCountEvent(id_eventu)));
+        filename1 = C.getString(C.getColumnIndex("name"))+ ".pdf";
         leadername_event.setText(s1);
         leaderemail_event.setText(s2);
         leaderphone_event.setText(s3);
@@ -196,7 +215,7 @@ public class EventInfo extends Fragment {
     public void createPdf(String text) {
 
         Document doc = new Document();
- /*
+
         try {
 
 
@@ -215,7 +234,7 @@ public class EventInfo extends Fragment {
             Font nadpis = new Font(Font.FontFamily.HELVETICA,18, Font.BOLD, BaseColor.BLACK);
             Font nadpish1 = new Font(Font.FontFamily.HELVETICA,25, Font.BOLD, BaseColor.BLACK);
             Font nadpish2 = new Font(Font.FontFamily.HELVETICA,20, Font.BOLD, BaseColor.BLUE);
-            Paragraph p1 = new Paragraph(getString(R.string.pdf_title)+ " " +text + ", "+eventName, nadpish1);
+            Paragraph p1 = new Paragraph(getString(R.string.pdf_title)+ " " +text, nadpish1);
             p1.setAlignment(Paragraph.ALIGN_CENTER);
             p1.add(Chunk.NEWLINE);
             DottedLineSeparator dottedline = new DottedLineSeparator();
@@ -229,7 +248,7 @@ public class EventInfo extends Fragment {
             p2.setFont(paraFont);
             doc.add(p1);
             myDB.open();
-
+/*
             zraneni = myDB.getAllRowsIncidents(id_participant, id_eventu);
             if (zraneni != null)
                 if (zraneni.moveToFirst()) {
@@ -279,7 +298,7 @@ public class EventInfo extends Fragment {
                         p2.add(Chunk.NEWLINE);
                         p2.add(Chunk.NEWLINE);
                     } while (zraneni.moveToNext());
-                }
+                }*/
             p2.add(Chunk.NEWLINE);
             doc.add(p2);
 
@@ -294,7 +313,7 @@ public class EventInfo extends Fragment {
         }
 
 
-        filename_event.setText(filename1); */
+        filename_event.setText(filename1);
         show.setEnabled(true);
         share.setEnabled(true);
     }
