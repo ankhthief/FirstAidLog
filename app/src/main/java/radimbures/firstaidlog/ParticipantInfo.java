@@ -34,6 +34,7 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
@@ -44,12 +45,14 @@ import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+import static com.itextpdf.text.html.HtmlTags.FONT;
 
 
 /**
@@ -214,10 +217,11 @@ public class ParticipantInfo extends Fragment {
 
             //open the document
             doc.open();
-            Font paraFont= new Font(Font.FontFamily.HELVETICA, 18,Font.NORMAL, BaseColor.BLACK);
-            Font nadpis = new Font(Font.FontFamily.HELVETICA,18, Font.BOLD, BaseColor.BLACK);
-            Font nadpish1 = new Font(Font.FontFamily.HELVETICA,25, Font.BOLD, BaseColor.BLACK);
-            Font nadpish2 = new Font(Font.FontFamily.HELVETICA,20, Font.BOLD, BaseColor.BLUE);
+            BaseFont bfFreesans = BaseFont.createFont("assets/Font/FreeSans.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED); //diakritika funkční
+            Font nadpis = new Font(bfFreesans,18, Font.BOLD, BaseColor.BLACK);
+            Font nadpish1 = new Font(bfFreesans,25, Font.BOLD, BaseColor.BLACK);
+            Font nadpish2 = new Font(bfFreesans,20, Font.BOLD, BaseColor.BLUE);
+            Font paraFont = new Font(bfFreesans, 18, Font.NORMAL, BaseColor.BLACK);
             Paragraph p1 = new Paragraph(getString(R.string.pdf_title)+ " " +text + ", "+eventName, nadpish1);
             p1.setAlignment(Paragraph.ALIGN_CENTER);
             p1.add(Chunk.NEWLINE);
@@ -243,6 +247,7 @@ public class ParticipantInfo extends Fragment {
                         String datum = zraneni.getString(zraneni.getColumnIndex("date"));
                         String cas = zraneni.getString(zraneni.getColumnIndex("time"));
                         Long idcko = zraneni.getLong(zraneni.getColumnIndex("_id"));
+
                         Chunk c = new Chunk(title + " - ", nadpish2);
                         p2.add(c);
                         Chunk c1 = new Chunk(" ", paraFont);
