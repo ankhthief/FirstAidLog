@@ -20,15 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
@@ -42,7 +39,6 @@ import java.io.IOException;
 
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
-import static com.itextpdf.text.html.HtmlTags.FONT;
 
 
 /**
@@ -263,6 +259,7 @@ public class EventInfo extends Fragment {
             p1.add(Chunk.NEWLINE);
             p1.add(Chunk.NEWLINE);
             Paragraph p2 = new Paragraph();
+            Paragraph p3 = new Paragraph();
             Paragraph p4 = new Paragraph();
             p2.setAlignment(Paragraph.ALIGN_LEFT);
             p2.setFont(paraFont);
@@ -291,7 +288,9 @@ public class EventInfo extends Fragment {
             p2.add(Chunk.NEWLINE);
             p2.add(ls);
             p2.add(Chunk.NEWLINE);
-            Paragraph p3 = new Paragraph();
+            Chunk xy = new Chunk(getString(R.string.photos), nadpish1);
+            p4.add(xy);
+            p4.add(Chunk.NEWLINE);
 
             Cursor participant = myDB.getAllRowsParticipantNew(id_eventu);
             if (participant != null)
@@ -363,20 +362,19 @@ public class EventInfo extends Fragment {
                                     Chunk e = new Chunk(popis, paraFont);
                                     p3.add(e);
                                     p3.add(Chunk.NEWLINE);
-                                    Chunk xy = new Chunk(getString(R.string.photos), nadpish1);
-                                    p4.add(xy);
-                                    p4.add(Chunk.NEWLINE);
                                     fotky = myDB.getAllPhotos(idcko);
                                     if (fotky != null)
                                         if (fotky.moveToFirst()) {
                                             do {
                                                 String cesta = fotky.getString(fotky.getColumnIndex("photo"));
                                                 image = Image.getInstance(cesta);
-                                                image.scalePercent(15);
+                                                image.scalePercent(16);
                                                 p4.add(image);
                                                 p4.add(Chunk.NEWLINE);
                                                 Chunk qw = new Chunk(title, photodesc);
                                                 p4.add(qw);
+                                                p4.add(Chunk.NEWLINE);
+                                                p4.add(Chunk.NEWLINE);
                                                 p4.add(Chunk.NEWLINE);
                                             } while (fotky.moveToNext());
                                         }
