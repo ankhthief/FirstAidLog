@@ -131,4 +131,5 @@
     <string name="email_adress_of_medic2">Email zdravotníka akce: %1$s</string>
     <string name="phone_number_of_medic2">Číslo na zdravotníka akce: %1$s</string>
     <string name="number_of_partincipants">Počet účastníků: %1$s</string>
+    <string name="photos">Fotky</string>
 </resources>
