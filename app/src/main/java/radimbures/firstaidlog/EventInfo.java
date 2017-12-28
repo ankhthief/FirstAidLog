@@ -2,6 +2,7 @@ package radimbures.firstaidlog;
 
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -20,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -95,8 +98,6 @@ public class EventInfo extends Fragment {
 
         myDB =  new DBAdapter(getContext());
         final View root = inflater.inflate(R.layout.fragment_event_info, container, false);
-
-        FloatingActionButton fab = root.findViewById(R.id.fab_backup);
         name_event = root.findViewById(R.id.name_event);
         location_event = root.findViewById(R.id.location_event);
         dates_event = root.findViewById(R.id.dates_event);
@@ -120,19 +121,9 @@ public class EventInfo extends Fragment {
         boolean fileExists =  new File(path+"/"+filename1).isFile();
         if (fileExists) {
             filename_event.setText(filename1);
-            show.setEnabled(true);
             share.setEnabled(true);
         }
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
-                }
-                createPdf(namestring);
-            }
-        });
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +150,10 @@ public class EventInfo extends Fragment {
         show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions( new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+                }
+                createPdf(namestring);
                 viewPdf(filename1, "FirstAidLog");
             }
         });
@@ -209,10 +204,18 @@ public class EventInfo extends Fragment {
         } else {
             path1 = Uri.fromFile(pdfFile);
         }
-        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-        pdfIntent.setDataAndType(path1, "application/pdf");
-        pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
-        startActivity(pdfIntent);
+
+        try {
+            Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+            pdfIntent.setDataAndType(path1, "application/pdf");
+            pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
+            startActivity(pdfIntent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), R.string.no_pdf_viewer,
+                    Toast.LENGTH_LONG).show();
+        }
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -406,7 +409,6 @@ public class EventInfo extends Fragment {
 
 
         filename_event.setText(filename1);
-        show.setEnabled(true);
         share.setEnabled(true);
     }
 
