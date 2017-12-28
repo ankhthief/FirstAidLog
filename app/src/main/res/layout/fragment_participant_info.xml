@@ -39,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/show"
-                android:enabled="false"
                 android:text="@string/show"
                 tools:ignore="ButtonStyle" />
             <Button
@@ -85,15 +84,5 @@
             android:linksClickable="true"
             android:id="@+id/parents_phone" />
     </LinearLayout>
-
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_backup_participant"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fab:fab_icon="@drawable/ic_backup_white_24px"
-        fab:fab_colorNormal="@color/colorAccent"
-        fab:fab_colorPressed="@color/colorPrimaryDark"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"/>
 
 </FrameLayout>

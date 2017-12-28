@@ -2,6 +2,7 @@ package radimbures.firstaidlog;
 
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -20,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -82,7 +85,6 @@ public class ParticipantInfo extends Fragment {
         myDB =  new DBAdapter(getContext());
         final View root = inflater.inflate(R.layout.fragment_participant_info, container, false);
         path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FirstAidLog";
-        fab2 = root.findViewById(R.id.fab_backup_participant);
         show = root.findViewById(R.id.show);
         notes = root.findViewById(R.id.notes);
         ins_company = root.findViewById(R.id.ins_company);
@@ -124,13 +126,17 @@ public class ParticipantInfo extends Fragment {
         boolean fileExists =  new File(path+"/"+filename1).isFile();
         if (fileExists) {
             filename.setText(filename1);
-            show.setEnabled(true);
             share.setEnabled(true);
         }
 
         show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+                }
+
+                createPdf(nameString);
                 viewPdf(filename1, "FirstAidLog");
             }
         });
@@ -153,24 +159,6 @@ public class ParticipantInfo extends Fragment {
                 }
             }
         });
-
-
-
-        fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
-                }
-
-                createPdf(nameString);
-
-
-
-            }
-        });
-
-
         myDB.close();
         return root;
 
@@ -298,10 +286,21 @@ public class ParticipantInfo extends Fragment {
         } else {
             path1 = Uri.fromFile(pdfFile);
         }
-        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-        pdfIntent.setDataAndType(path1, "application/pdf");
-        pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
-        startActivity(pdfIntent);
+
+        try {
+
+            Intent pdfIntent = new Intent();
+            pdfIntent.setAction(Intent.ACTION_VIEW);
+            pdfIntent.setDataAndType(path1, "application/pdf");
+            pdfIntent.setFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
+            startActivity(pdfIntent);
+
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), R.string.no_pdf_viewer,
+                    Toast.LENGTH_LONG).show();
+        }
+
     }
 
 }
