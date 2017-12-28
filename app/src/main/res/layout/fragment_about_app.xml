@@ -33,6 +33,20 @@
         android:autoLink="email"
         android:text="@string/contact"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorAccent"
+        android:text="@string/icon_app" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:text="https://www.instagram.com/hoodass/?hl=cs"/>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

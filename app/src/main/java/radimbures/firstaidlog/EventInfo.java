@@ -133,7 +133,6 @@ public class EventInfo extends Fragment {
                 pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + "FirstAidLog" + "/" + filename1);
 
                 if(pdfFile.exists()) {
-                    //TODO odeslání emailu
                     intentShareFile.setType("application/pdf");
                     intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+Uri.fromFile(pdfFile)));
                     intentShareFile.putExtra(Intent.EXTRA_EMAIL, new String[]{email_leader, email_medic});
