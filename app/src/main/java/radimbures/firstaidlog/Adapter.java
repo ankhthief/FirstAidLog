@@ -1,5 +1,6 @@
 package radimbures.firstaidlog;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -33,7 +34,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         foto = fotky.get(position);
         cesta = cesty.get(position);
         final int maxSize = 300;
@@ -56,7 +57,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 AlertDialog.Builder imageDialog = new AlertDialog.Builder(view.getContext());
                 imageDialog.setTitle("Image");
                 //View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_image, (ViewGroup) view,false);
-                View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_image, null);
+                @SuppressLint("InflateParams") View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_image, null);
                 imageDialog.setView(viewInflated);
                 ImageView image = viewInflated.findViewById(R.id.fotka);
                 foto = fotky.get(position);
@@ -104,7 +105,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         notifyItemInserted(position);
     }
 
-    public void remove(int position) {
+    private void remove(int position) {
         fotky.remove(position);
         cesty.remove(position);
         notifyItemRemoved(position);
@@ -128,7 +129,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         public ImageView photo;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             photo = itemView.findViewById(R.id.imageView);
         }

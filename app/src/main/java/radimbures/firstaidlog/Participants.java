@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 
 
 /**
@@ -17,7 +17,7 @@ public class Participants extends Fragment {
 
     DBAdapter myDB;
     public long id_eventu;
-    Class S;
+
 
     public Participants() {
         // Required empty public constructor

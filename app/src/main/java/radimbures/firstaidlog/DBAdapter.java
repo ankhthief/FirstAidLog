@@ -224,9 +224,11 @@ public class DBAdapter {
         return DatabaseUtils.queryNumEntries(db, TABLE_REGISTR);
     }
 
-    public long getPhotosCount() {
+    /*
+   public long getPhotosCount() {
         return DatabaseUtils.queryNumEntries(db, TABLE_PHOTOS);
     }
+    */
 
     //close database
     public void close() {
