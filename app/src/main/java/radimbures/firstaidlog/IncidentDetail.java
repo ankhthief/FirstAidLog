@@ -17,6 +17,7 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
 import java.io.File;
+import java.util.ArrayList;
 
 
 /**
@@ -39,6 +40,7 @@ public class IncidentDetail extends Fragment {
     CarouselView carouselView;
     Cursor c2;
     Bitmap bitmap;
+    ArrayList<Bitmap> list;
     int[] sampleImages;
     //int[] sampleImages = {R.drawable.image1, R.drawable.image2};
 
@@ -60,6 +62,7 @@ public class IncidentDetail extends Fragment {
         time = root.findViewById(R.id.det_time);
         desc = root.findViewById(R.id.det_desc);
         medication = root.findViewById(R.id.det_medication);
+        list = new ArrayList<>();
         bundle = getArguments();
         if (bundle != null) {
             idparticipant = bundle.getLong("idparticipant");
@@ -85,7 +88,7 @@ public class IncidentDetail extends Fragment {
                             bitmap = BitmapFactory.decodeFile(cesta);
                             int[] sampleImages = {R.drawable.image1, R.drawable.image2};
                             //Log.i(TAG, file.getAbsolutePath());
-                            //list.add(bitmap);
+                            list.add(bitmap);
                             //path.add(cesta);
 
                     } while (c2.moveToNext());
@@ -96,12 +99,14 @@ public class IncidentDetail extends Fragment {
         ImageListener imageListener = new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                imageView.setImageResource(sampleImages[position]);
+                //imageView.setImageResource(sampleImages[position]);
+                imageView.setImageBitmap(bitmap);
             }
         };
 
         carouselView = root.findViewById(R.id.carouselView);
-        carouselView.setPageCount(sampleImages.length);
+        // tady musí přijít počet fotek z DB (COUNT)
+        carouselView.setPageCount(1);
 
         carouselView.setImageListener(imageListener);
 
