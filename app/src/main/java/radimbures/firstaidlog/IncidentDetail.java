@@ -1,6 +1,7 @@
 package radimbures.firstaidlog;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -8,19 +9,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
-
-import java.io.File;
 import java.util.ArrayList;
 
 
@@ -70,7 +66,9 @@ public class IncidentDetail extends Fragment {
         date = root.findViewById(R.id.det_date);
         time = root.findViewById(R.id.det_time);
         desc = root.findViewById(R.id.det_desc);
+        carouselView = root.findViewById(R.id.carouselView);
         medication = root.findViewById(R.id.det_medication);
+        carouselView.setVisibility(View.GONE);
         pocet = 0;
         list = new ArrayList<>();
         bundle = getArguments();
@@ -89,12 +87,12 @@ public class IncidentDetail extends Fragment {
         medication.setText(c.getString(c.getColumnIndex("medication")));
         c.close();
         if (!myDB.isEmptyPhotos(id)) {
+            carouselView.setVisibility(View.VISIBLE);
             c2 = myDB.db.rawQuery("SELECT * FROM photos WHERE injuryid==" + id, null);
             if (c2 != null)
                 if (c2.moveToFirst()) {
                     do {
                         String cesta = c2.getString(c2.getColumnIndex("photo"));
-                        boolean fileExists =  new File(cesta).isFile();
                             bitmap = BitmapFactory.decodeFile(cesta);
                             //Log.i(TAG, file.getAbsolutePath());
                             list.add(bitmap);
@@ -113,7 +111,7 @@ public class IncidentDetail extends Fragment {
             }
         };
 
-        carouselView = root.findViewById(R.id.carouselView);
+
         carouselView.setPageCount(pocet);
 
         carouselView.setImageListener(imageListener);
@@ -124,7 +122,7 @@ public class IncidentDetail extends Fragment {
                 AlertDialog.Builder imageDialog = new AlertDialog.Builder(root.getContext());
                 imageDialog.setTitle(R.string.image);
                 //View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_image, (ViewGroup) view,false);
-                View viewInflated = LayoutInflater.from(root.getContext()).inflate(R.layout.dialog_image, null);
+                @SuppressLint("InflateParams") View viewInflated = LayoutInflater.from(root.getContext()).inflate(R.layout.dialog_image, null);
                 imageDialog.setView(viewInflated);
                 ImageView image = viewInflated.findViewById(R.id.fotka);
                 foto = list.get(position);
