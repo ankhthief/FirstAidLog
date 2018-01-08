@@ -133,7 +133,6 @@
     <string name="photos">Photos</string>
     <string name="no_pdf_viewer">You cannot view .pdf file. Install PDF viewer from Play Store.</string>
     <string name="icon_app">Icon app</string>
+    <string name="image">Image</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

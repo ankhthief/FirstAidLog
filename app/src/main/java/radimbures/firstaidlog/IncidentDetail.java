@@ -1,6 +1,8 @@
 package radimbures.firstaidlog;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
 
 import java.io.File;
@@ -42,6 +46,11 @@ public class IncidentDetail extends Fragment {
     Bitmap bitmap;
     ArrayList<Bitmap> list;
     int pocet;
+    private Bitmap foto;
+    private int outWidth;
+    private int outHeight;
+    private int inWidth;
+    private int inHeight;
 
 
 
@@ -109,6 +118,51 @@ public class IncidentDetail extends Fragment {
 
         carouselView.setImageListener(imageListener);
 
+        carouselView.setImageClickListener(new ImageClickListener() {
+            @Override
+            public void onClick(int position) {
+                AlertDialog.Builder imageDialog = new AlertDialog.Builder(root.getContext());
+                imageDialog.setTitle(R.string.image);
+                //View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_image, (ViewGroup) view,false);
+                View viewInflated = LayoutInflater.from(root.getContext()).inflate(R.layout.dialog_image, null);
+                imageDialog.setView(viewInflated);
+                ImageView image = viewInflated.findViewById(R.id.fotka);
+                foto = list.get(position);
+                final int maxSize = 850;
+                inWidth = foto.getWidth();
+                inHeight = foto.getHeight();
+                if(inWidth > inHeight){
+                    outWidth = maxSize;
+                    outHeight = (inHeight * maxSize) / inWidth;
+                } else {
+                    outHeight = maxSize;
+                    outWidth = (inWidth * maxSize) / inHeight;
+                }
+
+                Bitmap resizedFoto = Bitmap.createScaledBitmap(
+                        foto, outWidth, outHeight, false);
+                image.setImageBitmap(resizedFoto);
+                imageDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+
+                    }
+                });
+                /*
+                imageDialog.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        cesta = cesty.get(position);
+                        File file = new File(cesta);
+                        boolean deleted = file.delete();
+                        remove(position);
+                    }
+                });
+                */
+                imageDialog.show();
+            }
+        });
 
 
 
