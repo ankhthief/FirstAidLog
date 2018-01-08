@@ -64,6 +64,23 @@ public class IncidentsList extends Fragment {
         populateListView();
         registerForContextMenu(injuriesList);
 
+        injuriesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                IncidentDetail frag = new IncidentDetail();
+                Bundle bundle = new Bundle();
+                bundle.putLong("idparticipant", id_eventu);
+                bundle.putLong("idevent", id_participant);
+                bundle.putLong("id", l);
+                bundle.putBoolean("novy", false);
+                frag.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragment_holder, frag).addToBackStack(null).commit();
+
+            }
+        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
