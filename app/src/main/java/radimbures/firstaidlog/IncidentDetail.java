@@ -41,8 +41,8 @@ public class IncidentDetail extends Fragment {
     Cursor c2;
     Bitmap bitmap;
     ArrayList<Bitmap> list;
-    int[] sampleImages;
-    //int[] sampleImages = {R.drawable.image1, R.drawable.image2};
+    int pocet;
+
 
 
     public IncidentDetail() {
@@ -62,6 +62,7 @@ public class IncidentDetail extends Fragment {
         time = root.findViewById(R.id.det_time);
         desc = root.findViewById(R.id.det_desc);
         medication = root.findViewById(R.id.det_medication);
+        pocet = 0;
         list = new ArrayList<>();
         bundle = getArguments();
         if (bundle != null) {
@@ -86,10 +87,9 @@ public class IncidentDetail extends Fragment {
                         String cesta = c2.getString(c2.getColumnIndex("photo"));
                         boolean fileExists =  new File(cesta).isFile();
                             bitmap = BitmapFactory.decodeFile(cesta);
-                            int[] sampleImages = {R.drawable.image1, R.drawable.image2};
                             //Log.i(TAG, file.getAbsolutePath());
                             list.add(bitmap);
-                            //path.add(cesta);
+                            pocet++;
 
                     } while (c2.moveToNext());
                 }
@@ -99,14 +99,13 @@ public class IncidentDetail extends Fragment {
         ImageListener imageListener = new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                //imageView.setImageResource(sampleImages[position]);
-                imageView.setImageBitmap(bitmap);
+                imageView.setImageBitmap(list.get(position));
+
             }
         };
 
         carouselView = root.findViewById(R.id.carouselView);
-        // tady musí přijít počet fotek z DB (COUNT)
-        carouselView.setPageCount(1);
+        carouselView.setPageCount(pocet);
 
         carouselView.setImageListener(imageListener);
 
